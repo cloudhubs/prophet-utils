@@ -15,7 +15,10 @@ import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.Module;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.NotDirectoryException;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -48,6 +51,10 @@ public class SystemContextParser {
     private static DirectoryFactory directoryFactory;
     private static AnalysisContextFactory contextFactory;
 
+    private static final int DIRECTORY = 0;
+    private static final int FILE = 1;
+
+
     /**
      * Singleton instance getter
      * @return gets this instance of systemcontextparser
@@ -73,8 +80,15 @@ public class SystemContextParser {
      * @return an AnalysisContext object
      */
     public AnalysisContext createAnalysisContextFromDirectory(String path) {
-        DirectoryComponent directory = (DirectoryComponent) directoryFactory.createDirectoryGraph(path);
-        return contextFactory.createAnalysisContextFromDirectoryGraph(directory);
+        try {
+            validate(path, DIRECTORY);
+            DirectoryComponent directory = (DirectoryComponent) directoryFactory.createDirectoryGraph(path);
+            return contextFactory.createAnalysisContextFromDirectoryGraph(directory);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Could not create AnalysisContext");
+        }
+        return  null;
     }
 
     /**
@@ -85,8 +99,15 @@ public class SystemContextParser {
      * @return an AnalysisContext object for the file
      */
     public AnalysisContext createAnalysisContextFromFile(File file) {
-        DirectoryComponent directory = (DirectoryComponent) directoryFactory.createDirectoryGraphOfFile(file);
-        return contextFactory.createAnalysisContextFromDirectoryGraph(directory);
+        try {
+            validate(file.getPath(), FILE);
+            DirectoryComponent directory = (DirectoryComponent) directoryFactory.createDirectoryGraphOfFile(file);
+            return contextFactory.createAnalysisContextFromDirectoryGraph(directory);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Could not create AnalysisContext");
+        }
+        return null;
     }
 
     /**
@@ -97,9 +118,16 @@ public class SystemContextParser {
      * @return an AnalysisContext object for the file
      */
     public AnalysisContext createAnalysisContextFromFile(String filePath) {
-        DirectoryComponent directory = (DirectoryComponent) directoryFactory
-                .createDirectoryGraphOfFile(new File(filePath));
-        return contextFactory.createAnalysisContextFromDirectoryGraph(directory);
+        try{
+            validate(filePath, FILE);
+            DirectoryComponent directory = (DirectoryComponent) directoryFactory
+                    .createDirectoryGraphOfFile(new File(filePath));
+            return contextFactory.createAnalysisContextFromDirectoryGraph(directory);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Could not create AnalysisContext");
+        }
+        return null;
     }
 
     /**
@@ -147,6 +175,32 @@ public class SystemContextParser {
             modules.add(module_n);
         }
         return new SystemContext(context.getRootPath(), modules);
+    }
+
+    /**
+     * Validate that the input is correct before trying to run JParser on it. Protects against possible crash or just
+     * overall overhead.
+     * @param path Path of file or object
+     * @param type What to test for
+     */
+    private void validate(String path, int type) throws NotDirectoryException, FileNotFoundException {
+        if (type == DIRECTORY) {
+            File file = new File(path);
+            if (!file.isDirectory()) {
+                throw new NotDirectoryException("Input to SystemContextParser was expected to be a directory and is not!");
+            }
+            if (file.listFiles() == null) {
+                throw new NotDirectoryException("The supplied root directory contains no files!");
+            }
+        } else if (type == FILE) {
+            File file = new File(path);
+            if (file.isDirectory()) {
+                throw new FileNotFoundException("Input to SystemContextParser was expected to be a file and it is not!");
+            }
+            if (!file.exists()) {
+                throw new FileNotFoundException("File supplied to SystemContextParser does not exist!");
+            }
+        }
     }
 
 }
