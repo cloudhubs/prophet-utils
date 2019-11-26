@@ -1,4 +1,6 @@
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
+import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
+import systemcontext.SystemContextParser;
 
 public class ProphetUtilsFacade {
 
@@ -27,6 +29,12 @@ public class ProphetUtilsFacade {
      */
     public static BoundedContext getBoundedContext(String path) {
         return null;
+    }
+
+
+    public static SystemContext getSystemContext(String path, String[] msPaths){
+        SystemContextParser systemContextParser = SystemContextParser.getInstance();
+        return systemContextParser.createSystemContextFromPathViaAnalysisContext(path, msPaths);
     }
 
 

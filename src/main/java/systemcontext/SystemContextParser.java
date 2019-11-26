@@ -17,9 +17,8 @@ import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.NotDirectoryException;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Non-static methods because it requires the initialization of the appropriate factories for JParser.
@@ -135,8 +134,8 @@ public class SystemContextParser {
      * @param path Path to directory to create AnalysisContext for populating SystemContext.
      * @return A SystemContext object
      */
-    public SystemContext createSystemContextFromPathViaAnalysisContext(String path) {
-        return createSystemContextFromAnalysisContext(createAnalysisContextFromDirectory(path));
+    public SystemContext createSystemContextFromPathViaAnalysisContext(String path, String[] msPaths) {
+        return createSystemContextFromAnalysisContext(createAnalysisContextFromDirectory(path), msPaths);
     }
 
     /**
@@ -144,12 +143,14 @@ public class SystemContextParser {
      * @param context an AnalysisContext for populating SystemContext.
      * @return A SystemContext object
      */
-    public SystemContext createSystemContextFromAnalysisContext(AnalysisContext context) {
+    public SystemContext createSystemContextFromAnalysisContext(AnalysisContext context, String[] msPaths) {
         Set<Module> modules = new HashSet<>();
-        for (ModuleComponent module : context.getModules()) {
+        HashMap<String, Set<ClassComponent>> clusters = clusterClassComponents(context.getModules(), msPaths);
+
+        for (Map.Entry<String, Set<ClassComponent>> entry : clusters.entrySet()) {
             Module module_n = new Module();
             Set<Entity> entities = new HashSet<>();
-            for (ClassComponent clazz : module.getClasses()) {
+            for (ClassComponent clazz : entry.getValue()) {
                 Set<Field> fields = new HashSet<>();
                 for (FieldComponent field : clazz.getFieldComponents()) {
                     Field field_n = new Field();
@@ -170,11 +171,28 @@ public class SystemContextParser {
                 entity.setFields(fields);
                 entities.add(entity);
             }
-            module_n.setName(module.getInstanceName());
+            module_n.setName(entry.getKey());
             module_n.setEntities(entities);
             modules.add(module_n);
         }
+
         return new SystemContext(context.getRootPath(), modules);
+    }
+
+    public HashMap<String, Set<ClassComponent>> clusterClassComponents(List<ModuleComponent> moduleComponents,
+                                                                         String[] msPaths){
+        HashMap<String, Set<ClassComponent>> clusters = new HashMap<>();
+        for (String path: msPaths){
+            clusters.put(path, new HashSet<ClassComponent>());
+        }
+        for (ModuleComponent mc: moduleComponents){
+            String mcPath = mc.getPath();
+            String msPath = Arrays.stream(msPaths).filter(mcPath::contains).findFirst().get();
+            Set<ClassComponent> valueSet = clusters.get(msPath);
+            valueSet.addAll(mc.getClasses());
+            clusters.put(msPath, valueSet);
+        }
+        return clusters;
     }
 
     /**
