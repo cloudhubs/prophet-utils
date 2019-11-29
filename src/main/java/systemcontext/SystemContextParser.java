@@ -1,11 +1,9 @@
 package systemcontext;
 
+import com.github.javaparser.ast.expr.Name;
 import edu.baylor.ecs.ciljssa.component.Component;
 import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;
-import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
-import edu.baylor.ecs.ciljssa.component.impl.DirectoryComponent;
-import edu.baylor.ecs.ciljssa.component.impl.FieldComponent;
-import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
+import edu.baylor.ecs.ciljssa.component.impl.*;
 import edu.baylor.ecs.ciljssa.factory.context.AnalysisContextFactory;
 import edu.baylor.ecs.ciljssa.factory.directory.DirectoryFactory;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.Annotation;
@@ -151,25 +149,35 @@ public class SystemContextParser {
             Module module_n = new Module();
             Set<Entity> entities = new HashSet<>();
             for (ClassComponent clazz : entry.getValue()) {
-                Set<Field> fields = new HashSet<>();
-                for (FieldComponent field : clazz.getFieldComponents()) {
-                    Field field_n = new Field();
-                    field_n.setName(field.getFieldName());
-                    field_n.setType(field.getType());
-                    Set<Annotation> annotations = new HashSet<>();
+                List<Component> classAnnotations = clazz.getAnnotations();
+                if (classAnnotations != null){
+                    for (Component cmp: classAnnotations
+                         ) {
+                        AnnotationComponent ac = (AnnotationComponent) cmp;
+                        if (ac.getAsString().equals("@Entity")){
+                            Set<Field> fields = new HashSet<>();
+                            for (FieldComponent field : clazz.getFieldComponents()) {
+                                Field field_n = new Field();
+                                field_n.setName(field.getFieldName());
+                                field_n.setType(field.getType());
+                                Set<Annotation> annotations = new HashSet<>();
 
-                    for (Component annotation : field.getAnnotations()) {
-                        Annotation ann = new Annotation();
-                        ann.setStringValue(annotation.asAnnotationComponent().getAnnotationValue());
-                        ann.setName(annotation.asAnnotationComponent().getAsString());
-                        annotations.add(ann);
+                                for (Component annotation : field.getAnnotations()) {
+                                    Annotation ann = new Annotation();
+                                    ann.setStringValue(annotation.asAnnotationComponent().getAnnotationValue());
+                                    ann.setName(annotation.asAnnotationComponent().getAsString());
+                                    annotations.add(ann);
+                                }
+                                field_n.setAnnotations(annotations);
+                                fields.add(field_n);
+                            }
+                            Entity entity = new Entity(clazz.getClassName());
+                            entity.setFields(fields);
+                            entities.add(entity);
+                        }
                     }
-                    field_n.setAnnotations(annotations);
-                    fields.add(field_n);
                 }
-                Entity entity = new Entity(clazz.getClassName());
-                entity.setFields(fields);
-                entities.add(entity);
+
             }
             module_n.setName(entry.getKey());
             module_n.setEntities(entities);
@@ -187,10 +195,12 @@ public class SystemContextParser {
         }
         for (ModuleComponent mc: moduleComponents){
             String mcPath = mc.getPath();
-            String msPath = Arrays.stream(msPaths).filter(mcPath::contains).findFirst().get();
-            Set<ClassComponent> valueSet = clusters.get(msPath);
-            valueSet.addAll(mc.getClasses());
-            clusters.put(msPath, valueSet);
+            String msPath = Arrays.stream(msPaths).filter(mcPath::contains).findFirst().orElse(null);
+            if (msPath != null){
+                Set<ClassComponent> valueSet = clusters.get(msPath);
+                valueSet.addAll(mc.getClasses());
+                clusters.put(msPath, valueSet);
+            }
         }
         return clusters;
     }
