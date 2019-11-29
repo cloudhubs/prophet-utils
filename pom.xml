@@ -11,8 +11,8 @@
     <packaging>jar</packaging>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.11</maven.compiler.source>
+        <maven.compiler.target>1.11</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -39,6 +39,27 @@
             <artifactId>rad-source</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+
+        <!--<dependency>-->
+            <!--<groupId>edu.baylor.ecs.cloudhubs.prophet</groupId>-->
+            <!--<artifactId>prophet-bounded-context</artifactId>-->
+            <!--<version>1.0-SNAPSHOT</version>-->
+        <!--</dependency>-->
+
+        <dependency>
+            <groupId>edu.baylor.ecs.cloudhubs</groupId>
+            <artifactId>boundedcontext</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.6</version>
+        </dependency>
+
 
     </dependencies>
 
