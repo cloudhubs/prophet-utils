@@ -1,6 +1,15 @@
+package systemcontext;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
+import edu.baylor.ecs.prophet.bounded.context.utils.BoundedContextUtils;
+import edu.baylor.ecs.prophet.bounded.context.utils.impl.BoundedContextUtilsImpl;
+import filemanager.FileManager;
 import systemcontext.SystemContextParser;
+
+import java.io.*;
 
 public class ProphetUtilsFacade {
 
@@ -27,8 +36,13 @@ public class ProphetUtilsFacade {
      * @param path
      * @return BoundedContext
      */
-    public static BoundedContext getBoundedContext(String path) {
-        return null;
+    public static BoundedContext getBoundedContext(String path, String[] msPaths) {
+        BoundedContextUtils boundedContextUtils = new BoundedContextUtilsImpl();
+        SystemContext systemContext = ProphetUtilsFacade.getSystemContext(path, msPaths);
+        FileManager.writeToFile(systemContext);
+        BoundedContext boundedContext = boundedContextUtils.createBoundedContext(systemContext);
+
+        return boundedContext;
     }
 
 
