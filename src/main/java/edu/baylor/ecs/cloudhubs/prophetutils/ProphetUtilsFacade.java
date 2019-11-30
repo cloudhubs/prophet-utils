@@ -1,4 +1,4 @@
-package edu.baylor.ecs.cloudhubs.prophetutils.entitycontext;
+package edu.baylor.ecs.cloudhubs.prophetutils;
 
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
 import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;

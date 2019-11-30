@@ -1,4 +1,4 @@
-package mscontext.jparser;
+package edu.baylor.ecs.cloudhubs.prophetutils.mscontext;
 
 import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.*;
 import edu.baylor.ecs.cloudhubs.radsource.context.RadSourceRequestContext;
