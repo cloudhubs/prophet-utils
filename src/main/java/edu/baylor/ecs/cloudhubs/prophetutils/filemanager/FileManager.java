@@ -1,4 +1,4 @@
-package filemanager;
+package edu.baylor.ecs.cloudhubs.prophetutils.filemanager;
 
 import com.google.gson.Gson;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
