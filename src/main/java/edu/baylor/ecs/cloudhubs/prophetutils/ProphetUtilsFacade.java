@@ -1,15 +1,13 @@
-package systemcontext;
+package edu.baylor.ecs.cloudhubs.prophetutils.entitycontext;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
+import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
+import edu.baylor.ecs.cloudhubs.prophetutils.jparser.JParserUtils;
 import edu.baylor.ecs.prophet.bounded.context.utils.BoundedContextUtils;
 import edu.baylor.ecs.prophet.bounded.context.utils.impl.BoundedContextUtilsImpl;
-import filemanager.FileManager;
-import systemcontext.SystemContextParser;
-
-import java.io.*;
+import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
 
 public class ProphetUtilsFacade {
 
@@ -32,23 +30,30 @@ public class ProphetUtilsFacade {
 
 
     /**
-     * Get Data via Jparser, Create SystemContext, pass SystemContext to bounded-context lib
+     * Generates Bounded Context From Source Code of Microservice System
      * @param path
      * @return BoundedContext
      */
     public static BoundedContext getBoundedContext(String path, String[] msPaths) {
         BoundedContextUtils boundedContextUtils = new BoundedContextUtilsImpl();
-        SystemContext systemContext = ProphetUtilsFacade.getSystemContext(path, msPaths);
+        SystemContext systemContext = ProphetUtilsFacade.getEntityContext(path, msPaths);
         FileManager.writeToFile(systemContext);
         BoundedContext boundedContext = boundedContextUtils.createBoundedContext(systemContext);
-
         return boundedContext;
     }
 
 
-    public static SystemContext getSystemContext(String path, String[] msPaths){
-        SystemContextParser systemContextParser = SystemContextParser.getInstance();
-        return systemContextParser.createSystemContextFromPathViaAnalysisContext(path, msPaths);
+    /**
+     * Generates entity context of microservice system
+     * @param path to root folder
+     * @param msPaths to microservices
+     * @return entity context
+     */
+    public static SystemContext getEntityContext(String path, String[] msPaths){
+        JParserUtils jParserUtils = JParserUtils.getInstance();
+        AnalysisContext analysisContext = jParserUtils.createAnalysisContextFromDirectory(path);
+        SystemContext systemContext = EntityContextAdapter.getSystemContext(analysisContext, msPaths);
+        return systemContext;
     }
 
 
