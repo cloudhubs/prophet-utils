@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Mermaid Quick Test Page</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.2/mermaid.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.2/mermaid.core.js.map"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.2/mermaid.core.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+    <body>
+        <div class="mermaid" id="graphDiv">
+            stateDiagram
+            [*] --> First
+            state First {
+            [*] --> second
+            second --> [*]
+            }
+classDiagram
+question --> Choice : 1:N
+choices --> Question : 1:N
+exam --> Question : 1:N
+Exam : Integer sum
+Exam : String configurationId
+Exam : String examinee
+Exam : String examDate
+Exam : Integer correct
+Exam : String issuer
+Exam : ExamStatus status
+Exam : Integer id
+Choice : String body
+Choice : boolean correct
+Choice : boolean chosen
+Choice : Integer id
+Question : Integer id
+Question : String body
+Question : String code
+</div>
+<script>
+    mermaidAPI.initialize({
+        startOnLoad:true
+    });
+</script>
+</body>
+</html>
