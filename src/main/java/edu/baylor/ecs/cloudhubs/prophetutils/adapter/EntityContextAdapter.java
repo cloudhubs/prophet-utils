@@ -10,6 +10,7 @@ import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.*;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.Module;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * JParser AnalysisContext -> ProphetDTO SystemContext
@@ -39,9 +40,17 @@ public class EntityContextAdapter {
                             for (FieldComponent field : clazz.getFieldComponents()) {
                                 Field field_n = new Field();
                                 field_n.setName(field.getFieldName());
-                                field_n.setType(field.getType());
+                                if (isCollection(field.getType())){
+                                    String s = field.getType();
+                                    String entityRef = s.substring(s.indexOf("<") + 1, s.indexOf(">"));
+                                    field_n.setType(entityRef);
+                                    field_n.setCollection(true);
+                                    field_n.setReference(true);
+                                } else {
+                                    field_n.setType(field.getType());
+                                    field_n.setCollection(false);
+                                }
                                 Set<Annotation> annotations = new HashSet<>();
-
                                 for (Component annotation : field.getAnnotations()) {
                                     Annotation ann = new Annotation();
                                     ann.setStringValue(annotation.asAnnotationComponent().getAnnotationValue());
@@ -59,6 +68,24 @@ public class EntityContextAdapter {
                 }
 
             }
+
+//            //set entity reference
+//            for (Entity e: entities
+//                 ) {
+//                for (Field f: e.getFields()
+//                     ) {
+//                    List<Entity> ope =
+//                            entities.stream().filter(n -> n.getEntityName().equals(f.getType())).collect(Collectors.toList());
+//                    if (ope.size() > 0){
+//                        f.setEntityReference(ope.get(0));
+//                        f.setReference(true);
+//                        f.setCollection(true);
+//                    }
+//
+//                }
+//            }
+
+
             module_n.setName(entry.getKey());
             module_n.setEntities(entities);
             modules.add(module_n);
@@ -89,5 +116,14 @@ public class EntityContextAdapter {
             }
         }
         return clusters;
+    }
+
+
+    public static boolean isCollection(String type){
+        if (type.contains("Set") ){
+            return true;
+        } else if (type.contains("Collection")){
+            return true;
+        } else return type.contains("List");
     }
 }
