@@ -1,13 +1,18 @@
 package edu.baylor.ecs.cloudhubs.prophetutils;
 
+import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidGraph;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
 import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
+import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityGraphAdapter;
+import edu.baylor.ecs.cloudhubs.prophetutils.adapter.HtmlTemplateAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.jparser.JParserUtils;
 import edu.baylor.ecs.prophet.bounded.context.utils.BoundedContextUtils;
 import edu.baylor.ecs.prophet.bounded.context.utils.impl.BoundedContextUtilsImpl;
 import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
+
+import java.io.File;
 
 public class ProphetUtilsFacade {
 
@@ -37,7 +42,7 @@ public class ProphetUtilsFacade {
     public static BoundedContext getBoundedContext(String path, String[] msPaths) {
         BoundedContextUtils boundedContextUtils = new BoundedContextUtilsImpl();
         SystemContext systemContext = ProphetUtilsFacade.getEntityContext(path, msPaths);
-        FileManager.writeToFile(systemContext);
+        //FileManager.writeToFile(systemContext);
         BoundedContext boundedContext = boundedContextUtils.createBoundedContext(systemContext);
         return boundedContext;
     }
@@ -54,6 +59,13 @@ public class ProphetUtilsFacade {
         AnalysisContext analysisContext = jParserUtils.createAnalysisContextFromDirectory(path);
         SystemContext systemContext = EntityContextAdapter.getSystemContext(analysisContext, msPaths);
         return systemContext;
+    }
+
+
+    public static void createHtmlTemplate(String path, String[] msPaths){
+        BoundedContext boundedContext = getBoundedContext(path, msPaths);
+        MermaidGraph mermaidGraph = EntityGraphAdapter.getMermaidGraph(boundedContext);
+        HtmlTemplateAdapter.getIndexFile(mermaidGraph);
     }
 
 
