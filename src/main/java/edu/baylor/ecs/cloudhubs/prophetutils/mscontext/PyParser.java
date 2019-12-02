@@ -4,7 +4,6 @@ import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.*;
 import edu.baylor.ecs.cloudhubs.prophetdto.pyparser.msapi.PyMs;
 import edu.baylor.ecs.cloudhubs.prophetdto.pyparser.msapi.PyMsSystem;
 import edu.baylor.ecs.cloudhubs.prophetdto.pyparser.msapi.PyPoint;
-import javafx.util.Pair;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -80,9 +79,9 @@ public class PyParser {
         edge.setTo(node2);
 
         MsLabel label = new MsLabel();
-        label.setArgument(connection.getKey().getPayload().get(0).getType());
-        label.setMsReturn(connection.getValue().getResponse().getType());
-        label.setType(getRestType(connection.getKey().getName()));
+        label.setArgument(connection.getFirst().getPayload().get(0).getType());
+        label.setMsReturn(connection.getSecond().getResponse().getType());
+        label.setType(getRestType(connection.getFirst().getName()));
 
         edge.setLabel(label);
 
@@ -102,6 +101,26 @@ public class PyParser {
             default:
                 throw new IllegalArgumentException("Illegal argument for getRestType");
 
+        }
+    }
+
+    private static class Pair<T, S> {
+        private T first;
+        private S second;
+
+        private Pair(){}
+
+        Pair(T first, S second) {
+            this.first = first;
+            this.second = second;
+        }
+
+        T getFirst() {
+            return first;
+        }
+
+        S getSecond() {
+            return second;
         }
     }
 }
