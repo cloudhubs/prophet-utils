@@ -80,8 +80,8 @@ public class PyParser {
         edge.setTo(node2);
 
         MsLabel label = new MsLabel();
-        label.setArgument(connection.getKey().getPayloadMeta().toString());
-        label.setMsReturn(connection.getValue().getResponseMeta().toString());
+        label.setArgument(connection.getKey().getPayload().get(0).getType());
+        label.setMsReturn(connection.getValue().getResponse().getType());
         label.setType(getRestType(connection.getKey().getName()));
 
         edge.setLabel(label);
