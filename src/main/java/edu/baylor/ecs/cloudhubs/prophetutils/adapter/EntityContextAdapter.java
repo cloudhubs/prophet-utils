@@ -32,8 +32,7 @@ public class EntityContextAdapter {
             for (ClassComponent clazz : entry.getValue()) {
                 List<Component> classAnnotations = clazz.getAnnotations();
                 if (classAnnotations != null){
-                    for (Component cmp: classAnnotations
-                    ) {
+                    for (Component cmp: classAnnotations) {
                         AnnotationComponent ac = (AnnotationComponent) cmp;
                         if (ac.getAsString().equals("@Entity")){
                             Set<Field> fields = new HashSet<>();
