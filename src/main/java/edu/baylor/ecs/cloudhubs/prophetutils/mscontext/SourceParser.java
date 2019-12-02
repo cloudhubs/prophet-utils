@@ -25,8 +25,11 @@ public class SourceParser {
             String toKey = restFlow.getEndpoint().getMsRoot();
             String fromKey = restFlow.getClient().getMsRoot();
 
-            MsNode toNode = nodeMap.putIfAbsent(toKey, new MsNode(toKey));
-            MsNode fromNode = nodeMap.putIfAbsent(fromKey, new MsNode(fromKey));
+            nodeMap.putIfAbsent(toKey, new MsNode(toKey));
+            nodeMap.putIfAbsent(fromKey, new MsNode(fromKey));
+
+            MsNode toNode = nodeMap.get(toKey);
+            MsNode fromNode = nodeMap.get(fromKey);
 
             MsLabel msLabel = new MsLabel();
             msLabel.setType(MsLabelType.valueOf(restFlow.getEndpoint().getHttpMethod()));
