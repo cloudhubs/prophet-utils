@@ -14,3 +14,9 @@
 </head>
     <body>
         <div class="mermaid" id="graphDiv">
+            stateDiagram
+            [*] --> First
+            state First {
+            [*] --> second
+            second --> [*]
+            }

@@ -50,8 +50,8 @@ public class EntityGraphAdapter {
                  ) {
                 if (field.isReference()){
                     System.out.println("is filed");
-                    if (mermaidEdges.stream().filter(n -> n.exists(field.getName(), entity.getEntityName())).collect(Collectors.toList()).size() == 0){
-                        mermaidEdges.add(new MermaidEdge(field.getName(), entity.getEntityName()));
+                    if (mermaidEdges.stream().filter(n -> n.exists(field.getType(), entity.getEntityName())).collect(Collectors.toList()).size() == 0){
+                        mermaidEdges.add(new MermaidEdge(field.getType(), entity.getEntityName()));
                     }
                 }
             }

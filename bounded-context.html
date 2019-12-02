@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Mermaid Quick Test Page</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.2/mermaid.js"></script>
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.2/mermaid.core.js.map"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.4.2/mermaid.core.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+</head>
+    <body>
+        <div class="mermaid" id="graphDiv">
+classDiagram
+	 class Code
+      Code : +String body
+	 class Question
+      Question : +String code
+      Question : +String FIND_BY_CATEGORYID
+      Question : +String FIND_BY_CATEGORYID_LEVEL_LANGUAGE
+      Question : +String body
+      Question : +String title
+      Question : +String FIND_BY_CATEGORYID_AND_NAME
+      Question : +Integer level
+      Question : +String description
+      Question : +String FIND_DTO_BY_NAME
+	 class ConfigurationGroup
+      ConfigurationGroup : +Long category
+      ConfigurationGroup : +Long languageId
+      ConfigurationGroup : +Integer count
+      ConfigurationGroup : +Integer level
+	 class Language
+      Language : +String name
+	 class Category
+      Category : +String name
+      Category : +String description
+      Category : +String FIND_NAMES_BY_QUESTION_ID
+      Category : +String FIND_QUESTION_COUNT_DTO_BY_ID
+	 class Configuration
+      Configuration : +String name
+      Configuration : +String description
+      Configuration : +String FIND_ALL_GROUPS_BY_ID
+	 class Choice
+      Choice : +String note
+      Choice : +boolean chosen
+      Choice : +Boolean correct
+      Choice : +String description
+      Choice : +String body
+      Choice : +boolean correct
+	 class Person
+      Person : +String firstName
+      Person : +String lastName
+      Person : +String userName
+	 class Exam
+      Exam : +String examDate
+      Exam : +String description
+      Exam : +Integer correct
+      Exam : +String configurationId
+      Exam : +Integer issuer
+      Exam : +Date examDate
+      Exam : +ExamStatus status
+      Exam : +Integer sum
+      Exam : +String issuer
+      Exam : +String examinee
+      Exam : +Integer configurationId
+Question --> Code : 1:N
+Language --> Code : 1:N
+Choice --> Question : 1:N
+Exam --> Question : 1:N
+Category --> Question : 1:N
+Configuration --> ConfigurationGroup : 1:N
+</div>
+<script>
+    mermaidAPI.initialize({
+        startOnLoad:true
+    });
+</script>
+</body>
+</html>

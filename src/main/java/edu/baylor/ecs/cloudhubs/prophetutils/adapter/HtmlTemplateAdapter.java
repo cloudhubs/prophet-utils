@@ -8,13 +8,10 @@ import java.util.List;
 
 public class HtmlTemplateAdapter {
 
-    public static void getIndexFile(MermaidGraph mermaidGraph){
+    public static void saveGraphToFile(MermaidGraph mermaidGraph){
         List<String> start = FileManager.readHtmlTemplatesToList("src/main/resources/header.html");
         List<String> end = FileManager.readHtmlTemplatesToList("src/main/resources/footer.html");
         try{
-
-            //create a temp file
-
             //write it
             BufferedWriter bw = new BufferedWriter(new FileWriter("index.html"));
             PrintWriter out = new PrintWriter(bw);
@@ -34,10 +31,23 @@ public class HtmlTemplateAdapter {
             }
 
             out.close();
-            System.out.println("Done");
 
         }catch(IOException e){
             e.printStackTrace();
         }
     }
+
+
+    public static List<String> getHtmlTemplateList(MermaidGraph mermaidGraph) {
+        List<String> start = FileManager.readHtmlTemplatesToList("src/main/resources/header.html");
+        List<String> graph = mermaidGraph.getHtmlLines();
+        List<String> end = FileManager.readHtmlTemplatesToList("src/main/resources/footer.html");
+        start.addAll(graph);
+        start.addAll(end);
+        return start;
+    }
+
+
+
+
 }

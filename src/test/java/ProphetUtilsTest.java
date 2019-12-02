@@ -1,3 +1,4 @@
+import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidGraph;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
 
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
@@ -6,11 +7,9 @@ import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
+import java.util.List;
 
-import java.io.File;
-
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ProphetUtilsTest {
 
@@ -50,10 +49,25 @@ public class ProphetUtilsTest {
     }
 
     @Test
+    @DisplayName("generating list")
+    public void generateList(){
+        List<String> list = ProphetUtilsFacade.createHtmlTemplate(rootPath, microServicePaths);
+        assertNotNull(list);
+    }
+
+    @Test
     @DisplayName("generating template")
     public void generateTemplate(){
-        ProphetUtilsFacade.createHtmlTemplate(rootPath, microServicePaths);
-        assertNotNull(1);
+        List<String> list = ProphetUtilsFacade.createHtmlTemplate(rootPath, microServicePaths);
+        FileManager.writeBoundedContextToFile(list);
+        assertNotNull(list);
+    }
+
+    @Test
+    @DisplayName("get mermaid graph")
+    public void getMermaidGraph(){
+        MermaidGraph mg =  ProphetUtilsFacade.getMermaidGraph(rootPath, microServicePaths);
+        assertNotNull(mg);
     }
 
 }

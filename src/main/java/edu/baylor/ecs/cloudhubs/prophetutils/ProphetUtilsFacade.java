@@ -7,12 +7,10 @@ import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityGraphAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.HtmlTemplateAdapter;
+import edu.baylor.ecs.cloudhubs.prophetutils.bounded.SimpleBoundedUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.jparser.JParserUtils;
-import edu.baylor.ecs.prophet.bounded.context.utils.BoundedContextUtils;
-import edu.baylor.ecs.prophet.bounded.context.utils.impl.BoundedContextUtilsImpl;
-import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
 
-import java.io.File;
+import java.util.List;
 
 public class ProphetUtilsFacade {
 
@@ -40,10 +38,10 @@ public class ProphetUtilsFacade {
      * @return BoundedContext
      */
     public static BoundedContext getBoundedContext(String path, String[] msPaths) {
-        BoundedContextUtils boundedContextUtils = new BoundedContextUtilsImpl();
+//        BoundedContextUtils boundedContextUtils = new BoundedContextUtilsImpl();
         SystemContext systemContext = ProphetUtilsFacade.getEntityContext(path, msPaths);
         //FileManager.writeToFile(systemContext);
-        BoundedContext boundedContext = boundedContextUtils.createBoundedContext(systemContext);
+        BoundedContext boundedContext = SimpleBoundedUtils.getBoundedContext(systemContext);
         return boundedContext;
     }
 
@@ -57,16 +55,20 @@ public class ProphetUtilsFacade {
     public static SystemContext getEntityContext(String path, String[] msPaths){
         JParserUtils jParserUtils = JParserUtils.getInstance();
         AnalysisContext analysisContext = jParserUtils.createAnalysisContextFromDirectory(path);
-        SystemContext systemContext = EntityContextAdapter.getSystemContext(analysisContext, msPaths);
+        SystemContext systemContext = EntityContextAdapter. getSystemContext(analysisContext, msPaths);
         return systemContext;
     }
 
 
-    public static void createHtmlTemplate(String path, String[] msPaths){
+    public static List<String> createHtmlTemplate(String path, String[] msPaths){
         BoundedContext boundedContext = getBoundedContext(path, msPaths);
         MermaidGraph mermaidGraph = EntityGraphAdapter.getMermaidGraph(boundedContext);
-        HtmlTemplateAdapter.getIndexFile(mermaidGraph);
+        return HtmlTemplateAdapter.getHtmlTemplateList(mermaidGraph);
     }
 
+    public static MermaidGraph getMermaidGraph(String path, String[] msPaths){
+        BoundedContext boundedContext = getBoundedContext(path, msPaths);
+        return EntityGraphAdapter.getMermaidGraph(boundedContext);
+    }
 
 }

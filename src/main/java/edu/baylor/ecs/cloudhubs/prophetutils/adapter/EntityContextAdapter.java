@@ -45,7 +45,6 @@ public class EntityContextAdapter {
                                     String entityRef = s.substring(s.indexOf("<") + 1, s.indexOf(">"));
                                     field_n.setType(entityRef);
                                     field_n.setCollection(true);
-                                    field_n.setReference(true);
                                 } else {
                                     field_n.setType(field.getType());
                                     field_n.setCollection(false);
@@ -58,6 +57,13 @@ public class EntityContextAdapter {
                                     annotations.add(ann);
                                 }
                                 field_n.setAnnotations(annotations);
+                                for (Annotation a: field_n.getAnnotations()){
+                                    if (a.getName().equals("@ManyToOne") || a.getName().equals("@OneToMany" ) || a.getName().equals("@OneToOne")){
+                                        //field_n.setEntityReference();
+                                        field_n.setReference(true);
+                                        field_n.setEntityRefName(field_n.getType());
+                                    }
+                                }
                                 fields.add(field_n);
                             }
                             Entity entity = new Entity(clazz.getClassName());
@@ -66,25 +72,7 @@ public class EntityContextAdapter {
                         }
                     }
                 }
-
             }
-
-//            //set entity reference
-//            for (Entity e: entities
-//                 ) {
-//                for (Field f: e.getFields()
-//                     ) {
-//                    List<Entity> ope =
-//                            entities.stream().filter(n -> n.getEntityName().equals(f.getType())).collect(Collectors.toList());
-//                    if (ope.size() > 0){
-//                        f.setEntityReference(ope.get(0));
-//                        f.setReference(true);
-//                        f.setCollection(true);
-//                    }
-//
-//                }
-//            }
-
 
             module_n.setName(entry.getKey());
             module_n.setEntities(entities);

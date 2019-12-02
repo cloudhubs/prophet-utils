@@ -10,6 +10,21 @@ import java.util.List;
 
 public class FileManager {
 
+    public static void writeBoundedContextToFile(List<String> list){
+        try {
+
+            PrintWriter pw = new PrintWriter("bounded-context.html");
+            for (String s: list
+                 ) {
+                pw.println(s);
+            }
+            pw.flush();
+            pw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void writeToFile(SystemContext systemContext){
         try {
             Gson gson = new Gson();
