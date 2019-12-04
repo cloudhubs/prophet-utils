@@ -1,9 +1,9 @@
 package edu.baylor.ecs.cloudhubs.prophetutils.jparser;
 
-import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;
-import edu.baylor.ecs.ciljssa.component.impl.*;
-import edu.baylor.ecs.ciljssa.factory.context.AnalysisContextFactory;
-import edu.baylor.ecs.ciljssa.factory.directory.DirectoryFactory;
+import edu.baylor.ecs.jparser.component.context.AnalysisContext;
+import edu.baylor.ecs.jparser.component.impl.DirectoryComponent;
+import edu.baylor.ecs.jparser.factory.context.AnalysisContextFactory;
+import edu.baylor.ecs.jparser.factory.directory.DirectoryFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;

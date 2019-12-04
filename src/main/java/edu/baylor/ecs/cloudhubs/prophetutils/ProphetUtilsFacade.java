@@ -2,13 +2,13 @@ package edu.baylor.ecs.cloudhubs.prophetutils;
 
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidGraph;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
-import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityGraphAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.HtmlTemplateAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.bounded.SimpleBoundedUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.jparser.JParserUtils;
+import edu.baylor.ecs.jparser.component.context.AnalysisContext;
 
 import java.util.List;
 

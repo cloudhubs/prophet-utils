@@ -1,16 +1,15 @@
 package edu.baylor.ecs.cloudhubs.prophetutils.adapter;
 
-import edu.baylor.ecs.ciljssa.component.Component;
-import edu.baylor.ecs.ciljssa.component.context.AnalysisContext;
-import edu.baylor.ecs.ciljssa.component.impl.AnnotationComponent;
-import edu.baylor.ecs.ciljssa.component.impl.ClassComponent;
-import edu.baylor.ecs.ciljssa.component.impl.FieldComponent;
-import edu.baylor.ecs.ciljssa.component.impl.ModuleComponent;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.*;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.Module;
+import edu.baylor.ecs.jparser.component.Component;
+import edu.baylor.ecs.jparser.component.context.AnalysisContext;
+import edu.baylor.ecs.jparser.component.impl.AnnotationComponent;
+import edu.baylor.ecs.jparser.component.impl.ClassComponent;
+import edu.baylor.ecs.jparser.component.impl.FieldComponent;
+import edu.baylor.ecs.jparser.component.impl.ModuleComponent;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * JParser AnalysisContext -> ProphetDTO SystemContext
