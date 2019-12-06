@@ -9,6 +9,8 @@ import edu.baylor.ecs.cloudhubs.prophetutils.adapter.HtmlTemplateAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.bounded.SimpleBoundedUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.jparser.JParserUtils;
 import edu.baylor.ecs.jparser.component.context.AnalysisContext;
+import edu.baylor.ecs.prophet.bounded.context.utils.BoundedContextUtils;
+import edu.baylor.ecs.prophet.bounded.context.utils.impl.BoundedContextUtilsImpl;
 
 import java.util.List;
 
@@ -38,10 +40,11 @@ public class ProphetUtilsFacade {
      * @return BoundedContext
      */
     public static BoundedContext getBoundedContext(String path, String[] msPaths) {
-//        BoundedContextUtils boundedContextUtils = new BoundedContextUtilsImpl();
+        BoundedContextUtils boundedContextUtils = new BoundedContextUtilsImpl();
         SystemContext systemContext = ProphetUtilsFacade.getEntityContext(path, msPaths);
         //FileManager.writeToFile(systemContext);
         BoundedContext boundedContext = SimpleBoundedUtils.getBoundedContext(systemContext);
+        //BoundedContext boundedContext = boundedContextUtils.createBoundedContext(systemContext);
         return boundedContext;
     }
 
