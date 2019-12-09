@@ -43,8 +43,8 @@ public class ProphetUtilsFacade {
         BoundedContextUtils boundedContextUtils = new BoundedContextUtilsImpl();
         SystemContext systemContext = ProphetUtilsFacade.getEntityContext(path, msPaths);
         //FileManager.writeToFile(systemContext);
-        BoundedContext boundedContext = SimpleBoundedUtils.getBoundedContext(systemContext);
-        //BoundedContext boundedContext = boundedContextUtils.createBoundedContext(systemContext);
+        //BoundedContext boundedContext = SimpleBoundedUtils.getBoundedContext(systemContext);
+        BoundedContext boundedContext = boundedContextUtils.createBoundedContext(systemContext);
         return boundedContext;
     }
 
