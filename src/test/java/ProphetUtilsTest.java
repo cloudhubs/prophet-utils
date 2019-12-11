@@ -29,16 +29,28 @@ public class ProphetUtilsTest {
     @Value("${user.rootPath}")
     private String rootPath;
 
+    @Value("${user.cmsPath}")
+    private String cms_path;
+
+    @Value("${user.qmsPath}")
+    private String qms_path;
+
+    @Value("${user.emsPath}")
+    private String ems_path;
+
+    @Value("${user.umsPath}")
+    private String ums_path;
+
     private String[] microServicePaths;
 
     @BeforeEach
     public void initSystems(){
         //rootPath.setRootPath("/Users/svacina/git/c2advseproject/");
         microServicePaths = new String[4];
-        microServicePaths[0] = rootPath + "cms";
-        microServicePaths[1] = rootPath + "qms-backend";
-        microServicePaths[2] = rootPath + "ems";
-        microServicePaths[3] = rootPath + "user-management";
+        microServicePaths[0] = rootPath + cms_path;
+        microServicePaths[1] = rootPath + qms_path;
+        microServicePaths[2] = rootPath + ems_path;
+        microServicePaths[3] = rootPath + ums_path;
     }
 
     @Test
@@ -51,7 +63,7 @@ public class ProphetUtilsTest {
     @Test
     @DisplayName("bounded entity context generation")
     public void boundedContextGen() {
-        BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(rootPath, microServicePaths);
+         BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(rootPath, microServicePaths);
         assertNotNull(boundedContext.getSystemName());
     }
 
