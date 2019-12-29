@@ -5,42 +5,65 @@ import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
 import edu.baylor.ecs.cloudhubs.prophetutils.ProphetUtilsFacade;
 import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = JunitConfig.class)
+@TestPropertySource(locations = "/application.properties")
 public class ProphetUtilsTest {
 
-    private static RootPath rootPath = new RootPath();
+    @Value("${user.rootPath}")
+    private String rootPath;
 
-    private static String[] microServicePaths;
+    @Value("${user.cmsPath}")
+    private String cms_path;
 
-    @BeforeAll
-    public static void initSystems(){
-        rootPath.setRootPath("/Users/svacina/git/c2advseproject/");
+    @Value("${user.qmsPath}")
+    private String qms_path;
+
+    @Value("${user.emsPath}")
+    private String ems_path;
+
+    @Value("${user.umsPath}")
+    private String ums_path;
+
+    private String[] microServicePaths;
+
+    @BeforeEach
+    public void initSystems(){
+        //rootPath.setRootPath("/Users/svacina/git/c2advseproject/");
         microServicePaths = new String[4];
-        microServicePaths[0] = rootPath.getRootPath() + "cms";
-        microServicePaths[1] = rootPath.getRootPath() + "qms-backend";
-        microServicePaths[2] = rootPath.getRootPath() + "ems";
-        microServicePaths[3] = rootPath.getRootPath() + "user-management";
+        microServicePaths[0] = rootPath + cms_path;
+        microServicePaths[1] = rootPath + qms_path;
+        microServicePaths[2] = rootPath + ems_path;
+        microServicePaths[3] = rootPath + ums_path;
     }
 
     @Test
     @DisplayName("entity context generation")
     public void entityContextGen() {
-        SystemContext entityContext = ProphetUtilsFacade.getEntityContext(rootPath.getRootPath(), microServicePaths);
+        SystemContext entityContext = ProphetUtilsFacade.getEntityContext(rootPath, microServicePaths);
         assertNotNull(entityContext.getSystemName());
     }
 
     @Test
     @DisplayName("bounded entity context generation")
     public void boundedContextGen() {
-        BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(rootPath.getRootPath(), microServicePaths);
+         BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(rootPath, microServicePaths);
         assertNotNull(boundedContext.getSystemName());
     }
 
@@ -55,14 +78,14 @@ public class ProphetUtilsTest {
     @Test
     @DisplayName("generating list")
     public void generateList(){
-        List<String> list = ProphetUtilsFacade.createHtmlTemplate(rootPath.getRootPath(), microServicePaths);
+        List<String> list = ProphetUtilsFacade.createHtmlTemplate(rootPath, microServicePaths);
         assertNotNull(list);
     }
 
     @Test
     @DisplayName("generating template")
     public void generateTemplate(){
-        List<String> list = ProphetUtilsFacade.createHtmlTemplate(rootPath.getRootPath(), microServicePaths);
+        List<String> list = ProphetUtilsFacade.createHtmlTemplate(rootPath, microServicePaths);
         FileManager.writeBoundedContextToFile(list);
         assertNotNull(list);
     }
@@ -70,7 +93,7 @@ public class ProphetUtilsTest {
     @Test
     @DisplayName("get mermaid graph")
     public void getMermaidGraph(){
-        MermaidGraph mg =  ProphetUtilsFacade.getMermaidGraph(rootPath.getRootPath(), microServicePaths);
+        MermaidGraph mg =  ProphetUtilsFacade.getMermaidGraph(rootPath, microServicePaths);
         assertNotNull(mg);
     }
 

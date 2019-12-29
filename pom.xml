@@ -43,6 +43,21 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.0.5.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <version>2.1.6.RELEASE</version>
+        </dependency>
+
+
+
+        <dependency>
         <groupId>edu.baylor.ecs.cloudhubs</groupId>
         <artifactId>boundedcontext</artifactId>
         <version>1.0-SNAPSHOT</version>
