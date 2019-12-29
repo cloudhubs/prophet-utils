@@ -1,5 +1,6 @@
 package edu.baylor.ecs.cloudhubs.prophetutils;
 
+import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetResponse;
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidGraph;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
@@ -58,7 +59,7 @@ public class ProphetUtilsFacade {
     public static SystemContext getEntityContext(String path, String[] msPaths){
         JParserUtils jParserUtils = JParserUtils.getInstance();
         AnalysisContext analysisContext = jParserUtils.createAnalysisContextFromDirectory(path);
-        SystemContext systemContext = EntityContextAdapter. getSystemContext(analysisContext, msPaths);
+        SystemContext systemContext = EntityContextAdapter.getSystemContext(analysisContext, msPaths);
         return systemContext;
     }
 
@@ -72,6 +73,10 @@ public class ProphetUtilsFacade {
     public static MermaidGraph getMermaidGraph(String path, String[] msPaths){
         BoundedContext boundedContext = getBoundedContext(path, msPaths);
         return EntityGraphAdapter.getMermaidGraph(boundedContext);
+    }
+
+    public static ProphetResponse getProphetResponse(String path){
+        return new ProphetResponse();
     }
 
 }
