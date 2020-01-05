@@ -1,6 +1,10 @@
 package edu.baylor.ecs.cloudhubs.prophetutils;
 
 import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetResponse;
+import edu.baylor.ecs.cloudhubs.prophetdto.communication.Communication;
+import edu.baylor.ecs.cloudhubs.prophetdto.communication.ContextMap;
+import edu.baylor.ecs.cloudhubs.prophetdto.communication.Edge;
+import edu.baylor.ecs.cloudhubs.prophetdto.communication.Node;
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidGraph;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
@@ -8,6 +12,7 @@ import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityGraphAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.HtmlTemplateAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.bounded.SimpleBoundedUtils;
+import edu.baylor.ecs.cloudhubs.prophetutils.directories.DirectoryUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
 import edu.baylor.ecs.cloudhubs.prophetutils.jparser.JParserUtils;
 import edu.baylor.ecs.jparser.component.context.AnalysisContext;
@@ -77,7 +82,27 @@ public class ProphetUtilsFacade {
     }
 
     public static ProphetResponse getProphetResponse(String path){
-        return new ProphetResponse();
+        String[] htmlTemplate = (String[]) createHtmlTemplate(path, DirectoryUtils.getMsPaths(path)).toArray();
+        ProphetResponse prophetResponse = new ProphetResponse();
+        prophetResponse.setContextMap(htmlTemplate);
+        return prophetResponse;
+    }
+
+    public static Communication getCommunication(String path){
+        Communication communication = new Communication();
+        Edge[] edges = new Edge[3];
+        Node[] nodes = new Node[3];
+        communication.setEdges(edges);
+        communication.setNodes(nodes);
+        return communication;
+    }
+
+    public static ContextMap getContextMap(String path) {
+        ContextMap contextMap = new ContextMap();
+        String[] hashes = new String[4];
+        hashes[0]="aaaaa";
+        contextMap.setMarkdownStrings(hashes);
+        return contextMap;
     }
 
 }
