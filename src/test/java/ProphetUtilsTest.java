@@ -1,3 +1,4 @@
+import edu.baylor.ecs.cloudhubs.prophetdto.communication.ContextMap;
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidGraph;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
 
@@ -94,6 +95,13 @@ public class ProphetUtilsTest {
     @DisplayName("get mermaid graph")
     public void getMermaidGraph(){
         MermaidGraph mg =  ProphetUtilsFacade.getMermaidGraph(rootPath, microServicePaths);
+        assertNotNull(mg);
+    }
+
+    @Test
+    @DisplayName("get context map")
+    public void getContextMap(){
+        ContextMap mg =  ProphetUtilsFacade.getContextMap("/Users/svacina/tmp/tms");
         assertNotNull(mg);
     }
 

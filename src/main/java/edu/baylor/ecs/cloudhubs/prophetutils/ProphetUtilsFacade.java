@@ -19,6 +19,7 @@ import edu.baylor.ecs.jparser.component.context.AnalysisContext;
 import edu.baylor.ecs.prophet.bounded.context.utils.BoundedContextUtils;
 import edu.baylor.ecs.prophet.bounded.context.utils.impl.BoundedContextUtilsImpl;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ProphetUtilsFacade {
@@ -99,9 +100,16 @@ public class ProphetUtilsFacade {
 
     public static ContextMap getContextMap(String path) {
         ContextMap contextMap = new ContextMap();
-        String[] hashes = new String[4];
-        hashes[0]="aaaaa";
-        contextMap.setMarkdownStrings(hashes);
+        BoundedContext boundedContext = getBoundedContext(path, DirectoryUtils.getMsPaths(path));
+        MermaidGraph mermaidGraph = EntityGraphAdapter.getMermaidGraph(boundedContext);
+
+
+        List<String> htmlTemplate = mermaidGraph.getHtmlLines();
+        String[] strings = new String[htmlTemplate.size()];
+        for (int i = 0; i < htmlTemplate.size(); i++){
+            strings[i] = htmlTemplate.get(i);
+        }
+        contextMap.setMarkdownStrings(strings);
         return contextMap;
     }
 
