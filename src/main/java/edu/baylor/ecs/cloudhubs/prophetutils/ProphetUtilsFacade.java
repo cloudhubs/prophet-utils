@@ -1,5 +1,6 @@
 package edu.baylor.ecs.cloudhubs.prophetutils;
 
+import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetAppData;
 import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetResponse;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Communication;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.ContextMap;
@@ -39,6 +40,15 @@ public class ProphetUtilsFacade {
      */
     public static void getMsModelByte(String path) {
 
+    }
+
+    /**
+     * Generates App Data from microservice system
+     *
+     * @return ProphetAppData
+     */
+    public static ProphetAppData getProphetAppData() {
+        return new ProphetAppData();
     }
 
 
