@@ -1,5 +1,8 @@
 package edu.baylor.ecs.cloudhubs.prophetutils;
 
+import edu.baylor.ecs.cloudhubs.prophetdto.app.MicroserviceResult;
+import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetAppData;
+import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetAppRequest;
 import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetResponse;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Communication;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.ContextMap;
@@ -19,8 +22,10 @@ import edu.baylor.ecs.jparser.component.context.AnalysisContext;
 import edu.baylor.ecs.prophet.bounded.context.utils.BoundedContextUtils;
 import edu.baylor.ecs.prophet.bounded.context.utils.impl.BoundedContextUtilsImpl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ProphetUtilsFacade {
 
@@ -39,6 +44,36 @@ public class ProphetUtilsFacade {
      */
     public static void getMsModelByte(String path) {
 
+    }
+
+    /**
+     * Generates App Data from microservice system
+     * @param path
+     * @return ProphetAppData
+     */
+    public static ProphetAppData getProphetAppData(String path) {
+        ProphetAppData response = new ProphetAppData();
+
+        // Set the globals: Project name, communication object, context map
+        JParserUtils jParserUtils = JParserUtils.getInstance();
+        response.setProjectName(jParserUtils.createAnalysisContextFromDirectory(path).getRootPath());
+        response.setContextMap(ProphetUtilsFacade.getContextMap(path));
+        response.setCommunicationContextMap(getRestContextMap(path));
+        //response.setCommunication(ProphetUtilsFacade.getCommunication(path));
+
+        // Get each microservice's bounded context
+        String[] msPaths = DirectoryUtils.getMsPaths(path);
+        List<MicroserviceResult> msResults = new ArrayList<>();
+        for (String msPath : msPaths) {
+            MicroserviceResult msResult = new MicroserviceResult();
+            BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(path, new String[]{msPath});
+            msResult.setName(msPath);
+            msResult.setBoundedContext(boundedContext);
+            msResults.add(msResult);
+        }
+        response.setMicroservices(msResults);
+
+        return response;
     }
 
 
@@ -111,6 +146,18 @@ public class ProphetUtilsFacade {
         }
         contextMap.setMarkdownStrings(strings);
         return contextMap;
+    }
+
+    /**
+     * Creates a context map from the results of the Rest API Discovery tool
+     *
+     * @author Vincent Bushong
+     * @param path to project root
+     * @return ContextMap of the API communication
+     */
+    public static ContextMap getRestContextMap(String path) {
+        // TODO: call rad service
+        return new ContextMap();
     }
 
 }
