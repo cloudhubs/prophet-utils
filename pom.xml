@@ -93,6 +93,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.sciss</groupId>
+            <artifactId>ws4j</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
 
     </dependencies>
 
