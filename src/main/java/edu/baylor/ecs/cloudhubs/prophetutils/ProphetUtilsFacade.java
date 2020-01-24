@@ -1,9 +1,6 @@
 package edu.baylor.ecs.cloudhubs.prophetutils;
 
-import edu.baylor.ecs.cloudhubs.prophetdto.app.MicroserviceResult;
-import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetAppData;
-import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetAppRequest;
-import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetResponse;
+import edu.baylor.ecs.cloudhubs.prophetdto.app.*;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Communication;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.ContextMap;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Edge;
@@ -61,9 +58,12 @@ public class ProphetUtilsFacade {
 
         // Set the globals: Project name and context map for bounded context and microservice communication
         JParserUtils jParserUtils = JParserUtils.getInstance();
-        response.setProjectName(jParserUtils.createAnalysisContextFromDirectory(path).getRootPath());
-        response.setContextMap(ProphetUtilsFacade.getContextMap(path));
-        response.setCommunication(getRestContextMap(path));
+        ProphetAppGlobal global = new ProphetAppGlobal();
+
+        global.setProjectName(jParserUtils.createAnalysisContextFromDirectory(path).getRootPath());
+        global.setContextMap(ProphetUtilsFacade.getContextMapMermaidString(path));
+        global.setCommunication(getCommunicationMermaidString(path));
+        response.setGlobal(global);
 
         // Get each microservice's bounded context
         String[] msPaths = DirectoryUtils.getMsPaths(path);
@@ -75,7 +75,7 @@ public class ProphetUtilsFacade {
             msResult.setBoundedContext(boundedContext);
             msResults.add(msResult);
         }
-        response.setMicroservices(msResults);
+        response.setMs(msResults);
 
         return response;
     }
@@ -152,6 +152,17 @@ public class ProphetUtilsFacade {
         return contextMap;
     }
 
+    public static String getContextMapMermaidString(String path) {
+        BoundedContext boundedContext = getBoundedContext(path, DirectoryUtils.getMsPaths(path));
+        MermaidGraph mermaidGraph = EntityGraphAdapter.getMermaidGraph(boundedContext);
+        List<String> htmlTemplate = mermaidGraph.getHtmlLines();
+        StringBuilder sb = new StringBuilder();
+        for (String line : htmlTemplate) {
+            sb.append(line).append(";");
+        }
+        return sb.toString();
+    }
+
     /**
      * Creates a context map from the results of the Rest API Discovery tool
      *
@@ -159,7 +170,7 @@ public class ProphetUtilsFacade {
      * @param path to project root
      * @return ContextMap of the API communication
      */
-    public static ContextMap getRestContextMap(String path) throws IOException {
+    public static String getCommunicationMermaidString(String path) throws IOException {
         SourceParser parser = new SourceParser();
         // get the full paths to the microservice directories
         List<String> msPaths = Arrays.asList(DirectoryUtils.getMsPaths(path)).stream().map(ms -> path + "/" + ms).collect(Collectors.toList());
@@ -169,12 +180,12 @@ public class ProphetUtilsFacade {
         MsMermaidGraph graph = MsGraphAdapter.getMermaidGraphFromMsModel(model);
 
         // get the mermaid markdown lines
-        ContextMap contextMap = new ContextMap();
-        String[] markdownLines = new String[graph.getHtmlLines().size()];
-        markdownLines = graph.getHtmlLines().toArray(markdownLines);
-        contextMap.setMarkdownStrings(markdownLines);
-
-        return contextMap;
+        List<String> htmlTemplate = graph.getHtmlLines();
+        StringBuilder sb = new StringBuilder();
+        for (String line : htmlTemplate) {
+            sb.append(line).append(";");
+        }
+        return sb.toString();
     }
 
 }

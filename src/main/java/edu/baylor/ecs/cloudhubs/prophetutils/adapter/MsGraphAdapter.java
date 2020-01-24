@@ -31,6 +31,15 @@ public class MsGraphAdapter {
      * @return A description that will show up in the mermaid graph
      */
     private static String getMsEdgeDescription(MsEdge edge) {
-        return "HTTP Verb: " + edge.getLabel().getType() + "<br />Arguments: " + edge.getLabel().getArgument() + "<br />Return: " + edge.getLabel().getMsReturn();
+        return "HTTP Verb: " + edge.getLabel().getType() + "<br />Arguments: " + escapeMermaidQuotes(edge.getLabel().getArgument()) + "<br />Return: " + escapeMermaidQuotes(edge.getLabel().getMsReturn());
+    }
+
+    /**
+     * Replace double quotes with mermaid's escape sequence #quot;
+     * @param input
+     * @return
+     */
+    private static String escapeMermaidQuotes(String input) {
+        return input.replaceAll("\"", "#quot;");
     }
 }

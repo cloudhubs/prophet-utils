@@ -19,7 +19,7 @@
         <dependency>
             <groupId>edu.baylor.ecs.cloudhubs</groupId>
             <artifactId>jparser-lib</artifactId>
-            <version>0.0.5</version>
+            <version>0.0.6</version>
         </dependency>
 
         <dependency>
@@ -98,7 +98,6 @@
             <artifactId>ws4j</artifactId>
             <version>1.0.1</version>
         </dependency>
-
 
     </dependencies>
 
