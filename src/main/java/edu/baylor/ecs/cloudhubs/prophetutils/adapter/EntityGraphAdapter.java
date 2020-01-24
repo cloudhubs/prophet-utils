@@ -2,7 +2,11 @@ package edu.baylor.ecs.cloudhubs.prophetutils.adapter;
 
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidEdge;
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidGraph;
+import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.ms.MsMermaidGraph;
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidNode;
+import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.MsEdge;
+import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.MsLabel;
+import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.MsModel;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.Entity;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.Field;
@@ -22,7 +26,7 @@ public class EntityGraphAdapter {
         List<MermaidNode> mermaidNodes = new ArrayList<>();
         List<MermaidEdge> mermaidEdges = new ArrayList<>();
         for (Entity entity: boundedContext.getBoundedContextEntities()){
-            mermaidNodes.add(new MermaidNode(entity.getEntityName()));
+            mermaidNodes.add(new MermaidNode(entity.getEntityName().getName()));
         }
         //create references here
 
@@ -48,8 +52,8 @@ public class EntityGraphAdapter {
                  ) {
                 if (field.isReference()){
                     System.out.println("is filed");
-                    if (mermaidEdges.stream().filter(n -> n.exists(field.getType(), entity.getEntityName())).collect(Collectors.toList()).size() == 0){
-                        mermaidEdges.add(new MermaidEdge(field.getType(), entity.getEntityName()));
+                    if (mermaidEdges.stream().filter(n -> n.exists(field.getType(), entity.getEntityName().getName())).collect(Collectors.toList()).size() == 0){
+                        mermaidEdges.add(new MermaidEdge(field.getType(), entity.getEntityName().getName()));
                     }
                 }
             }

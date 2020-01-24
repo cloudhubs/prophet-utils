@@ -9,19 +9,24 @@ import edu.baylor.ecs.cloudhubs.prophetdto.communication.ContextMap;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Edge;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Node;
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidGraph;
+import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.ms.MsMermaidGraph;
+import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.MsModel;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityGraphAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.HtmlTemplateAdapter;
+import edu.baylor.ecs.cloudhubs.prophetutils.adapter.MsGraphAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.bounded.SimpleBoundedUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.directories.DirectoryUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
 import edu.baylor.ecs.cloudhubs.prophetutils.jparser.JParserUtils;
+import edu.baylor.ecs.cloudhubs.prophetutils.mscontext.SourceParser;
 import edu.baylor.ecs.jparser.component.context.AnalysisContext;
 import edu.baylor.ecs.prophet.bounded.context.utils.BoundedContextUtils;
 import edu.baylor.ecs.prophet.bounded.context.utils.impl.BoundedContextUtilsImpl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -51,15 +56,14 @@ public class ProphetUtilsFacade {
      * @param path
      * @return ProphetAppData
      */
-    public static ProphetAppData getProphetAppData(String path) {
+    public static ProphetAppData getProphetAppData(String path) throws IOException {
         ProphetAppData response = new ProphetAppData();
 
-        // Set the globals: Project name, communication object, context map
+        // Set the globals: Project name and context map for bounded context and microservice communication
         JParserUtils jParserUtils = JParserUtils.getInstance();
         response.setProjectName(jParserUtils.createAnalysisContextFromDirectory(path).getRootPath());
         response.setContextMap(ProphetUtilsFacade.getContextMap(path));
-        response.setCommunicationContextMap(getRestContextMap(path));
-        //response.setCommunication(ProphetUtilsFacade.getCommunication(path));
+        response.setCommunication(getRestContextMap(path));
 
         // Get each microservice's bounded context
         String[] msPaths = DirectoryUtils.getMsPaths(path);
@@ -155,9 +159,22 @@ public class ProphetUtilsFacade {
      * @param path to project root
      * @return ContextMap of the API communication
      */
-    public static ContextMap getRestContextMap(String path) {
-        // TODO: call rad service
-        return new ContextMap();
+    public static ContextMap getRestContextMap(String path) throws IOException {
+        SourceParser parser = new SourceParser();
+        // get the full paths to the microservice directories
+        List<String> msPaths = Arrays.asList(DirectoryUtils.getMsPaths(path)).stream().map(ms -> path + "/" + ms).collect(Collectors.toList());
+
+        // get the microservice communication model and convert to mermaid graph representation
+        MsModel model = parser.createMsModel(msPaths);
+        MsMermaidGraph graph = MsGraphAdapter.getMermaidGraphFromMsModel(model);
+
+        // get the mermaid markdown lines
+        ContextMap contextMap = new ContextMap();
+        String[] markdownLines = new String[graph.getHtmlLines().size()];
+        markdownLines = graph.getHtmlLines().toArray(markdownLines);
+        contextMap.setMarkdownStrings(markdownLines);
+
+        return contextMap;
     }
 
 }
