@@ -32,14 +32,14 @@
         <dependency>
             <groupId>edu.baylor.ecs.cloudhubs</groupId>
             <artifactId>rad</artifactId>
-            <version>0.0.5</version>
+            <version>0.0.6</version>
         </dependency>
 
         <!-- rad-source -->
         <dependency>
             <groupId>edu.baylor.ecs.cloudhubs</groupId>
             <artifactId>rad-source</artifactId>
-            <version>0.0.5</version>
+            <version>0.0.6</version>
         </dependency>
 
         <dependency>

@@ -1,8 +1,8 @@
 package edu.baylor.ecs.cloudhubs.prophetutils.mscontext;
 
 import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.*;
-import edu.baylor.ecs.cloudhubs.rad.context.RadRequestContext;
-import edu.baylor.ecs.cloudhubs.rad.context.RadResponseContext;
+import edu.baylor.ecs.cloudhubs.rad.context.RequestContext;
+import edu.baylor.ecs.cloudhubs.rad.context.ResponseContext;
 import edu.baylor.ecs.cloudhubs.rad.model.RestFlow;
 import edu.baylor.ecs.cloudhubs.rad.service.RestDiscoveryService;
 
@@ -58,8 +58,8 @@ public class BytecodeParser {
 
     private List<RestFlow> getRestFlows(String organizationPath, String pathToCompiledJars) {
         // no output path i.e. don't output gv file
-        RadRequestContext request = new RadRequestContext(pathToCompiledJars, organizationPath, null);
-        RadResponseContext radResponseContext = this.restDiscoveryService.generateRadResponseContext(request);
+        RequestContext request = new RequestContext(pathToCompiledJars, organizationPath, null);
+        ResponseContext radResponseContext = this.restDiscoveryService.generateResponseContext(request);
         return radResponseContext.getRestFlowContext().getRestFlows();
     }
 }
