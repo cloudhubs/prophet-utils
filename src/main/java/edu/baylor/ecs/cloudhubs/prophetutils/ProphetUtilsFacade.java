@@ -18,6 +18,7 @@ import edu.baylor.ecs.cloudhubs.prophetutils.bounded.SimpleBoundedUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.directories.DirectoryUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
 import edu.baylor.ecs.cloudhubs.prophetutils.jparser.JParserUtils;
+import edu.baylor.ecs.cloudhubs.prophetutils.mermaidutils.MermaidStringConverters;
 import edu.baylor.ecs.cloudhubs.prophetutils.mscontext.SourceParser;
 import edu.baylor.ecs.jparser.component.context.AnalysisContext;
 import edu.baylor.ecs.prophet.bounded.context.utils.BoundedContextUtils;
@@ -55,24 +56,32 @@ public class ProphetUtilsFacade {
      */
     public static ProphetAppData getProphetAppData(String path) throws IOException {
         ProphetAppData response = new ProphetAppData();
+        JParserUtils jParserUtils = JParserUtils.getInstance();
+        String[] msPaths = DirectoryUtils.getMsPaths(path);
 
         // Set the globals: Project name and context map for bounded context and microservice communication
-        JParserUtils jParserUtils = JParserUtils.getInstance();
-        ProphetAppGlobal global = new ProphetAppGlobal();
 
+        ProphetAppGlobal global = new ProphetAppGlobal();
         global.setProjectName(jParserUtils.createAnalysisContextFromDirectory(path).getRootPath());
-        global.setContextMap(ProphetUtilsFacade.getContextMapMermaidString(path));
-        global.setCommunication(getCommunicationMermaidString(path));
+
+        // get the context and MsModel of the project
+        BoundedContext globalContext = getBoundedContext(path, msPaths);
+        MsModel msModel = getMsModel(path);
+
+        // get the mermaid string representations of the context and model
+        global.setContextMap(MermaidStringConverters.getBoundedContextMermaidString(globalContext));
+        global.setCommunication(MermaidStringConverters.getMsModelMermaidString(msModel));
+
         response.setGlobal(global);
 
         // Get each microservice's bounded context
-        String[] msPaths = DirectoryUtils.getMsPaths(path);
         List<MicroserviceResult> msResults = new ArrayList<>();
         for (String msPath : msPaths) {
             MicroserviceResult msResult = new MicroserviceResult();
             BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(path, new String[]{msPath});
             msResult.setName(msPath);
-            msResult.setBoundedContext(boundedContext);
+            // get the mermaid representation of the bounded context
+            msResult.setBoundedContext(MermaidStringConverters.getBoundedContextMermaidString(boundedContext));
             msResults.add(msResult);
         }
         response.setMs(msResults);
@@ -152,40 +161,20 @@ public class ProphetUtilsFacade {
         return contextMap;
     }
 
-    public static String getContextMapMermaidString(String path) {
-        BoundedContext boundedContext = getBoundedContext(path, DirectoryUtils.getMsPaths(path));
-        MermaidGraph mermaidGraph = EntityGraphAdapter.getMermaidGraph(boundedContext);
-        List<String> htmlTemplate = mermaidGraph.getHtmlLines();
-        StringBuilder sb = new StringBuilder();
-        for (String line : htmlTemplate) {
-            sb.append(line).append(";");
-        }
-        return sb.toString();
-    }
-
     /**
-     * Creates a context map from the results of the Rest API Discovery tool
-     *
-     * @author Vincent Bushong
-     * @param path to project root
-     * @return ContextMap of the API communication
+     * Uses the RAD source analyzer to get an MsModel from a directory
+     * @param path Path to the ms roots
+     * @return MsModel of the microservice communication
      */
-    public static String getCommunicationMermaidString(String path) throws IOException {
+    public static MsModel getMsModel(String path) throws IOException {
+        // get a parser instance
         SourceParser parser = new SourceParser();
+
         // get the full paths to the microservice directories
         List<String> msPaths = Arrays.asList(DirectoryUtils.getMsPaths(path)).stream().map(ms -> path + "/" + ms).collect(Collectors.toList());
 
-        // get the microservice communication model and convert to mermaid graph representation
-        MsModel model = parser.createMsModel(msPaths);
-        MsMermaidGraph graph = MsGraphAdapter.getMermaidGraphFromMsModel(model);
-
-        // get the mermaid markdown lines
-        List<String> htmlTemplate = graph.getHtmlLines();
-        StringBuilder sb = new StringBuilder();
-        for (String line : htmlTemplate) {
-            sb.append(line).append(";");
-        }
-        return sb.toString();
+        // get the microservice communication model
+        return parser.createMsModel(msPaths);
     }
 
 }
