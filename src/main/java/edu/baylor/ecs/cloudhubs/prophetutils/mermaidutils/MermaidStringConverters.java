@@ -22,7 +22,7 @@ public class MermaidStringConverters {
         List<String> htmlTemplate = mermaidGraph.getHtmlLines();
         StringBuilder sb = new StringBuilder();
         for (String line : htmlTemplate) {
-            sb.append(line).append(";");
+            sb.append(line).append("\n");
         }
         return sb.toString();
     }
@@ -41,7 +41,7 @@ public class MermaidStringConverters {
         List<String> htmlTemplate = graph.getHtmlLines();
         StringBuilder sb = new StringBuilder();
         for (String line : htmlTemplate) {
-            sb.append(line).append(";");
+            sb.append(line).append("\n");
         }
         return sb.toString();
     }

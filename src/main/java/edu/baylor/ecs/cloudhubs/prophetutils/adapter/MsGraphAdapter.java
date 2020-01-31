@@ -31,7 +31,7 @@ public class MsGraphAdapter {
      * @return A description that will show up in the mermaid graph
      */
     private static String getMsEdgeDescription(MsEdge edge) {
-        return "HTTP Verb: " + edge.getLabel().getType() + "<br />Arguments: " + escapeMermaidQuotes(edge.getLabel().getArgument()) + "<br />Return: " + escapeMermaidQuotes(edge.getLabel().getMsReturn());
+        return "HTTP Verb: " + edge.getLabel().getType() + "<br/>Arguments: " + escapeMermaidQuotes(edge.getLabel().getArgument()) + "<br/>Return: " + escapeMermaidQuotes(edge.getLabel().getMsReturn());
     }
 
     /**
