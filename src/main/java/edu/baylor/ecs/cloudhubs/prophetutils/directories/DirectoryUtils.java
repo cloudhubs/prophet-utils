@@ -13,6 +13,44 @@ import java.util.stream.Collectors;
 
 public class DirectoryUtils {
     public static String[] getMsPaths(String root){
+        File[] directories = filterDirectories(root);
+        return Arrays.stream(directories).map(d -> d.getName()).toArray(String[]::new);
+//        List<String> ignoreFolders = new ArrayList<>();
+//        try {
+//            Gson gson = new Gson();
+//            //Reader ignoreReader = Files.newBufferedReader(Paths.get("ignoreFolders.json"));
+//            InputStream inputStream = DirectoryUtils.class
+//                    .getClassLoader().getResourceAsStream("ignoreFolders.json");
+//            Reader ignoreReader = new InputStreamReader(inputStream);
+//            ignoreFolders.addAll(Arrays.asList(gson.fromJson(ignoreReader, String[].class)));
+//        } catch (Exception e) {
+//            // log this somewhere
+//            System.out.println("Failed to read folder exclusions, will parse all folders: " + e.getMessage());
+//        }
+//
+//        File rootDir = new File(root);
+////        try {
+////            return (String[]) Files.list(new File(root).toPath())
+////                    .limit(10)
+////                    .map(n -> n.getFileName().toString())
+////                    .collect(Collectors.toList()).toArray();
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////        }
+//        return rootDir.list((current, name) -> new File(current, name).isDirectory() && !ignoreFolders.contains(name));
+    }
+
+    public static String[] getMsFullPaths(String root) {
+        File[] directories = filterDirectories(root);
+        return Arrays.stream(directories).map(d -> d.getPath()).toArray(String[]::new);
+    }
+
+    public static String getDirectoryNameFromPath(String dirPath) {
+        File dir = new File(dirPath);
+        return dir.getName();
+    }
+
+    private static File[] filterDirectories(String root) {
         List<String> ignoreFolders = new ArrayList<>();
         try {
             Gson gson = new Gson();
@@ -27,15 +65,6 @@ public class DirectoryUtils {
         }
 
         File rootDir = new File(root);
-//        try {
-//            return (String[]) Files.list(new File(root).toPath())
-//                    .limit(10)
-//                    .map(n -> n.getFileName().toString())
-//                    .collect(Collectors.toList()).toArray();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-        return rootDir.list((current, name) -> new File(current, name).isDirectory() && !ignoreFolders.contains(name));
+        return rootDir.listFiles((current, name) -> new File(current, name).isDirectory() && !ignoreFolders.contains(name));
     }
 }

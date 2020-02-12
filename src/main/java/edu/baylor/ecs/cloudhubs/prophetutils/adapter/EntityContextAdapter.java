@@ -94,7 +94,7 @@ public class EntityContextAdapter {
         for (String path: msPaths){
             clusters.put(path, new HashSet<ClassComponent>());
         }
-        for (ModuleComponent mc: moduleComponents){
+        for (ModuleComponent mc: moduleComponents) {
             String mcPath = mc.getPath();
             String msPath = Arrays.stream(msPaths).filter(mcPath::contains).findFirst().orElse(null);
             if (msPath != null){

@@ -8,6 +8,7 @@ import edu.baylor.ecs.jparser.factory.directory.DirectoryFactory;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.nio.file.NotDirectoryException;
+import java.util.List;
 
 /**
  * Non-static methods because it requires the initialization of the appropriate factories for JParser.
@@ -80,6 +81,27 @@ public class JParserUtils {
     }
 
     /**
+     * Creates an AnalysisContext from multiple, disparate microservice directories. Experimental feature!
+     * @author Vincent Bushong
+     * @param msFullPaths
+     * @return
+     */
+    public AnalysisContext createAnalysisContextFromMultipleDirectories(List<String> msFullPaths) {
+        try {
+            DirectoryComponent fakeParent = new DirectoryComponent();
+            for (String path : msFullPaths) {
+                DirectoryComponent msComponent = (DirectoryComponent) directoryFactory.createDirectoryGraph(path);
+                fakeParent.getSubDirectories().add(msComponent);
+            }
+            return contextFactory.createAnalysisContextFromDirectoryGraph(fakeParent);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Could not create AnalysisContext");
+        }
+        return null;
+    }
+
+    /**
      * Create an analysis context object directly for a given single file. Still populates whole context object which
      * has large overhead. If all you need is information regarding a single class or single module without any metadata,
      * this is not the best way.
@@ -117,7 +139,6 @@ public class JParserUtils {
         }
         return null;
     }
-
 
 
     /**
