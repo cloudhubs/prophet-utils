@@ -37,7 +37,7 @@ public class EntityContextAdapter {
                             Set<Field> fields = new HashSet<>();
                             for (FieldComponent field : clazz.getFieldComponents()) {
                                 Field field_n = new Field();
-                                field_n.setName(field.getFieldName());
+                                field_n.setName(new Name(field.getFieldName()));
                                 if (isCollection(field.getType())){
                                     String s = field.getType();
                                     String entityRef = s.substring(s.indexOf("<") + 1, s.indexOf(">"));
@@ -72,7 +72,7 @@ public class EntityContextAdapter {
                 }
             }
 
-            module_n.setName(entry.getKey());
+            module_n.setName(new Name(entry.getKey()));
             module_n.setEntities(entities);
             modules.add(module_n);
         }

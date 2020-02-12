@@ -2,1173 +2,1195 @@
   "systemName":"/Users/svacina/tmp/tms",
   "modules":[
     {
-      "name":"cms",
+      "name":{
+        "name":"cms",
+        "fullName":"cms"
+      },
       "entities":[
         {
-          "entityName":"Exam",
+          "entityName":{
+            "name":"Exam",
+            "fullName":"Exam"
+          },
           "fields":[
             {
-              "name":"examDate",
+              "name":{
+                "name":"examDate",
+                "fullName":"examDate"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@JsonFormat"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"description",
+              "name":{
+                "name":"description",
+                "fullName":"description"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"correct",
+              "name":{
+                "name":"correct",
+                "fullName":"correct"
+              },
               "type":"Integer",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"configurationId",
+              "name":{
+                "name":"configurationId",
+                "fullName":"configurationId"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"id",
+              "name":{
+                "name":"id",
+                "fullName":"id"
+              },
               "type":"Integer",
               "annotations":[
                 {
                   "name":"@GeneratedValue"
-
                 },
                 {
                   "name":"@Id",
                   "stringValue":"Id"
-
                 },
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"status",
+              "name":{
+                "name":"status",
+                "fullName":"status"
+              },
               "type":"ExamStatus",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"sum",
+              "name":{
+                "name":"sum",
+                "fullName":"sum"
+              },
               "type":"Integer",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"issuer",
+              "name":{
+                "name":"issuer",
+                "fullName":"issuer"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"examinee",
+              "name":{
+                "name":"examinee",
+                "fullName":"examinee"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         },
         {
-          "entityName":"Choice",
+          "entityName":{
+            "name":"Choice",
+            "fullName":"Choice"
+          },
           "fields":[
             {
-              "name":"chosen",
+              "name":{
+                "name":"chosen",
+                "fullName":"chosen"
+              },
               "type":"boolean",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"question",
+              "name":{
+                "name":"question",
+                "fullName":"question"
+              },
               "type":"Question",
               "annotations":[
                 {
                   "name":"@JoinColumn"
-
                 },
                 {
                   "name":"@NotNull",
                   "stringValue":"NotNull"
-
                 },
                 {
                   "name":"@ManyToOne"
-
                 },
                 {
                   "name":"@JsonIgnore",
                   "stringValue":"JsonIgnore"
-
                 }
-
               ],
               "isReference":true,
               "entityRefName":"Question",
               "isCollection":false
-
             },
             {
-              "name":"id",
+              "name":{
+                "name":"id",
+                "fullName":"id"
+              },
               "type":"Integer",
               "annotations":[
                 {
                   "name":"@GeneratedValue"
-
                 },
                 {
                   "name":"@Id",
                   "stringValue":"Id"
-
                 },
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"correct",
+              "name":{
+                "name":"correct",
+                "fullName":"correct"
+              },
               "type":"boolean",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"body",
+              "name":{
+                "name":"body",
+                "fullName":"body"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         },
         {
-          "entityName":"Question",
+          "entityName":{
+            "name":"Question",
+            "fullName":"Question"
+          },
           "fields":[
             {
-              "name":"code",
+              "name":{
+                "name":"code",
+                "fullName":"code"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"exam",
+              "name":{
+                "name":"exam",
+                "fullName":"exam"
+              },
               "type":"Exam",
               "annotations":[
                 {
                   "name":"@JoinColumn"
-
                 },
                 {
                   "name":"@ManyToOne"
-
                 },
                 {
                   "name":"@JsonIgnore",
                   "stringValue":"JsonIgnore"
-
                 },
                 {
                   "name":"@OnDelete"
-
                 }
-
               ],
               "isReference":true,
               "entityRefName":"Exam",
               "isCollection":false
-
             },
             {
-              "name":"id",
+              "name":{
+                "name":"id",
+                "fullName":"id"
+              },
               "type":"Integer",
               "annotations":[
                 {
                   "name":"@GeneratedValue"
-
                 },
                 {
                   "name":"@Id",
                   "stringValue":"Id"
-
                 },
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"choices",
+              "name":{
+                "name":"choices",
+                "fullName":"choices"
+              },
               "type":"Choice",
               "annotations":[
                 {
                   "name":"@OneToMany"
-
                 }
-
               ],
               "isReference":true,
               "entityRefName":"Choice",
               "isCollection":true
-
             },
             {
-              "name":"description",
+              "name":{
+                "name":"description",
+                "fullName":"description"
+              },
               "type":"String",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"body",
+              "name":{
+                "name":"body",
+                "fullName":"body"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         }
-
       ]
-
     },
     {
-      "name":".git",
+      "name":{
+        "name":".git",
+        "fullName":".git"
+      },
       "entities":[
 
-
       ]
-
     },
     {
-      "name":"ems",
+      "name":{
+        "name":"ems",
+        "fullName":"ems"
+      },
       "entities":[
         {
-          "entityName":"Question",
+          "entityName":{
+            "name":"Question",
+            "fullName":"Question"
+          },
           "fields":[
             {
-              "name":"code",
+              "name":{
+                "name":"code",
+                "fullName":"code"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"exam",
+              "name":{
+                "name":"exam",
+                "fullName":"exam"
+              },
               "type":"Exam",
               "annotations":[
                 {
                   "name":"@JoinColumn"
-
                 },
                 {
                   "name":"@ManyToOne"
-
                 },
                 {
                   "name":"@JsonIgnore",
                   "stringValue":"JsonIgnore"
-
                 },
                 {
                   "name":"@OnDelete"
-
                 }
-
               ],
               "isReference":true,
               "entityRefName":"Exam",
               "isCollection":false
-
             },
             {
-              "name":"id",
+              "name":{
+                "name":"id",
+                "fullName":"id"
+              },
               "type":"Integer",
               "annotations":[
                 {
                   "name":"@GeneratedValue"
-
                 },
                 {
                   "name":"@Id",
                   "stringValue":"Id"
-
                 },
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"choices",
+              "name":{
+                "name":"choices",
+                "fullName":"choices"
+              },
               "type":"Choice",
               "annotations":[
                 {
                   "name":"@OneToMany"
-
                 }
-
               ],
               "isReference":true,
               "entityRefName":"Choice",
               "isCollection":true
-
             },
             {
-              "name":"body",
+              "name":{
+                "name":"body",
+                "fullName":"body"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         },
         {
-          "entityName":"Choice",
+          "entityName":{
+            "name":"Choice",
+            "fullName":"Choice"
+          },
           "fields":[
             {
-              "name":"chosen",
+              "name":{
+                "name":"chosen",
+                "fullName":"chosen"
+              },
               "type":"boolean",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"question",
+              "name":{
+                "name":"question",
+                "fullName":"question"
+              },
               "type":"Question",
               "annotations":[
                 {
                   "name":"@JoinColumn"
-
                 },
                 {
                   "name":"@NotNull",
                   "stringValue":"NotNull"
-
                 },
                 {
                   "name":"@ManyToOne"
-
                 },
                 {
                   "name":"@JsonIgnore",
                   "stringValue":"JsonIgnore"
-
                 }
-
               ],
               "isReference":true,
               "entityRefName":"Question",
               "isCollection":false
-
             },
             {
-              "name":"id",
+              "name":{
+                "name":"id",
+                "fullName":"id"
+              },
               "type":"Integer",
               "annotations":[
                 {
                   "name":"@GeneratedValue"
-
                 },
                 {
                   "name":"@Id",
                   "stringValue":"Id"
-
                 },
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"correct",
+              "name":{
+                "name":"correct",
+                "fullName":"correct"
+              },
               "type":"boolean",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"body",
+              "name":{
+                "name":"body",
+                "fullName":"body"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         },
         {
-          "entityName":"Exam",
+          "entityName":{
+            "name":"Exam",
+            "fullName":"Exam"
+          },
           "fields":[
             {
-              "name":"correct",
+              "name":{
+                "name":"correct",
+                "fullName":"correct"
+              },
               "type":"Integer",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"id",
+              "name":{
+                "name":"id",
+                "fullName":"id"
+              },
               "type":"Integer",
               "annotations":[
                 {
                   "name":"@GeneratedValue"
-
                 },
                 {
                   "name":"@Id",
                   "stringValue":"Id"
-
                 },
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"issuer",
+              "name":{
+                "name":"issuer",
+                "fullName":"issuer"
+              },
               "type":"Integer",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"examDate",
+              "name":{
+                "name":"examDate",
+                "fullName":"examDate"
+              },
               "type":"Date",
               "annotations":[
                 {
                   "name":"@JsonFormat"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"status",
+              "name":{
+                "name":"status",
+                "fullName":"status"
+              },
               "type":"ExamStatus",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"sum",
+              "name":{
+                "name":"sum",
+                "fullName":"sum"
+              },
               "type":"Integer",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"examinee",
+              "name":{
+                "name":"examinee",
+                "fullName":"examinee"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"configurationId",
+              "name":{
+                "name":"configurationId",
+                "fullName":"configurationId"
+              },
               "type":"Integer",
               "annotations":[
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         }
-
       ]
-
     },
     {
-      "name":"qms",
+      "name":{
+        "name":"qms",
+        "fullName":"qms"
+      },
       "entities":[
         {
-          "entityName":"Code",
+          "entityName":{
+            "name":"Code",
+            "fullName":"Code"
+          },
           "fields":[
             {
-              "name":"question",
+              "name":{
+                "name":"question",
+                "fullName":"question"
+              },
               "type":"Question",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"language",
+              "name":{
+                "name":"language",
+                "fullName":"language"
+              },
               "type":"Language",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"body",
+              "name":{
+                "name":"body",
+                "fullName":"body"
+              },
               "type":"String",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         },
         {
-          "entityName":"Question",
+          "entityName":{
+            "name":"Question",
+            "fullName":"Question"
+          },
           "fields":[
             {
-              "name":"choices",
+              "name":{
+                "name":"choices",
+                "fullName":"choices"
+              },
               "type":"Choice",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":true
-
             },
             {
-              "name":"codes",
+              "name":{
+                "name":"codes",
+                "fullName":"codes"
+              },
               "type":"Code",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":true
-
             },
             {
-              "name":"FIND_BY_CATEGORYID",
+              "name":{
+                "name":"FIND_BY_CATEGORYID",
+                "fullName":"FIND_BY_CATEGORYID"
+              },
               "type":"String",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"FIND_BY_CATEGORYID_LEVEL_LANGUAGE",
+              "name":{
+                "name":"FIND_BY_CATEGORYID_LEVEL_LANGUAGE",
+                "fullName":"FIND_BY_CATEGORYID_LEVEL_LANGUAGE"
+              },
               "type":"String",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"level",
+              "name":{
+                "name":"level",
+                "fullName":"level"
+              },
               "type":"Integer",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"body",
+              "name":{
+                "name":"body",
+                "fullName":"body"
+              },
               "type":"String",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"categories",
+              "name":{
+                "name":"categories",
+                "fullName":"categories"
+              },
               "type":"Category",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":true
-
             },
             {
-              "name":"title",
+              "name":{
+                "name":"title",
+                "fullName":"title"
+              },
               "type":"String",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"FIND_BY_CATEGORYID_AND_NAME",
+              "name":{
+                "name":"FIND_BY_CATEGORYID_AND_NAME",
+                "fullName":"FIND_BY_CATEGORYID_AND_NAME"
+              },
               "type":"String",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"FIND_DTO_BY_NAME",
+              "name":{
+                "name":"FIND_DTO_BY_NAME",
+                "fullName":"FIND_DTO_BY_NAME"
+              },
               "type":"String",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         },
         {
-          "entityName":"Language",
+          "entityName":{
+            "name":"Language",
+            "fullName":"Language"
+          },
           "fields":[
             {
-              "name":"name",
+              "name":{
+                "name":"name",
+                "fullName":"name"
+              },
               "type":"String",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         },
         {
-          "entityName":"ConfigurationGroup",
+          "entityName":{
+            "name":"ConfigurationGroup",
+            "fullName":"ConfigurationGroup"
+          },
           "fields":[
             {
-              "name":"category",
+              "name":{
+                "name":"category",
+                "fullName":"category"
+              },
               "type":"Long",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"languageId",
+              "name":{
+                "name":"languageId",
+                "fullName":"languageId"
+              },
               "type":"Long",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"configuration",
+              "name":{
+                "name":"configuration",
+                "fullName":"configuration"
+              },
               "type":"Configuration",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"count",
+              "name":{
+                "name":"count",
+                "fullName":"count"
+              },
               "type":"Integer",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"level",
+              "name":{
+                "name":"level",
+                "fullName":"level"
+              },
               "type":"Integer",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         },
         {
-          "entityName":"Category",
+          "entityName":{
+            "name":"Category",
+            "fullName":"Category"
+          },
           "fields":[
             {
-              "name":"name",
+              "name":{
+                "name":"name",
+                "fullName":"name"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@Size"
-
                 },
                 {
                   "name":"@NotNull",
                   "stringValue":"NotNull"
-
                 },
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"questions",
+              "name":{
+                "name":"questions",
+                "fullName":"questions"
+              },
               "type":"Question",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":true
-
             },
             {
-              "name":"description",
+              "name":{
+                "name":"description",
+                "fullName":"description"
+              },
               "type":"String",
               "annotations":[
                 {
                   "name":"@Size"
-
                 },
                 {
                   "name":"@NotNull",
                   "stringValue":"NotNull"
-
                 },
                 {
                   "name":"@Column"
-
                 }
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"FIND_NAMES_BY_QUESTION_ID",
+              "name":{
+                "name":"FIND_NAMES_BY_QUESTION_ID",
+                "fullName":"FIND_NAMES_BY_QUESTION_ID"
+              },
               "type":"String",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"FIND_QUESTION_COUNT_DTO_BY_ID",
+              "name":{
+                "name":"FIND_QUESTION_COUNT_DTO_BY_ID",
+                "fullName":"FIND_QUESTION_COUNT_DTO_BY_ID"
+              },
               "type":"String",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         },
         {
-          "entityName":"Configuration",
+          "entityName":{
+            "name":"Configuration",
+            "fullName":"Configuration"
+          },
           "fields":[
             {
-              "name":"groups",
+              "name":{
+                "name":"groups",
+                "fullName":"groups"
+              },
               "type":"ConfigurationGroup",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":true
-
             },
             {
-              "name":"name",
+              "name":{
+                "name":"name",
+                "fullName":"name"
+              },
               "type":"String",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"description",
+              "name":{
+                "name":"description",
+                "fullName":"description"
+              },
               "type":"String",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"FIND_ALL_GROUPS_BY_ID",
+              "name":{
+                "name":"FIND_ALL_GROUPS_BY_ID",
+                "fullName":"FIND_ALL_GROUPS_BY_ID"
+              },
               "type":"String",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         },
         {
-          "entityName":"Choice",
+          "entityName":{
+            "name":"Choice",
+            "fullName":"Choice"
+          },
           "fields":[
             {
-              "name":"question",
+              "name":{
+                "name":"question",
+                "fullName":"question"
+              },
               "type":"Question",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"correct",
+              "name":{
+                "name":"correct",
+                "fullName":"correct"
+              },
               "type":"Boolean",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"body",
+              "name":{
+                "name":"body",
+                "fullName":"body"
+              },
               "type":"String",
               "annotations":[
 
-
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         },
         {
-          "entityName":"Person",
+          "entityName":{
+            "name":"Person",
+            "fullName":"Person"
+          },
           "fields":[
             {
-              "name":"firstName",
+              "name":{
+                "name":"firstName",
+                "fullName":"firstName"
+              },
               "type":"String",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"lastName",
+              "name":{
+                "name":"lastName",
+                "fullName":"lastName"
+              },
               "type":"String",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":false
-
             },
             {
-              "name":"userName",
+              "name":{
+                "name":"userName",
+                "fullName":"userName"
+              },
               "type":"String",
               "annotations":[
-
 
               ],
               "isReference":false,
               "isCollection":false
-
             }
-
           ]
-
         }
-
       ]
-
     }
-
   ]
 }
