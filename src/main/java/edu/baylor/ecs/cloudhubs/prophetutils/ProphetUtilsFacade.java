@@ -130,8 +130,8 @@ public class ProphetUtilsFacade {
         BoundedContextUtils boundedContextUtils = new BoundedContextUtilsImpl();
         SystemContext systemContext = ProphetUtilsFacade.getEntityContext(path, msPaths);
         FileManager.writeToFile(systemContext);
-        BoundedContext boundedContext = SimpleBoundedUtils.getBoundedContext(systemContext);
-//        BoundedContext boundedContext = boundedContextUtils.createBoundedContext(systemContext);
+//        BoundedContext boundedContext = SimpleBoundedUtils.getBoundedContext(systemContext);
+        BoundedContext boundedContext = boundedContextUtils.createBoundedContext(systemContext);
         return boundedContext;
     }
 
@@ -144,8 +144,8 @@ public class ProphetUtilsFacade {
         BoundedContextUtils boundedContextUtils = new BoundedContextUtilsImpl();
         SystemContext systemContext = ProphetUtilsFacade.getEntityContext(msFullPaths);
         FileManager.writeToFile(systemContext);
-        BoundedContext boundedContext = SimpleBoundedUtils.getBoundedContext(systemContext);
-//        BoundedContext boundedContext = boundedContextUtils.createBoundedContext(systemContext);
+//        BoundedContext boundedContext = SimpleBoundedUtils.getBoundedContext(systemContext);
+        BoundedContext boundedContext = boundedContextUtils.createBoundedContext(systemContext);
         return boundedContext;
     }
 
@@ -200,6 +200,12 @@ public class ProphetUtilsFacade {
 
     public static List<String> createHtmlTemplate(String path, String[] msPaths){
         BoundedContext boundedContext = getBoundedContext(path, msPaths);
+        MermaidGraph mermaidGraph = EntityGraphAdapter.getMermaidGraph(boundedContext);
+        return HtmlTemplateAdapter.getHtmlTemplateList(mermaidGraph);
+    }
+
+    public static List<String> createHtmlTemplate(List<String> msFullPaths){
+        BoundedContext boundedContext = getBoundedContext(msFullPaths);
         MermaidGraph mermaidGraph = EntityGraphAdapter.getMermaidGraph(boundedContext);
         return HtmlTemplateAdapter.getHtmlTemplateList(mermaidGraph);
     }

@@ -18,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -87,6 +88,15 @@ public class ProphetUtilsTest {
     @DisplayName("generating template")
     public void generateTemplate(){
         List<String> list = ProphetUtilsFacade.createHtmlTemplate(rootPath, microServicePaths);
+        FileManager.writeBoundedContextToFile(list);
+        assertNotNull(list);
+    }
+
+    @Test
+    @DisplayName("generating TMS2 template")
+    public void generateTms2Template(){
+        String[] paths = new String[] {ems_path, cms_path};
+        List<String> list = ProphetUtilsFacade.createHtmlTemplate(rootPath, paths);
         FileManager.writeBoundedContextToFile(list);
         assertNotNull(list);
     }
