@@ -34,4 +34,5 @@ build/
 .vscode/
 
 ### application.properties ###
-**/src/main/recources/application.properties
+**/src/main/recources/application-dev.properties
+systemContext.json
