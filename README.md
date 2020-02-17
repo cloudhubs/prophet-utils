@@ -1,1 +1,1 @@
-# prophet-utils
+# prophet-utils v 0.0.6
