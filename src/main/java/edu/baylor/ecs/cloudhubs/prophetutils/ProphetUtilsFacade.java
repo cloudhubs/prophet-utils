@@ -1,27 +1,23 @@
 package edu.baylor.ecs.cloudhubs.prophetutils;
 
+import edu.baylor.ecs.cloudhubs.jparser.component.context.AnalysisContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.app.*;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Communication;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.ContextMap;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Edge;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Node;
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidGraph;
-import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.ms.MsMermaidGraph;
 import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.MsModel;
-import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
+import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityGraphAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.HtmlTemplateAdapter;
-import edu.baylor.ecs.cloudhubs.prophetutils.adapter.MsGraphAdapter;
-import edu.baylor.ecs.cloudhubs.prophetutils.bounded.SimpleBoundedUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.directories.DirectoryUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
 import edu.baylor.ecs.cloudhubs.prophetutils.jparser.JParserUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.mermaidutils.MermaidStringConverters;
 import edu.baylor.ecs.cloudhubs.prophetutils.mscontext.SourceParser;
-import edu.baylor.ecs.jparser.component.context.AnalysisContext;
-import edu.baylor.ecs.jparser.component.impl.DirectoryComponent;
 import edu.baylor.ecs.prophet.bounded.context.utils.BoundedContextUtils;
 import edu.baylor.ecs.prophet.bounded.context.utils.impl.BoundedContextUtilsImpl;
 
@@ -29,7 +25,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProphetUtilsFacade {
 

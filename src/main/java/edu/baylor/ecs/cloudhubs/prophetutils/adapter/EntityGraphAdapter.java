@@ -2,19 +2,13 @@ package edu.baylor.ecs.cloudhubs.prophetutils.adapter;
 
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidEdge;
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidGraph;
-import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.ms.MsMermaidGraph;
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidNode;
-import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.MsEdge;
-import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.MsLabel;
-import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.MsModel;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.Entity;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.Field;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
