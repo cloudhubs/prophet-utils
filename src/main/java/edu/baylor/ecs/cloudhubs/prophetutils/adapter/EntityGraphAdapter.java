@@ -51,9 +51,28 @@ public class EntityGraphAdapter {
             for (Field field: entity.getFields()
                  ) {
                 if (field.isReference()){
-                    System.out.println("is filed");
-                    if (mermaidEdges.stream().filter(n -> n.exists(field.getType(), entity.getEntityName().getName())).collect(Collectors.toList()).size() == 0){
-                        mermaidEdges.add(new MermaidEdge(field.getType(), entity.getEntityName().getName()));
+                    List<MermaidEdge> edges = mermaidEdges.stream().filter(n -> n.exists(field.getType(), entity.getEntityName().getName())).collect(Collectors.toList());
+                    // no edge yet between entities
+                    if (edges.size() == 0) {
+                        // no edge yet between these entities, field is not a collection
+                        if (!field.isCollection()) {
+                            mermaidEdges.add(new MermaidEdge(entity.getEntityName().getName(), field.getType(), "", false, "1", "1"));
+                        }
+                        // no edge yet, field is collection
+                        else {
+                            mermaidEdges.add(new MermaidEdge(entity.getEntityName().getName(), field.getType(), "", false, "1", "*"));
+                        }
+                    }
+                    // edge already exists
+                    else {
+                        mermaidEdges.stream().filter(n -> n.exists(field.getType(), entity.getEntityName().getName())).forEach(e -> {
+                            if (e.getFrom().equals(field.getType())) {
+                                e.setBidirectional(true);
+                            }
+                            if (field.isCollection()) {
+                                e.setToCardinality("*");
+                            }
+                        });
                     }
                 }
             }
