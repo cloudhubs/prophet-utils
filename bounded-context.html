@@ -40,7 +40,7 @@ classDiagram
       Question : +Integer id
       Question : +Exam exam
       Question : +String body
-Question --> Choice : 1:N
+Question "1" --> "*" Choice
 </div>
 <script>
     mermaidAPI.initialize({

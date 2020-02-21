@@ -1,24 +1,18 @@
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.ContextMap;
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidGraph;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
-
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
 import edu.baylor.ecs.cloudhubs.prophetutils.ProphetUtilsFacade;
 import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
