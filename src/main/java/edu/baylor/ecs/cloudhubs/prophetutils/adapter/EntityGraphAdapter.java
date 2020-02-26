@@ -24,21 +24,22 @@ public class EntityGraphAdapter {
         }
         //create references here
 
-        //set entity reference
-        for (Entity e: boundedContext.getBoundedContextEntities()
-             ) {
-            for (Field f: e.getFields()
-                 ) {
-                List<Entity> ope =
-                        boundedContext.getBoundedContextEntities().stream().filter(n -> n.getEntityName().equals(f.getType())).collect(Collectors.toList());
-                if (ope.size() > 0){
-                    f.setEntityReference(ope.get(0));
-                    f.setReference(true);
-                    f.setCollection(true);
-                }
-
-            }
-        }
+        // Unsure if this is needed, shouldn't bounded context already have these references in place?
+//        //set entity reference
+//        for (Entity e: boundedContext.getBoundedContextEntities()
+//             ) {
+//            for (Field f: e.getFields()
+//                 ) {
+//                List<Entity> ope =
+//                        boundedContext.getBoundedContextEntities().stream().filter(n -> n.getEntityName().getName().equals(f.getType())).collect(Collectors.toList());
+//                if (ope.size() > 0){
+//                    f.setEntityRefName(ope.get(0).getEntityName().getName());
+//                    f.setReference(true);
+//                    //f.setCollection(true);
+//                }
+//
+//            }
+//        }
 
         for (Entity entity: boundedContext.getBoundedContextEntities()
              ) {
@@ -50,11 +51,11 @@ public class EntityGraphAdapter {
                     if (edges.size() == 0) {
                         // no edge yet between these entities, field is not a collection
                         if (!field.isCollection()) {
-                            mermaidEdges.add(new MermaidEdge(entity.getEntityName().getName(), field.getType(), "", false, "1", "1"));
+                            mermaidEdges.add(new MermaidEdge(entity.getEntityName().getName(), field.getType(), "", false, "*", "1"));
                         }
                         // no edge yet, field is collection
                         else {
-                            mermaidEdges.add(new MermaidEdge(entity.getEntityName().getName(), field.getType(), "", false, "1", "*"));
+                            mermaidEdges.add(new MermaidEdge(entity.getEntityName().getName(), field.getType(), "", false, "*", "*"));
                         }
                     }
                     // edge already exists
@@ -62,9 +63,9 @@ public class EntityGraphAdapter {
                         mermaidEdges.stream().filter(n -> n.exists(field.getType(), entity.getEntityName().getName())).forEach(e -> {
                             if (e.getFrom().equals(field.getType())) {
                                 e.setBidirectional(true);
-                            }
-                            if (field.isCollection()) {
-                                e.setToCardinality("*");
+                                if (!field.isCollection()) {
+                                    e.setFromCardinality("1");
+                                }
                             }
                         });
                     }
