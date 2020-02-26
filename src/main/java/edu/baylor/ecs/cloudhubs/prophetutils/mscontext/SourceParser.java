@@ -1,6 +1,7 @@
 package edu.baylor.ecs.cloudhubs.prophetutils.mscontext;
 
 import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.*;
+import edu.baylor.ecs.cloudhubs.prophetutils.directories.DirectoryUtils;
 import edu.baylor.ecs.cloudhubs.radsource.context.RadSourceRequestContext;
 import edu.baylor.ecs.cloudhubs.radsource.model.RestFlow;
 import edu.baylor.ecs.cloudhubs.radsource.service.RadSourceService;
@@ -22,8 +23,8 @@ public class SourceParser {
         Map<String, MsNode> nodeMap = new HashMap<>();
 
         for (RestFlow restFlow : restFlows) {
-            String toKey = restFlow.getEndpoint().getMsRoot();
-            String fromKey = restFlow.getClient().getMsRoot();
+            String toKey = DirectoryUtils.getDirectoryNameFromPath(restFlow.getEndpoint().getMsRoot());
+            String fromKey = DirectoryUtils.getDirectoryNameFromPath(restFlow.getClient().getMsRoot());
 
             nodeMap.putIfAbsent(toKey, new MsNode(toKey));
             nodeMap.putIfAbsent(fromKey, new MsNode(fromKey));
