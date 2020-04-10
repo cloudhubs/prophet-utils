@@ -56,7 +56,8 @@ public class EntityContextAdapter {
                                 }
                                 field_n.setAnnotations(annotations);
                                 for (Annotation a: field_n.getAnnotations()){
-                                    if (a.getName().equals("@ManyToOne") || a.getName().equals("@OneToMany" ) || a.getName().equals("@OneToOne")){
+                                    if (a.getName().equals("@ManyToOne") || a.getName().equals("@OneToMany" )
+                                            || a.getName().equals("@OneToOne") || a.getName().equals("@ManyToMany")) {
                                         //field_n.setEntityReference();
                                         field_n.setReference(true);
                                         field_n.setEntityRefName(field_n.getType());
