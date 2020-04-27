@@ -49,9 +49,9 @@ public class ProphetUtilsFacade {
         List<String> msFullPaths = new ArrayList<>();
         for (RepoReq repo : request.getRepositories()) {
             if (repo.isMonolith()) {
-                msFullPaths.add(repo.getLocalPath());
+                msFullPaths.add(repo.getPath());
             } else {
-                msFullPaths.addAll(Arrays.asList(DirectoryUtils.getMsFullPaths(repo.getLocalPath())));
+                msFullPaths.addAll(Arrays.asList(DirectoryUtils.getMsFullPaths(repo.getPath())));
             }
         }
 
