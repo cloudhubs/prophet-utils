@@ -33,7 +33,7 @@ public class EntityContextAdapter {
                 if (classAnnotations != null){
                     for (Component cmp: classAnnotations) {
                         AnnotationComponent ac = (AnnotationComponent) cmp;
-                        if (ac.getAsString().equals("@Entity") || ac.getAsString().equals("@Document")){
+                        if (ac.getAsString().equals("@Entity") || ac.getAsString().equals("@Document") || ac.getAsString().equals("@Data")){
                             Set<Field> fields = new HashSet<>();
                             for (FieldComponent field : clazz.getFieldComponents()) {
                                 Field field_n = new Field();

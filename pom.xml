@@ -6,7 +6,7 @@
 
     <groupId>edu.baylor.ecs.cloudhubs</groupId>
     <artifactId>prophet-utils</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.8</version>
 
     <packaging>jar</packaging>
 
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>edu.baylor.ecs.cloudhubs</groupId>
             <artifactId>prophet-dto</artifactId>
-            <version>0.0.6</version>
+            <version>0.0.8</version>
         </dependency>
 
         <!-- rad -->

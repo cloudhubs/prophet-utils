@@ -2,6 +2,8 @@ package edu.baylor.ecs.cloudhubs.prophetutils;
 
 import edu.baylor.ecs.cloudhubs.jparser.component.context.AnalysisContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.app.*;
+import edu.baylor.ecs.cloudhubs.prophetdto.app.utilsapp.GitReq;
+import edu.baylor.ecs.cloudhubs.prophetdto.app.utilsapp.RepoReq;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Communication;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.ContextMap;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Edge;
@@ -22,9 +24,7 @@ import edu.baylor.ecs.prophet.bounded.context.utils.BoundedContextUtils;
 import edu.baylor.ecs.prophet.bounded.context.utils.impl.BoundedContextUtilsImpl;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class ProphetUtilsFacade {
 
@@ -45,54 +45,13 @@ public class ProphetUtilsFacade {
 
     }
 
-    /**
-     * Generates App Data from microservice system, using a root URL
-     * @param rootPath
-     * @return ProphetAppData
-     */
-    public static ProphetAppData getProphetAppData(String rootPath) throws IOException {
-        ProphetAppData response = new ProphetAppData();
-        JParserUtils jParserUtils = JParserUtils.getInstance();
-//        String[] msPaths = DirectoryUtils.getMsPaths(rootPath);
-        String[] msPaths = DirectoryUtils.getMsFullPaths(rootPath);
-
-        // Set the globals: Project name and context map for bounded context and microservice communication
-
-        ProphetAppGlobal global = new ProphetAppGlobal();
-        global.setProjectName(jParserUtils.createAnalysisContextFromDirectory(rootPath).getRootPath());
-
-        // get the context and MsModel of the project
-        BoundedContext globalContext = getBoundedContext(rootPath, msPaths);
-        MsModel msModel = getMsModel(rootPath);
-
-        // get the mermaid string representations of the context and model
-        global.setContextMap(MermaidStringConverters.getBoundedContextMermaidString(globalContext));
-        global.setCommunication(MermaidStringConverters.getMsModelMermaidString(msModel));
-
-        response.setGlobal(global);
-
-        // Get each microservice's bounded context
-        List<MicroserviceResult> msResults = new ArrayList<>();
-        for (String msPath : msPaths) {
-            MicroserviceResult msResult = new MicroserviceResult();
-            BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(rootPath, new String[]{msPath});
-            msResult.setName(DirectoryUtils.getDirectoryNameFromPath(msPath));
-            // get the mermaid representation of the bounded context
-            msResult.setBoundedContext(MermaidStringConverters.getBoundedContextMermaidString(boundedContext));
-            msResults.add(msResult);
-        }
-        response.setMs(msResults);
-
-        return response;
-    }
-
-    public static ProphetAppData getProphetAppData(ProphetAppMultiRepoRequest request) throws IOException {
+    public static ProphetAppData getProphetAppData(GitReq request) throws IOException {
         List<String> msFullPaths = new ArrayList<>();
-        for (ProphetAppRequest repo : request.getRepositories()) {
+        for (RepoReq repo : request.getRepositories()) {
             if (repo.isMonolith()) {
-                msFullPaths.add(repo.getPath());
+                msFullPaths.add(repo.getLocalPath());
             } else {
-                msFullPaths.addAll(Arrays.asList(DirectoryUtils.getMsFullPaths(repo.getPath())));
+                msFullPaths.addAll(Arrays.asList(DirectoryUtils.getMsFullPaths(repo.getLocalPath())));
             }
         }
 
@@ -158,11 +117,13 @@ public class ProphetUtilsFacade {
             List<String> singleMsPathList = new ArrayList<>(Arrays.asList(msPath));
             BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(singleMsPathList);
 
-            msResult.setName(DirectoryUtils.getDirectoryNameFromPath(msPath));
+            if (boundedContext.getBoundedContextEntities().size() != 0) {
+                msResult.setName(DirectoryUtils.getDirectoryNameFromPath(msPath));
 
-            // get the mermaid representation of the bounded context
-            msResult.setBoundedContext(MermaidStringConverters.getBoundedContextMermaidString(boundedContext));
-            msResults.add(msResult);
+                // get the mermaid representation of the bounded context
+                msResult.setBoundedContext(MermaidStringConverters.getBoundedContextMermaidString(boundedContext));
+                msResults.add(msResult);
+            }
         }
         return msResults;
     }
@@ -219,8 +180,8 @@ public class ProphetUtilsFacade {
 
     public static Communication getCommunication(String path){
         Communication communication = new Communication();
-        Edge[] edges = new Edge[3];
-        Node[] nodes = new Node[3];
+        Set<Edge> edges = new HashSet<>();
+        Set<Node> nodes = new HashSet<>();
         communication.setEdges(edges);
         communication.setNodes(nodes);
         return communication;

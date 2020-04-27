@@ -24,22 +24,21 @@ public class EntityGraphAdapter {
         }
         //create references here
 
-        // Unsure if this is needed, shouldn't bounded context already have these references in place?
-//        //set entity reference
-//        for (Entity e: boundedContext.getBoundedContextEntities()
-//             ) {
-//            for (Field f: e.getFields()
-//                 ) {
-//                List<Entity> ope =
-//                        boundedContext.getBoundedContextEntities().stream().filter(n -> n.getEntityName().getName().equals(f.getType())).collect(Collectors.toList());
-//                if (ope.size() > 0){
-//                    f.setEntityRefName(ope.get(0).getEntityName().getName());
-//                    f.setReference(true);
-//                    //f.setCollection(true);
-//                }
-//
-//            }
-//        }
+        //set entity reference
+        for (Entity e: boundedContext.getBoundedContextEntities()
+             ) {
+            for (Field f: e.getFields()
+                 ) {
+                List<Entity> ope =
+                        boundedContext.getBoundedContextEntities().stream().filter(n -> n.getEntityName().getName().equals(f.getType())).collect(Collectors.toList());
+                if (ope.size() > 0){
+                    f.setEntityRefName(ope.get(0).getEntityName().getName());
+                    f.setReference(true);
+                    //f.setCollection(true);
+                }
+
+            }
+        }
 
         for (Entity entity: boundedContext.getBoundedContextEntities()
              ) {
