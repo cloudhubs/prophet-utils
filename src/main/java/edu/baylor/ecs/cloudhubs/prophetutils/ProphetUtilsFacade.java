@@ -88,8 +88,8 @@ public class ProphetUtilsFacade {
         BoundedContext globalContext = getBoundedContext(msFullPaths);
         MsModel msModel = getMsModel(msFullPaths);
 
-        global.setHasContextMap(globalContext.getBoundedContextEntities().size() > 0);
-        global.setHasCommunication(msModel.getEdges().size() > 0);
+        global.setHasContextMap(globalContext.getBoundedContextEntities() != null && globalContext.getBoundedContextEntities().size() > 0);
+        global.setHasCommunication(msModel.getEdges() != null && msModel.getEdges().size() > 0);
 
         // get the mermaid string representations of the context and model
         global.setContextMap(MermaidStringConverters.getBoundedContextMermaidString(globalContext));
