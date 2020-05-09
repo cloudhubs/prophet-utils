@@ -25,6 +25,7 @@ import edu.baylor.ecs.prophet.bounded.context.utils.impl.BoundedContextUtilsImpl
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProphetUtilsFacade {
 
@@ -47,11 +48,35 @@ public class ProphetUtilsFacade {
 
     public static ProphetAppData getProphetAppData(GitReq request) throws IOException {
         List<String> msFullPaths = new ArrayList<>();
+        List<MicroserviceResult> msFailures = new ArrayList<>();
         for (RepoReq repo : request.getRepositories()) {
             if (repo.isMonolith()) {
-                msFullPaths.add(repo.getPath());
+                if (DirectoryUtils.hasJava(repo.getPath())) {
+                    msFullPaths.add(repo.getPath());
+                } else {
+                    MicroserviceResult fail = new MicroserviceResult();
+                    fail.setHasBoundedContext(false);
+                    fail.setMessage("Project does not contain Java.");
+                    fail.setName(DirectoryUtils.getDirectoryNameFromPath(repo.getPath()));
+                    msFailures.add(fail);
+                }
             } else {
-                msFullPaths.addAll(Arrays.asList(DirectoryUtils.getMsFullPaths(repo.getPath())));
+                List<String> allPaths = Arrays.asList(DirectoryUtils.getMsFullPaths(repo.getPath()));
+
+                // filter paths to only those projects that contain Java
+                List<String> validPaths = allPaths.stream().filter(DirectoryUtils::hasJava).collect(Collectors.toList());
+                msFullPaths.addAll(validPaths);
+
+                // denote non-java projects
+                List<String> badPaths = allPaths.stream().filter(p -> !validPaths.contains(p)).collect(Collectors.toList());
+                msFailures.addAll(badPaths.stream().map(p -> {
+                        MicroserviceResult fail = new MicroserviceResult();
+                        fail.setHasBoundedContext(false);
+                        fail.setMessage("Project does not contain Java.");
+                        fail.setName(DirectoryUtils.getDirectoryNameFromPath(p));
+                        return fail;
+                    }).collect(Collectors.toList())
+                );
             }
         }
 
@@ -73,6 +98,7 @@ public class ProphetUtilsFacade {
         response.setGlobal(global);
 
         List<MicroserviceResult> msResults = getMsBoundedContexts(msFullPaths);
+        msResults.addAll(msFailures);
         response.setMs(msResults);
 
         return response;
@@ -119,13 +145,17 @@ public class ProphetUtilsFacade {
             // get the bounded context from this single microservice
             List<String> singleMsPathList = new ArrayList<>(Arrays.asList(msPath));
             BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(singleMsPathList);
+            msResult.setName(DirectoryUtils.getDirectoryNameFromPath(msPath));
 
             if (boundedContext.getBoundedContextEntities().size() != 0) {
-                msResult.setName(DirectoryUtils.getDirectoryNameFromPath(msPath));
-
                 // get the mermaid representation of the bounded context
                 msResult.setBoundedContext(MermaidStringConverters.getBoundedContextMermaidString(boundedContext));
+                msResult.setHasBoundedContext(true);
                 msResults.add(msResult);
+            } else {
+                // has no entities, so no supported annotations were found
+                msResult.setHasBoundedContext(false);
+                msResult.setMessage("No supported entities found.");
             }
         }
         return msResults;
