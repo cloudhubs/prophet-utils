@@ -155,7 +155,7 @@ public class ProphetUtilsFacade {
             } else {
                 // has no entities, so no supported annotations were found
                 msResult.setHasBoundedContext(false);
-                msResult.setMessage("No supported entities found.");
+                msResult.setMessage("No supported entity annotations found.");
             }
         }
         return msResults;
