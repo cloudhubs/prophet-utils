@@ -36,6 +36,7 @@ public class SourceParser {
             msLabel.setType(MsLabelType.valueOf(restFlow.getEndpoint().getHttpMethod()));
             msLabel.setArgument(restFlow.getEndpoint().getArguments());
             msLabel.setMsReturn(restFlow.getEndpoint().getReturnType());
+            msLabel.setEndpointFunction(restFlow.getEndpoint().getParentMethod());
 
             MsEdge msEdge = new MsEdge();
             msEdge.setTo(toNode);
