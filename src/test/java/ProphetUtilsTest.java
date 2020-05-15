@@ -1,3 +1,6 @@
+import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetAppData;
+import edu.baylor.ecs.cloudhubs.prophetdto.app.utilsapp.GitReq;
+import edu.baylor.ecs.cloudhubs.prophetdto.app.utilsapp.RepoReq;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.ContextMap;
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidGraph;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
@@ -13,6 +16,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -107,6 +112,22 @@ public class ProphetUtilsTest {
     public void getContextMap(){
         ContextMap mg =  ProphetUtilsFacade.getContextMap("/Users/svacina/tmp/tms");
         assertNotNull(mg);
+    }
+
+
+    @Test
+    @DisplayName("prophet data")
+    public void testProphetData() throws IOException {
+        ProphetAppData data = new ProphetAppData();
+        GitReq request = new GitReq();
+        List<RepoReq> repoReqs = new ArrayList<>();
+        RepoReq rr = new RepoReq();
+        rr.setPath("/Users/svacina/git/cdh/prophet-app-utils/repos-1589488397/train-ticket");
+        rr.setMonolith(false);
+        repoReqs.add(rr);
+        request.setRepositories(repoReqs);
+        data = ProphetUtilsFacade.getProphetAppData(request);
+        assertNotNull(data);
     }
 
 }
