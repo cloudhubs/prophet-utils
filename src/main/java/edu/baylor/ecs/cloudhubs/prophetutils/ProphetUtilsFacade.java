@@ -54,8 +54,8 @@ public class ProphetUtilsFacade {
                     msFullPaths.add(repo.getPath());
                 } else {
                     MicroserviceResult fail = new MicroserviceResult();
-                    fail.setHasBoundedContext(false);
-                    fail.setMessage("Project does not contain Java.");
+                    fail.setNoBoundedContext(true);
+                    fail.setNotJava(true);
                     fail.setName(DirectoryUtils.getDirectoryNameFromPath(repo.getPath()));
                     msFailures.add(fail);
                 }
@@ -70,8 +70,8 @@ public class ProphetUtilsFacade {
                 List<String> badPaths = allPaths.stream().filter(p -> !validPaths.contains(p)).collect(Collectors.toList());
                 msFailures.addAll(badPaths.stream().map(p -> {
                         MicroserviceResult fail = new MicroserviceResult();
-                        fail.setHasBoundedContext(false);
-                        fail.setMessage("Project does not contain Java.");
+                        fail.setNoBoundedContext(true);
+                        fail.setNotJava(true);
                         fail.setName(DirectoryUtils.getDirectoryNameFromPath(p));
                         return fail;
                     }).collect(Collectors.toList())
@@ -87,8 +87,8 @@ public class ProphetUtilsFacade {
         BoundedContext globalContext = getBoundedContext(msFullPaths);
         MsModel msModel = getMsModel(msFullPaths);
 
-        global.setHasContextMap(globalContext.getBoundedContextEntities() != null && globalContext.getBoundedContextEntities().size() > 0);
-        global.setHasCommunication(msModel.getEdges() != null && msModel.getEdges().size() > 0);
+        global.setNoContextMap(globalContext.getBoundedContextEntities() == null || globalContext.getBoundedContextEntities().size() == 0);
+        global.setNoCommunication(msModel.getEdges() == null || msModel.getEdges().size() == 0);
 
         // get the mermaid string representations of the context and model
         global.setContextMap(MermaidStringConverters.getBoundedContextMermaidString(globalContext));
@@ -145,12 +145,10 @@ public class ProphetUtilsFacade {
             if (boundedContext.getBoundedContextEntities().size() != 0) {
                 // get the mermaid representation of the bounded context
                 msResult.setBoundedContext(MermaidStringConverters.getBoundedContextMermaidString(boundedContext));
-                msResult.setHasBoundedContext(true);
                 msResults.add(msResult);
             } else {
-                // has no entities, so no supported annotations were found
-                msResult.setHasBoundedContext(false);
-                msResult.setMessage("No supported entity annotations found.");
+                // has no entities, so no context map can be made
+                msResult.setNoBoundedContext(true);
             }
         }
         return msResults;
