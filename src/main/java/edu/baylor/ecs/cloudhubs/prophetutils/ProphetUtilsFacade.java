@@ -250,4 +250,14 @@ public class ProphetUtilsFacade {
         return parser.createMsModel(msFullPaths);
     }
 
+    public static AnalysisContext getAnalysisContext(String path){
+        JParserUtils jParserUtils = JParserUtils.getInstance();
+        return jParserUtils.createAnalysisContextFromDirectory(path);
+    }
+
+    public static AnalysisContext getMultipleAnalysisContext(List<String> paths) {
+        JParserUtils jParserUtils = JParserUtils.getInstance();
+        return jParserUtils.createAnalysisContextFromMultipleDirectories(paths);
+    }
+
 }
