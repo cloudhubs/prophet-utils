@@ -14,6 +14,7 @@ import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
 import edu.baylor.ecs.cloudhubs.prophetutils.ProphetUtilsFacade;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
+import edu.baylor.ecs.cloudhubs.prophetutils.semantic.SemanticUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -139,63 +140,78 @@ public class ProphetUtilsTest {
 
     @Test
     @DisplayName("")
-    public void testAnalysisContext() {
-        String[] msPaths = new String[2];
-        msPaths[0] = ("/Users/svacina/git/tms2/cms");
-        msPaths[1] = ("/Users/svacina/git/tms2/ems");
-        AnalysisContext ac = ProphetUtilsFacade.getAnalysisContext("/Users/svacina/git/tms2");
-        Map<String, List<ClassComponent>> restControllers = new HashMap<>();
-        HashMap<String, Set<ClassComponent>> clusters = EntityContextAdapter.clusterClassComponents(ac.getModules(), msPaths);
-        for (Map.Entry<String, Set<ClassComponent>> entry : clusters.entrySet()) {
-            restControllers.put(entry.getKey(), new ArrayList<>());
-            for (ClassComponent classComponent : entry.getValue()) {
-                List<Component> annotations = classComponent.getAnnotations();
-                for (int j = 0; j < annotations.size(); j++) {
-                    AnnotationComponent annotationComponent = (AnnotationComponent) annotations.get(j);
-                    Name annotationName = annotationComponent.getAnnotation().getName();
-                    if (annotationName.getIdentifier().equals("RestController")) {
-                        List<ClassComponent> values = restControllers.get(entry.getKey());
-                        values.add(classComponent);
-                        restControllers.put(entry.getKey(), values);
-                        break;
-                    }
-                }
+    public void testAnalysisContext1() {
+        SemanticUtils semanticUtils = new SemanticUtils();
+        String root = "/Users/svacina/git/tms2";
+        String[] msPaths = {"/Users/svacina/git/tms2/cms", "/Users/svacina/git/tms2/ems"};
 
-            }
+        List<String> lines = semanticUtils.getClonesInLines(root, msPaths);
+        for (String s: lines
+             ) {
+            System.out.println(s);
         }
-        List<Map.Entry<String, Set<ClassComponent>>> entryList = new ArrayList<>();
-        for (Map.Entry<String, Set<ClassComponent>> entry : clusters.entrySet()) {
-            entryList.add(entry);
-        }
-
-        for (int i = 0; i < entryList.size(); i++) {
-            for (int j = i + 1; j< entryList.size(); j++) {
-                Set<ClassComponent> setA = entryList.get(i).getValue();
-                Set<ClassComponent> setB = entryList.get(j).getValue();
-                Iterator<ClassComponent> itA = setA.iterator();
-                Iterator<ClassComponent> itB = setB.iterator();
-                while (itA.hasNext()) {
-                    ClassComponent componentA = itA.next();
-                    while (itB.hasNext()) {
-                        ClassComponent componentB = itB.next();
-                        for (int k = 0; k < componentA.getMethods().size(); k++) {
-                            MethodInfoComponent methodA = (MethodInfoComponent) componentA.getMethods().get(k);
-                            for (int l = 0; l < componentB.getMethods().size(); l++) {
-                                MethodInfoComponent methodB = (MethodInfoComponent) componentB.getMethods().get(l);
-                                // are methods match?
-
-                            }
-
-                        }
-
-
-
-                    }
-                }
-
-            }
-        }
-
     }
+
+
+//    @Test
+//    @DisplayName("")
+//    public void testAnalysisContext() {
+//        String[] msPaths = new String[2];
+//        msPaths[0] = ("/Users/svacina/git/tms2/cms");
+//        msPaths[1] = ("/Users/svacina/git/tms2/ems");
+//        AnalysisContext ac = ProphetUtilsFacade.getAnalysisContext("/Users/svacina/git/tms2");
+//        Map<String, List<ClassComponent>> restControllers = new HashMap<>();
+//        HashMap<String, Set<ClassComponent>> clusters = EntityContextAdapter.clusterClassComponents(ac.getModules(), msPaths);
+//        for (Map.Entry<String, Set<ClassComponent>> entry : clusters.entrySet()) {
+//            restControllers.put(entry.getKey(), new ArrayList<>());
+//            for (ClassComponent classComponent : entry.getValue()) {
+//                List<Component> annotations = classComponent.getAnnotations();
+//                for (int j = 0; j < annotations.size(); j++) {
+//                    AnnotationComponent annotationComponent = (AnnotationComponent) annotations.get(j);
+//                    Name annotationName = annotationComponent.getAnnotation().getName();
+//                    if (annotationName.getIdentifier().equals("RestController")) {
+//                        List<ClassComponent> values = restControllers.get(entry.getKey());
+//                        values.add(classComponent);
+//                        restControllers.put(entry.getKey(), values);
+//                        break;
+//                    }
+//                }
+//
+//            }
+//        }
+//        List<Map.Entry<String, Set<ClassComponent>>> entryList = new ArrayList<>();
+//        for (Map.Entry<String, Set<ClassComponent>> entry : clusters.entrySet()) {
+//            entryList.add(entry);
+//        }
+//
+//        for (int i = 0; i < entryList.size(); i++) {
+//            for (int j = i + 1; j< entryList.size(); j++) {
+//                Set<ClassComponent> setA = entryList.get(i).getValue();
+//                Set<ClassComponent> setB = entryList.get(j).getValue();
+//                Iterator<ClassComponent> itA = setA.iterator();
+//                Iterator<ClassComponent> itB = setB.iterator();
+//                while (itA.hasNext()) {
+//                    ClassComponent componentA = itA.next();
+//                    while (itB.hasNext()) {
+//                        ClassComponent componentB = itB.next();
+//                        for (int k = 0; k < componentA.getMethods().size(); k++) {
+//                            MethodInfoComponent methodA = (MethodInfoComponent) componentA.getMethods().get(k);
+//                            for (int l = 0; l < componentB.getMethods().size(); l++) {
+//                                MethodInfoComponent methodB = (MethodInfoComponent) componentB.getMethods().get(l);
+//                                // are methods match?
+//
+//                            }
+//
+//                        }
+//
+//
+//
+//                    }
+//                }
+//
+//            }
+//        }
+//
+//    }
 
 }

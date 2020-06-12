@@ -14,33 +14,33 @@
 </head>
     <body>
         <div class="mermaid" id="graphDiv">
-classDiagram
-	 class Exam
-      Exam : +String examinee
-      Exam : +Date description
-      Exam : +Integer correct
-      Exam : +Integer sum
-      Exam : +Integer correct
-      Exam : +Integer id
-      Exam : +ExamStatus status
-      Exam : +Integer configurationId
-      Exam : +String issuer
-      Exam : +String configurationId
-      Exam : +String examDate
-	 class Choice
-      Choice : +boolean correct
-      Choice : +Question question
-      Choice : +Integer id
-      Choice : +boolean chosen
-      Choice : +boolean correct
-      Choice : +String body
-	 class Question
-      Question : +Choice description
-      Question : +String code
-      Question : +Integer id
-      Question : +Exam exam
-      Question : +String body
-Question "1" --> "*" Choice
+            classDiagram
+            class Exam
+            Exam : +String examinee
+            Exam : +Date description
+            Exam : +Integer correct
+            Exam : +Integer sum
+            Exam : +Integer correct
+            Exam : +Integer id
+            Exam : +ExamStatus status
+            Exam : +Integer configurationId
+            Exam : +String issuer
+            Exam : +String configurationId
+            Exam : +String examDate
+            class Choice
+            Choice : +boolean correct
+            Choice : +Question question
+            Choice : +Integer id
+            Choice : +boolean chosen
+            Choice : +boolean correct
+            Choice : +String body
+            class Question
+            Question : +Choice description
+            Question : +String code
+            Question : +Integer id
+            Question : +Exam exam
+            Question : +String body
+            Question "1" --> "*" Choice
 </div>
 <script>
     mermaidAPI.initialize({
