@@ -2,6 +2,8 @@ package edu.baylor.ecs.cloudhubs.prophetutils;
 
 import edu.baylor.ecs.cloudhubs.jparser.component.context.AnalysisContext;
 import edu.baylor.ecs.cloudhubs.prophetdto.app.*;
+import edu.baylor.ecs.cloudhubs.prophetdto.app.utilsapp.GitReq;
+import edu.baylor.ecs.cloudhubs.prophetdto.app.utilsapp.RepoReq;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Communication;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.ContextMap;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Edge;
@@ -18,13 +20,11 @@ import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
 import edu.baylor.ecs.cloudhubs.prophetutils.jparser.JParserUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.mermaidutils.MermaidStringConverters;
 import edu.baylor.ecs.cloudhubs.prophetutils.mscontext.SourceParser;
-import edu.baylor.ecs.prophet.bounded.context.utils.BoundedContextUtils;
-import edu.baylor.ecs.prophet.bounded.context.utils.impl.BoundedContextUtilsImpl;
+import edu.baylor.ecs.prophet.bounded.context.api.impl.BoundedContextApiImpl;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProphetUtilsFacade {
 
@@ -45,54 +45,37 @@ public class ProphetUtilsFacade {
 
     }
 
-    /**
-     * Generates App Data from microservice system, using a root URL
-     * @param rootPath
-     * @return ProphetAppData
-     */
-    public static ProphetAppData getProphetAppData(String rootPath) throws IOException {
-        ProphetAppData response = new ProphetAppData();
-        JParserUtils jParserUtils = JParserUtils.getInstance();
-//        String[] msPaths = DirectoryUtils.getMsPaths(rootPath);
-        String[] msPaths = DirectoryUtils.getMsFullPaths(rootPath);
-
-        // Set the globals: Project name and context map for bounded context and microservice communication
-
-        ProphetAppGlobal global = new ProphetAppGlobal();
-        global.setProjectName(jParserUtils.createAnalysisContextFromDirectory(rootPath).getRootPath());
-
-        // get the context and MsModel of the project
-        BoundedContext globalContext = getBoundedContext(rootPath, msPaths);
-        MsModel msModel = getMsModel(rootPath);
-
-        // get the mermaid string representations of the context and model
-        global.setContextMap(MermaidStringConverters.getBoundedContextMermaidString(globalContext));
-        global.setCommunication(MermaidStringConverters.getMsModelMermaidString(msModel));
-
-        response.setGlobal(global);
-
-        // Get each microservice's bounded context
-        List<MicroserviceResult> msResults = new ArrayList<>();
-        for (String msPath : msPaths) {
-            MicroserviceResult msResult = new MicroserviceResult();
-            BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(rootPath, new String[]{msPath});
-            msResult.setName(DirectoryUtils.getDirectoryNameFromPath(msPath));
-            // get the mermaid representation of the bounded context
-            msResult.setBoundedContext(MermaidStringConverters.getBoundedContextMermaidString(boundedContext));
-            msResults.add(msResult);
-        }
-        response.setMs(msResults);
-
-        return response;
-    }
-
-    public static ProphetAppData getProphetAppData(ProphetAppMultiRepoRequest request) throws IOException {
+    public static ProphetAppData getProphetAppData(GitReq request) throws IOException {
         List<String> msFullPaths = new ArrayList<>();
-        for (ProphetAppRequest repo : request.getRepositories()) {
+        List<MicroserviceResult> msFailures = new ArrayList<>();
+        for (RepoReq repo : request.getRepositories()) {
             if (repo.isMonolith()) {
-                msFullPaths.add(repo.getPath());
+                if (DirectoryUtils.hasJava(repo.getPath())) {
+                    msFullPaths.add(repo.getPath());
+                } else {
+                    MicroserviceResult fail = new MicroserviceResult();
+                    fail.setNoBoundedContext(true);
+                    fail.setNotJava(true);
+                    fail.setName(DirectoryUtils.getDirectoryNameFromPath(repo.getPath()));
+                    msFailures.add(fail);
+                }
             } else {
-                msFullPaths.addAll(Arrays.asList(DirectoryUtils.getMsFullPaths(repo.getPath())));
+                List<String> allPaths = Arrays.asList(DirectoryUtils.getMsFullPaths(repo.getPath()));
+
+                // filter paths to only those projects that contain Java
+                List<String> validPaths = allPaths.stream().filter(DirectoryUtils::hasJava).collect(Collectors.toList());
+                msFullPaths.addAll(validPaths);
+
+                // denote non-java projects
+                List<String> badPaths = allPaths.stream().filter(p -> !validPaths.contains(p)).collect(Collectors.toList());
+                msFailures.addAll(badPaths.stream().map(p -> {
+                        MicroserviceResult fail = new MicroserviceResult();
+                        fail.setNoBoundedContext(true);
+                        fail.setNotJava(true);
+                        fail.setName(DirectoryUtils.getDirectoryNameFromPath(p));
+                        return fail;
+                    }).collect(Collectors.toList())
+                );
             }
         }
 
@@ -104,6 +87,9 @@ public class ProphetUtilsFacade {
         BoundedContext globalContext = getBoundedContext(msFullPaths);
         MsModel msModel = getMsModel(msFullPaths);
 
+        global.setNoContextMap(globalContext.getBoundedContextEntities() == null || globalContext.getBoundedContextEntities().size() == 0);
+        global.setNoCommunication(msModel.getEdges() == null || msModel.getEdges().size() == 0);
+
         // get the mermaid string representations of the context and model
         global.setContextMap(MermaidStringConverters.getBoundedContextMermaidString(globalContext));
         global.setCommunication(MermaidStringConverters.getMsModelMermaidString(msModel));
@@ -111,6 +97,7 @@ public class ProphetUtilsFacade {
         response.setGlobal(global);
 
         List<MicroserviceResult> msResults = getMsBoundedContexts(msFullPaths);
+        msResults.addAll(msFailures);
         response.setMs(msResults);
 
         return response;
@@ -122,12 +109,10 @@ public class ProphetUtilsFacade {
      * @return BoundedContext
      */
     public static BoundedContext getBoundedContext(String path, String[] msPaths) {
-        BoundedContextUtils boundedContextUtils = new BoundedContextUtilsImpl();
         SystemContext systemContext = ProphetUtilsFacade.getEntityContext(path, msPaths);
         FileManager.writeToFile(systemContext);
-//        BoundedContext boundedContext = SimpleBoundedUtils.getBoundedContext(systemContext);
-        BoundedContext boundedContext = boundedContextUtils.createBoundedContext(systemContext);
-        return boundedContext;
+//        return SimpleBoundedUtils.getBoundedContext(systemContext);
+        return new BoundedContextApiImpl().getBoundedContext(systemContext, false);
     }
 
     /**
@@ -136,12 +121,10 @@ public class ProphetUtilsFacade {
      * @return BoundedContext
      */
     public static BoundedContext getBoundedContext(List<String> msFullPaths) {
-        BoundedContextUtils boundedContextUtils = new BoundedContextUtilsImpl();
         SystemContext systemContext = ProphetUtilsFacade.getEntityContext(msFullPaths);
         FileManager.writeToFile(systemContext);
-//        BoundedContext boundedContext = SimpleBoundedUtils.getBoundedContext(systemContext);
-        BoundedContext boundedContext = boundedContextUtils.createBoundedContext(systemContext);
-        return boundedContext;
+//        return SimpleBoundedUtils.getBoundedContext(systemContext);
+        return new BoundedContextApiImpl().getBoundedContext(systemContext, false);
     }
 
     /**
@@ -157,12 +140,16 @@ public class ProphetUtilsFacade {
             // get the bounded context from this single microservice
             List<String> singleMsPathList = new ArrayList<>(Arrays.asList(msPath));
             BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(singleMsPathList);
-
             msResult.setName(DirectoryUtils.getDirectoryNameFromPath(msPath));
 
-            // get the mermaid representation of the bounded context
-            msResult.setBoundedContext(MermaidStringConverters.getBoundedContextMermaidString(boundedContext));
-            msResults.add(msResult);
+            if (boundedContext.getBoundedContextEntities().size() != 0) {
+                // get the mermaid representation of the bounded context
+                msResult.setBoundedContext(MermaidStringConverters.getBoundedContextMermaidString(boundedContext));
+                msResults.add(msResult);
+            } else {
+                // has no entities, so no context map can be made
+                msResult.setNoBoundedContext(true);
+            }
         }
         return msResults;
     }
@@ -219,8 +206,8 @@ public class ProphetUtilsFacade {
 
     public static Communication getCommunication(String path){
         Communication communication = new Communication();
-        Edge[] edges = new Edge[3];
-        Node[] nodes = new Node[3];
+        Set<Edge> edges = new HashSet<>();
+        Set<Node> nodes = new HashSet<>();
         communication.setEdges(edges);
         communication.setNodes(nodes);
         return communication;
@@ -261,6 +248,16 @@ public class ProphetUtilsFacade {
     public static MsModel getMsModel(List<String> msFullPaths) throws IOException {
         SourceParser parser = new SourceParser();
         return parser.createMsModel(msFullPaths);
+    }
+
+    public static AnalysisContext getAnalysisContext(String path){
+        JParserUtils jParserUtils = JParserUtils.getInstance();
+        return jParserUtils.createAnalysisContextFromDirectory(path);
+    }
+
+    public static AnalysisContext getMultipleAnalysisContext(List<String> paths) {
+        JParserUtils jParserUtils = JParserUtils.getInstance();
+        return jParserUtils.createAnalysisContextFromMultipleDirectories(paths);
     }
 
 }

@@ -33,7 +33,7 @@ public class EntityContextAdapter {
                 if (classAnnotations != null){
                     for (Component cmp: classAnnotations) {
                         AnnotationComponent ac = (AnnotationComponent) cmp;
-                        if (ac.getAsString().equals("@Entity")){
+                        if (ac.getAsString().equals("@Entity") || ac.getAsString().equals("@Document") || ac.getAsString().equals("@Data")){
                             Set<Field> fields = new HashSet<>();
                             for (FieldComponent field : clazz.getFieldComponents()) {
                                 Field field_n = new Field();
@@ -56,7 +56,8 @@ public class EntityContextAdapter {
                                 }
                                 field_n.setAnnotations(annotations);
                                 for (Annotation a: field_n.getAnnotations()){
-                                    if (a.getName().equals("@ManyToOne") || a.getName().equals("@OneToMany" ) || a.getName().equals("@OneToOne")){
+                                    if (a.getName().equals("@ManyToOne") || a.getName().equals("@OneToMany" )
+                                            || a.getName().equals("@OneToOne") || a.getName().equals("@ManyToMany")) {
                                         //field_n.setEntityReference();
                                         field_n.setReference(true);
                                         field_n.setEntityRefName(field_n.getType());

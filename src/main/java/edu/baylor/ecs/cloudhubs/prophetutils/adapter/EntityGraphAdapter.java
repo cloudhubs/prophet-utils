@@ -8,7 +8,9 @@ import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.Entity;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.Field;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -19,32 +21,28 @@ public class EntityGraphAdapter {
     public static MermaidGraph getMermaidGraph(BoundedContext boundedContext){
         List<MermaidNode> mermaidNodes = new ArrayList<>();
         List<MermaidEdge> mermaidEdges = new ArrayList<>();
-        for (Entity entity: boundedContext.getBoundedContextEntities()){
+        Set<Entity> entities = boundedContext.getBoundedContextEntities() != null ? boundedContext.getBoundedContextEntities() : new HashSet<>();
+        for (Entity entity: entities){
             mermaidNodes.add(new MermaidNode(entity.getEntityName().getName()));
         }
+
         //create references here
+        //set entity reference
+        for (Entity e: entities) {
+            for (Field f: e.getFields()) {
+                List<Entity> ope =
+                        boundedContext.getBoundedContextEntities().stream().filter(n -> n.getEntityName().getName().equals(f.getType())).collect(Collectors.toList());
+                if (ope.size() > 0){
+                    f.setEntityRefName(ope.get(0).getEntityName().getName());
+                    f.setReference(true);
+                    //f.setCollection(true);
+                }
 
-        // Unsure if this is needed, shouldn't bounded context already have these references in place?
-//        //set entity reference
-//        for (Entity e: boundedContext.getBoundedContextEntities()
-//             ) {
-//            for (Field f: e.getFields()
-//                 ) {
-//                List<Entity> ope =
-//                        boundedContext.getBoundedContextEntities().stream().filter(n -> n.getEntityName().getName().equals(f.getType())).collect(Collectors.toList());
-//                if (ope.size() > 0){
-//                    f.setEntityRefName(ope.get(0).getEntityName().getName());
-//                    f.setReference(true);
-//                    //f.setCollection(true);
-//                }
-//
-//            }
-//        }
+            }
+        }
 
-        for (Entity entity: boundedContext.getBoundedContextEntities()
-             ) {
-            for (Field field: entity.getFields()
-                 ) {
+        for (Entity entity: entities) {
+            for (Field field: entity.getFields()) {
                 if (field.isReference()){
                     List<MermaidEdge> edges = mermaidEdges.stream().filter(n -> n.exists(field.getType(), entity.getEntityName().getName())).collect(Collectors.toList());
                     // no edge yet between entities
@@ -72,9 +70,8 @@ public class EntityGraphAdapter {
                 }
             }
         }
-        MermaidGraph mermaidGraph = new MermaidGraph(mermaidNodes, mermaidEdges, boundedContext.getBoundedContextEntities());
 
-        return mermaidGraph;
+        return new MermaidGraph(mermaidNodes, mermaidEdges, entities);
 
     }
 }
