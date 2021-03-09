@@ -61,6 +61,7 @@ public class ProphetUtilsFacade {
 //                }
             } else {
                 List<String> allPaths = Arrays.asList(DirectoryUtils.getMsFullPaths(repo.getPath()));
+                System.out.println("All paths - " + allPaths);
 
                 // filter paths to only those projects that contain Java
                 List<String> validPaths = allPaths.stream()/*.filter(DirectoryUtils::hasJava)*/.collect(Collectors.toList());
@@ -175,6 +176,7 @@ public class ProphetUtilsFacade {
     public static SystemContext getEntityContext(List<String> msFullPaths){
         JParserUtils jParserUtils = JParserUtils.getInstance();
         AnalysisContext analysisContext = jParserUtils.createAnalysisContextFromMultipleDirectories(msFullPaths);
+        System.out.println(analysisContext);
         SystemContext systemContext = EntityContextAdapter.getSystemContext(analysisContext, msFullPaths.toArray(new String[msFullPaths.size()]));
         return systemContext;
     }

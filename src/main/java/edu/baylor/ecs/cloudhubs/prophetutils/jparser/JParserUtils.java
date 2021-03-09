@@ -4,6 +4,7 @@ import edu.baylor.ecs.cloudhubs.jparser.component.context.AnalysisContext;
 import edu.baylor.ecs.cloudhubs.jparser.component.impl.DirectoryComponent;
 import edu.baylor.ecs.cloudhubs.jparser.factory.context.AnalysisContextFactory;
 import edu.baylor.ecs.cloudhubs.jparser.factory.directory.DirectoryFactory;
+import edu.baylor.ecs.cloudhubs.prophetutils.directories.DirectoryUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -71,7 +72,7 @@ public class JParserUtils {
     public AnalysisContext createAnalysisContextFromDirectory(String path) {
         try {
             validate(path, DIRECTORY);
-            DirectoryComponent directory = (DirectoryComponent) directoryFactory.createDirectoryGraph(path);
+            DirectoryComponent directory = (DirectoryComponent) directoryFactory.createDirectoryGraph(path, DirectoryUtils.getIgnoreFolders());
             return contextFactory.createAnalysisContextFromDirectoryGraph(directory);
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,7 +91,7 @@ public class JParserUtils {
         try {
             DirectoryComponent fakeParent = new DirectoryComponent();
             for (String path : msFullPaths) {
-                DirectoryComponent msComponent = (DirectoryComponent) directoryFactory.createDirectoryGraph(path);
+                DirectoryComponent msComponent = (DirectoryComponent) directoryFactory.createDirectoryGraph(path, DirectoryUtils.getIgnoreFolders());
                 fakeParent.getSubDirectories().add(msComponent);
             }
             return contextFactory.createAnalysisContextFromDirectoryGraph(fakeParent);

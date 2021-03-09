@@ -98,7 +98,7 @@ public class DirectoryUtils {
 
     private static List<String> ignoreFolders = null;
 
-    private static List<String> getIgnoreFolders() {
+    public static List<String> getIgnoreFolders() {
         if (ignoreFolders == null) {
             ignoreFolders = new ArrayList<>();
             try {
@@ -108,6 +108,7 @@ public class DirectoryUtils {
                         .getClassLoader().getResourceAsStream("ignoreFolders.json");
                 Reader ignoreReader = new InputStreamReader(inputStream);
                 ignoreFolders.addAll(Arrays.asList(gson.fromJson(ignoreReader, String[].class)));
+                System.out.println("Ignore Folders: " + ignoreFolders);
             } catch (Exception e) {
                 // log this somewhere
                 System.out.println("Failed to read folder exclusions, will parse all folders: " + e.getMessage());

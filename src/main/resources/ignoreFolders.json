@@ -1,3 +1,21 @@
 [
-  ".git", ".github", ".mvn", "target"
+  ".git", ".github", ".mvn", "target",
+  "Docker",
+  "docker",
+  "openshift",
+  "vendor",
+  "wrk2_lua_scripts",
+  "cmake",
+  "config",
+  "datasets",
+  "gen-cpp",
+  "gen-lua",
+  "gen-py",
+  "nginx-web-server",
+  "scripts",
+  "test",
+  "third_party",
+  "wrk2",
+  "figures",
+  "media-frontend"
 ]
