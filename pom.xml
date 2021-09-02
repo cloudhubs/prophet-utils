@@ -16,10 +16,16 @@
     </properties>
 
     <dependencies>
-        <dependency>
+       <!--  <dependency>
             <groupId>edu.baylor.ecs.cloudhubs</groupId>
             <artifactId>jparser-lib</artifactId>
             <version>0.0.7</version>
+        </dependency> -->
+        
+        <dependency>
+            <groupId>edu.baylor.ecs.cloudhubs</groupId>
+            <artifactId>jparser-lib</artifactId>
+            <version>0.0.6</version>
         </dependency>
 
         <dependency>
@@ -35,7 +41,14 @@
             <version>0.0.5</version>
         </dependency>
 
-        <!-- rad-source -->
+         <!-- rad-source -->
+       <!-- <dependency>
+            <groupId>edu.baylor.ecs.cloudhubs</groupId>
+            <artifactId>rad-source</artifactId>
+            <version>0.0.5</version>
+        </dependency> -->
+		
+		 <!-- rad-source -->
         <dependency>
             <groupId>edu.baylor.ecs.cloudhubs</groupId>
             <artifactId>rad-source</artifactId>
@@ -90,7 +103,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.10</version>
+            <version>1.18.20</version>
+            <!-- <version>1.18.10</version> -->
             <scope>provided</scope>
         </dependency>
 
@@ -122,11 +136,17 @@
             <version>2.10.2</version>
         </dependency>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>com.sciss</groupId>
             <artifactId>ws4j</artifactId>
             <version>1.0.1</version>
-        </dependency>
+        </dependency> -->
+        
+        <dependency>
+		    <groupId>edu.cmu.lti</groupId>
+		    <artifactId>ws4j</artifactId>
+		    <version>1.0.1</version>
+		</dependency>
 
         <!-- https://mvnrepository.com/artifact/tech.sourced/enry-java -->
         <dependency>
