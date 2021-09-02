@@ -172,17 +172,17 @@
             <version>1.0.1</version>
         </dependency> -->
         
-       <dependency>
+       <!-- <dependency>
 		    <groupId>edu.cmu.lti</groupId>
 		    <artifactId>ws4j</artifactId>
 		    <version>1.0.1</version>
-		</dependency>
-		
-		<!-- <dependency>
-		    <groupId>com.github.cloudhubs</groupId>
-		    <artifactId>WS4J-ex</artifactId>
-		    <version>expansion-base-SNAPSHOT</version>
 		</dependency> -->
+		
+		<dependency>
+		    <groupId>com.github.cloudhubs</groupId>
+		    <artifactId>ws4j</artifactId>
+		    <version>main-SNAPSHOT</version>
+		</dependency>
 
         <!-- https://mvnrepository.com/artifact/tech.sourced/enry-java -->
         <dependency>
