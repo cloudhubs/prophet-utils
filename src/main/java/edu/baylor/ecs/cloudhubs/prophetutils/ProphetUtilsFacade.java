@@ -102,6 +102,64 @@ public class ProphetUtilsFacade {
 
         return response;
     }
+    
+    public static ProphetAppData getProphetJSONAppData(GitReq request) throws IOException {
+        List<String> msFullPaths = new ArrayList<>();
+        List<MicroserviceResult> msFailures = new ArrayList<>();
+        for (RepoReq repo : request.getRepositories()) {
+            if (repo.isMonolith()) {
+                if (DirectoryUtils.hasJava(repo.getPath())) {
+                    msFullPaths.add(repo.getPath());
+                } else {
+                    MicroserviceResult fail = new MicroserviceResult();
+                    fail.setNoBoundedContext(true);
+                    fail.setNotJava(true);
+                    fail.setName(DirectoryUtils.getDirectoryNameFromPath(repo.getPath()));
+                    msFailures.add(fail);
+                }
+            } else {
+                List<String> allPaths = Arrays.asList(DirectoryUtils.getMsFullPaths(repo.getPath()));
+
+                // filter paths to only those projects that contain Java
+                List<String> validPaths = allPaths.stream().filter(DirectoryUtils::hasJava).collect(Collectors.toList());
+                msFullPaths.addAll(validPaths);
+
+                // denote non-java projects
+                List<String> badPaths = allPaths.stream().filter(p -> !validPaths.contains(p)).collect(Collectors.toList());
+                msFailures.addAll(badPaths.stream().map(p -> {
+                        MicroserviceResult fail = new MicroserviceResult();
+                        fail.setNoBoundedContext(true);
+                        fail.setNotJava(true);
+                        fail.setName(DirectoryUtils.getDirectoryNameFromPath(p));
+                        return fail;
+                    }).collect(Collectors.toList())
+                );
+            }
+        }
+
+        ProphetAppData response = new ProphetAppData();
+        ProphetAppGlobal global = new ProphetAppGlobal();
+        global.setProjectName(request.getSystemName());
+
+        // get the context and MsModel of the project
+        BoundedContext globalContext = getBoundedContext(msFullPaths);
+        MsModel msModel = getMsModel(msFullPaths);
+
+        global.setNoContextMap(globalContext.getBoundedContextEntities() == null || globalContext.getBoundedContextEntities().size() == 0);
+        global.setNoCommunication(msModel.getEdges() == null || msModel.getEdges().size() == 0);
+
+        // get the mermaid string representations of the context and model
+        global.setContextMap(MermaidStringConverters.getBoundedContextMermaidString(globalContext));
+        global.setCommunication(MermaidStringConverters.getMsModelMermaidJSON(msModel));
+
+        response.setGlobal(global);
+
+        List<MicroserviceResult> msResults = getMsBoundedContexts(msFullPaths);
+        msResults.addAll(msFailures);
+        response.setMs(msResults);
+
+        return response;
+    }
 
     /**
      * Generates Bounded Context From Source Code of Microservice System
