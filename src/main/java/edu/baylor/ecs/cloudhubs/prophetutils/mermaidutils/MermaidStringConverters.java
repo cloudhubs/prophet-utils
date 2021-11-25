@@ -44,7 +44,7 @@ public class MermaidStringConverters {
             sb.append(line).append("\n");
         }
         return sb.toString();
-    }
+    } 
     
     public static String getMsModelMermaidJSON(MsModel model) {
         MsMermaidGraph graph = MsGraphAdapter.getMermaidGraphFromMsModel(model);
