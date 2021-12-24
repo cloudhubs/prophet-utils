@@ -9,6 +9,8 @@ import edu.baylor.ecs.cloudhubs.radsource.service.RadSourceService;
 import java.io.IOException;
 import java.util.*;
 
+import com.google.common.collect.Lists;
+
 public class SourceParser {
     private final RadSourceService radSourceService;
 
@@ -21,10 +23,17 @@ public class SourceParser {
 
         Set<MsEdge> msEdges = new HashSet<>();
         Map<String, MsNode> nodeMap = new HashMap<>();
+        
+        String[] subset = new String[] {"ts-auth-service", "ts-ticketinfo-service", "ts-price-service", "ts-config-service", "ts-preserve-service", "ts-train-service", "ts-route-service", "ts-user-service", "ts-security-service", "ts-order-service", "ts-travel-plan-service", "ts-cancel-service", "ts-travel-service", "ts-route-plan-service", "ts-station-service", "ts-contacts-service", "ts-basic-service"};
+        List<String> subsetList = Arrays.asList(subset);
 
         for (RestFlow restFlow : restFlows) {
             String toKey = DirectoryUtils.getDirectoryNameFromPath(restFlow.getEndpoint().getMsRoot());
             String fromKey = DirectoryUtils.getDirectoryNameFromPath(restFlow.getClient().getMsRoot());
+            
+            if(!subsetList.contains(toKey) || !subsetList.contains(fromKey)) {
+            	continue;
+            }
 
             nodeMap.putIfAbsent(toKey, new MsNode(toKey));
             nodeMap.putIfAbsent(fromKey, new MsNode(fromKey));
