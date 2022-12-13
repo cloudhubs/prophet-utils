@@ -26,11 +26,15 @@ public class EntityContextAdapter {
         HashMap<String, Set<ClassComponent>> clusters = clusterClassComponents(context.getModules(), msPaths);
         
         HashMap<String, Integer> tempNumberCollection = new HashMap();
-        tempNumberCollection.put("@Entity", 0);
-        tempNumberCollection.put("@Document", 0);
-        tempNumberCollection.put("@Data", 0);
-
+        int serviceNumber = 0;
+        
         for (Map.Entry<String, Set<ClassComponent>> entry : clusters.entrySet()) {
+        	tempNumberCollection.put("@Entity", 0);
+            tempNumberCollection.put("@Document", 0);
+            tempNumberCollection.put("@Data", 0);
+            
+            serviceNumber++;
+            
             Module module_n = new Module();
             Set<Entity> entities = new HashSet<>();
             for (ClassComponent clazz : entry.getValue()) {
@@ -93,9 +97,9 @@ public class EntityContextAdapter {
             modules.add(module_n);
             
             
-            System.out.println("-----------Context----------");
-        	System.out.println(entry.getKey() + "--->" + "   #Documents=" + tempNumberCollection.get("@Document") + "   #Entity = " + tempNumberCollection.get("@Entity") + "   #Data=" + tempNumberCollection.get("@Data"));
-        	System.out.println("---------------------");
+//            System.out.println("-----------Context----------");
+        	System.out.println(serviceNumber +" "+ entry.getKey() + "--->" + "   #Documents=" + tempNumberCollection.get("@Document") + "   #Entity = " + tempNumberCollection.get("@Entity") + "   #Data=" + tempNumberCollection.get("@Data"));
+//        	System.out.println("---------------------");
         }
 
         return new SystemContext(context.getRootPath(), modules);
