@@ -36,17 +36,21 @@ public class EntityContextAdapter {
                         if (ac.getAsString().equals("@Entity") || ac.getAsString().equals("@Document") || ac.getAsString().equals("@Data")){
                             Set<Field> fields = new HashSet<>();
                             for (FieldComponent field : clazz.getFieldComponents()) {
-                                Field field_n = new Field();
-                                field_n.setName(new Name(field.getFieldName()));
-                                if (isCollection(field.getType())){
-                                    String s = field.getType();
-                                    String entityRef = s.substring(s.indexOf("<") + 1, s.indexOf(">"));
-                                    field_n.setType(entityRef);
-                                    field_n.setCollection(true);
-                                } else {
-                                    field_n.setType(field.getType());
-                                    field_n.setCollection(false);
-                                }
+//                                Field field_n = new Field();
+//                                field_n.setName(new Name(field.getFieldName()));
+//                                if (isCollection(field.getType())){
+//                                    String s = field.getType();
+//                                    String entityRef = s.substring(s.indexOf("<") + 1, s.indexOf(">"));
+//                                    field_n.setType(entityRef);
+//                                    field_n.setCollection(true);
+//                                } else {
+//                                    field_n.setType(field.getType());
+//                                    field_n.setCollection(false);
+//                                }
+                            	System.out.println("-----------Context----------");
+                            	System.out.println(clazz.getPackageName() + "...>" + clazz.getClassName() + " ---> " + ac.getAsString());
+                            	System.out.println("---------------------");
+                            	
                                 Set<Annotation> annotations = new HashSet<>();
                                 for (Component annotation : field.getAnnotations()) {
                                     Annotation ann = new Annotation();
@@ -54,16 +58,20 @@ public class EntityContextAdapter {
                                     ann.setName(annotation.asAnnotationComponent().getAsString());
                                     annotations.add(ann);
                                 }
-                                field_n.setAnnotations(annotations);
-                                for (Annotation a: field_n.getAnnotations()){
-                                    if (a.getName().equals("@ManyToOne") || a.getName().equals("@OneToMany" )
-                                            || a.getName().equals("@OneToOne") || a.getName().equals("@ManyToMany")) {
-                                        //field_n.setEntityReference();
-                                        field_n.setReference(true);
-                                        field_n.setEntityRefName(field_n.getType());
+                                List<Field> subFields = new ArrayList();
+                            	subFields = getSubFields(field.getFieldName(), annotations, field.getType(), subFields);
+//                                field_n.setAnnotations(annotations);
+                            	for (Field field_n : subFields) {
+                            		for (Annotation a: field_n.getAnnotations()){
+                                        if (a.getName().equals("@ManyToOne") || a.getName().equals("@OneToMany" )
+                                                || a.getName().equals("@OneToOne") || a.getName().equals("@ManyToMany")) {
+                                            //field_n.setEntityReference();
+                                            field_n.setReference(true);
+                                            field_n.setEntityRefName(field_n.getType());
+                                        }
                                     }
-                                }
-                                fields.add(field_n);
+                                    fields.add(field_n);
+                            	}
                             }
                             Entity entity = new Entity(clazz.getClassName());
                             entity.setFields(fields);
@@ -107,6 +115,33 @@ public class EntityContextAdapter {
         return clusters;
     }
 
+    
+    public static List<Field> getSubFields(String name, Set<Annotation> annotations, String type, List<Field> fields) {
+    	Field field_n = new Field();
+    	field_n.setName(new Name(name));
+    	field_n.setAnnotations(annotations);
+        if (type.contains("Map")) {
+        	field_n.setType(type);
+        	field_n.setCollection(true);
+        	String valuePart = type.substring(type.indexOf(",") + 1, type.length() - 1);
+        	fields.add(field_n);
+            return getSubFields(name, annotations, valuePart, fields);
+        } else if (isCollection(type)){
+//            String entityRef = type.substring(type.indexOf("<") + 1, type.indexOf(">"));
+        	String entityRef = type.substring(type.indexOf("<") + 1, type.length() - 1);
+            field_n.setType(entityRef);
+            field_n.setCollection(true);
+            fields.add(field_n);
+            return getSubFields(name, annotations, entityRef, fields);
+        } else if (!type.isEmpty()){
+            field_n.setType(type);
+            field_n.setCollection(false);
+            fields.add(field_n);
+            return fields;
+        } else {
+        	return fields;
+        }
+    }
 
     public static boolean isCollection(String type){
         if (type.contains("Set") ){
