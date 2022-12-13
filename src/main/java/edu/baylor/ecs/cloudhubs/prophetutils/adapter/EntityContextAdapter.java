@@ -56,7 +56,7 @@ public class EntityContextAdapter {
 //                            	System.out.println(clazz.getPackageName() + "...>" + clazz.getClassName() + " ---> " + ac.getAsString());
 //                            	System.out.println("---------------------");
                             	
-                            	tempNumberCollection.put(ac.getAsString(), tempNumberCollection.get(ac.getAsString() + 1));
+                            	tempNumberCollection.put(ac.getAsString(), tempNumberCollection.get(ac.getAsString()) + 1);
                             	
                                 Set<Annotation> annotations = new HashSet<>();
                                 for (Component annotation : field.getAnnotations()) {
