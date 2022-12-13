@@ -24,6 +24,11 @@ public class EntityContextAdapter {
     public static SystemContext getSystemContext(AnalysisContext context, String[] msPaths) {
         Set<Module> modules = new HashSet<>();
         HashMap<String, Set<ClassComponent>> clusters = clusterClassComponents(context.getModules(), msPaths);
+        
+        HashMap<String, Integer> tempNumberCollection = new HashMap();
+        tempNumberCollection.put("@Entity", 0);
+        tempNumberCollection.put("@Document", 0);
+        tempNumberCollection.put("@Data", 0);
 
         for (Map.Entry<String, Set<ClassComponent>> entry : clusters.entrySet()) {
             Module module_n = new Module();
@@ -47,9 +52,11 @@ public class EntityContextAdapter {
 //                                    field_n.setType(field.getType());
 //                                    field_n.setCollection(false);
 //                                }
-                            	System.out.println("-----------Context----------");
-                            	System.out.println(clazz.getPackageName() + "...>" + clazz.getClassName() + " ---> " + ac.getAsString());
-                            	System.out.println("---------------------");
+//                            	System.out.println("-----------Context----------");
+//                            	System.out.println(clazz.getPackageName() + "...>" + clazz.getClassName() + " ---> " + ac.getAsString());
+//                            	System.out.println("---------------------");
+                            	
+                            	tempNumberCollection.put(ac.getAsString(), tempNumberCollection.get(ac.getAsString() + 1));
                             	
                                 Set<Annotation> annotations = new HashSet<>();
                                 for (Component annotation : field.getAnnotations()) {
@@ -84,6 +91,11 @@ public class EntityContextAdapter {
             module_n.setName(new Name(entry.getKey()));
             module_n.setEntities(entities);
             modules.add(module_n);
+            
+            
+            System.out.println("-----------Context----------");
+        	System.out.println(entry.getKey() + "--->" + "   #Documents=" + tempNumberCollection.get("@Document") + "   #Entity = " + tempNumberCollection.get("@Entity") + "   #Data=" + tempNumberCollection.get("@Data"));
+        	System.out.println("---------------------");
         }
 
         return new SystemContext(context.getRootPath(), modules);
@@ -120,7 +132,7 @@ public class EntityContextAdapter {
     	Field field_n = new Field();
     	field_n.setName(new Name(name));
     	field_n.setAnnotations(annotations);
-        if (type.contains("Map")) {
+        if (type.contains("Map") || type.contains("HashMap")) {
         	field_n.setType(type);
         	field_n.setCollection(true);
         	String valuePart = type.substring(type.indexOf(",") + 1, type.length() - 1);
