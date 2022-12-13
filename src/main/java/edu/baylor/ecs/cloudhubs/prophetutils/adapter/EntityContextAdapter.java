@@ -26,12 +26,18 @@ public class EntityContextAdapter {
         HashMap<String, Set<ClassComponent>> clusters = clusterClassComponents(context.getModules(), msPaths);
         
         HashMap<String, Integer> tempNumberCollection = new HashMap();
+//        Set<String> temoDatabaseEntities = new HashSet();
+//        Set<String> temoDataEntities = new HashSet();
+        
         int serviceNumber = 0;
         
         for (Map.Entry<String, Set<ClassComponent>> entry : clusters.entrySet()) {
         	tempNumberCollection.put("@Entity", 0);
             tempNumberCollection.put("@Document", 0);
             tempNumberCollection.put("@Data", 0);
+            
+            Set<String> tempDatabaseEntities = new HashSet();
+            Set<String> tempDataEntities = new HashSet();
             
             serviceNumber++;
             
@@ -44,7 +50,23 @@ public class EntityContextAdapter {
                         AnnotationComponent ac = (AnnotationComponent) cmp;
                         if (ac.getAsString().equals("@Entity") || ac.getAsString().equals("@Document") || ac.getAsString().equals("@Data")){
                         	
-                        	tempNumberCollection.put(ac.getAsString(), tempNumberCollection.get(ac.getAsString()) + 1);
+                        	// To get rid of the class with multiple data annotations (prioritize the Entity over the Data)
+                        	if(ac.getAsString().equals("@Entity") || ac.getAsString().equals("@Document") ) {
+                        		if (tempDataEntities.contains(clazz.getClassName())) {
+                        			tempDataEntities.remove(clazz.getClassName());
+                        			tempNumberCollection.put("@Data", tempNumberCollection.get("@Data") - 1);
+                        		}
+                        		tempNumberCollection.put(ac.getAsString(), tempNumberCollection.get(ac.getAsString()) + 1);
+                        		tempDatabaseEntities.add(clazz.getClassName());
+                        		
+                        	} else {
+                        		if (!tempDatabaseEntities.contains(clazz.getClassName())) {
+                        			tempDataEntities.add(clazz.getClassName());
+                        			tempNumberCollection.put(ac.getAsString(), tempNumberCollection.get(ac.getAsString()) + 1);
+                        		}
+                        	}
+                        	
+                        	
                         	
                             Set<Field> fields = new HashSet<>();
                             for (FieldComponent field : clazz.getFieldComponents()) {
