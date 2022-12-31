@@ -19,7 +19,11 @@ public class SourceParser {
     }
 
     public MsModel createMsModel(List<String> pathToMsRoots) throws IOException {
-        List<RestFlow> restFlows = getRestFlows(pathToMsRoots);
+    	return this.createMsModel(pathToMsRoots, null);
+    }
+    
+    public MsModel createMsModel(List<String> pathToMsRoots, String extractedJsonDataFilePath) throws IOException {
+        List<RestFlow> restFlows = getRestFlows(pathToMsRoots, extractedJsonDataFilePath);
 
         Set<MsEdge> msEdges = new HashSet<>();
         Map<String, MsNode> nodeMap = new HashMap<>();
@@ -66,8 +70,8 @@ public class SourceParser {
         return msModel;
     }
 
-    private List<RestFlow> getRestFlows(List<String> pathToMsRoots) throws IOException {
-        RadSourceRequestContext radSourceRequestContext = new RadSourceRequestContext(pathToMsRoots);
+    private List<RestFlow> getRestFlows(List<String> pathToMsRoots, String extractedJsonDataFilePath) throws IOException {
+        RadSourceRequestContext radSourceRequestContext = new RadSourceRequestContext(pathToMsRoots, extractedJsonDataFilePath);
         return this.radSourceService.generateRadSourceResponseContext(radSourceRequestContext).getRestFlows();
     }
 

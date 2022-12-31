@@ -85,7 +85,7 @@ public class ProphetUtilsFacade {
 
         // get the context and MsModel of the project
         BoundedContext globalContext = getBoundedContext(msFullPaths);
-        MsModel msModel = getMsModel(msFullPaths);
+        MsModel msModel = getMsModel(msFullPaths, request.getExtractedJsonDataFilePath());
 
         global.setNoContextMap(globalContext.getBoundedContextEntities() == null || globalContext.getBoundedContextEntities().size() == 0);
         global.setNoCommunication(msModel.getEdges() == null || msModel.getEdges().size() == 0);
@@ -143,7 +143,7 @@ public class ProphetUtilsFacade {
 
         // get the context and MsModel of the project
         BoundedContext globalContext = getBoundedContext(msFullPaths);
-        MsModel msModel = getMsModel(msFullPaths);
+        MsModel msModel = getMsModel(msFullPaths, request.getExtractedJsonDataFilePath());
 
         global.setNoContextMap(globalContext.getBoundedContextEntities() == null || globalContext.getBoundedContextEntities().size() == 0);
         global.setNoCommunication(msModel.getEdges() == null || msModel.getEdges().size() == 0);
@@ -303,9 +303,9 @@ public class ProphetUtilsFacade {
         return parser.createMsModel(msPaths);
     }
 
-    public static MsModel getMsModel(List<String> msFullPaths) throws IOException {
+    public static MsModel getMsModel(List<String> msFullPaths, String extractedJsonDataFilePath) throws IOException {
         SourceParser parser = new SourceParser();
-        return parser.createMsModel(msFullPaths);
+        return parser.createMsModel(msFullPaths, extractedJsonDataFilePath);
     }
 
     public static AnalysisContext getAnalysisContext(String path){
