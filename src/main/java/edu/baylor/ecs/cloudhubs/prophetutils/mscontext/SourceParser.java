@@ -23,7 +23,9 @@ public class SourceParser {
     }
     
     public MsModel createMsModel(List<String> pathToMsRoots, String extractedJsonDataFilePath) throws IOException {
+    	System.out.println("BEFOREEEEEEEEEEEEEEEEEE");
         List<RestFlow> restFlows = getRestFlows(pathToMsRoots, extractedJsonDataFilePath);
+        System.out.println("AFTEEEEEEEEEEEEEER");
 
         Set<MsEdge> msEdges = new HashSet<>();
         Map<String, MsNode> nodeMap = new HashMap<>();
