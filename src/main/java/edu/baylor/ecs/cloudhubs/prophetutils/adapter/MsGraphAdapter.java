@@ -43,6 +43,9 @@ public class MsGraphAdapter {
      * @return
      */
     private static String escapeMermaidQuotes(String input) {
+    	if (input == null) {
+    		return "N/A";
+    	}
         return input.replaceAll("\"", "#quot;");
     }
 }
