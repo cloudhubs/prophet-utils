@@ -32,8 +32,16 @@ public class SourceParser {
 //        List<String> subsetList = Arrays.asList(subset);
 
         for (RestFlow restFlow : restFlows) {
-            String toKey = DirectoryUtils.getDirectoryNameFromPath(restFlow.getEndpoint().getMsRoot());
-            String fromKey = DirectoryUtils.getDirectoryNameFromPath(restFlow.getClient().getMsRoot());
+            String toKey = restFlow.getEndpoint().getMsRoot();
+            String fromKey = restFlow.getClient().getMsRoot();
+            if (toKey.contains("/")) {
+            	toKey = DirectoryUtils.getDirectoryNameFromPath(restFlow.getEndpoint().getMsRoot());
+            }
+            
+            if (fromKey.contains("/")) {
+            	fromKey = DirectoryUtils.getDirectoryNameFromPath(restFlow.getClient().getMsRoot());
+            }
+            
             /// FOR SUBSET
 //            if(!subsetList.contains(toKey) || !subsetList.contains(fromKey)) {
 //            	continue;
