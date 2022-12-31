@@ -36,6 +36,9 @@ public class SourceParser {
         for (RestFlow restFlow : restFlows) {
             String toKey = restFlow.getEndpoint().getMsRoot();
             String fromKey = restFlow.getClient().getMsRoot();
+            System.out.println("From= "+ fromKey);
+            System.out.println("To= "+ toKey);
+            
             if (toKey.contains("/")) {
             	toKey = DirectoryUtils.getDirectoryNameFromPath(restFlow.getEndpoint().getMsRoot());
             }
