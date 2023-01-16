@@ -12,7 +12,7 @@ import java.util.List;
 
 public class NativeImageRunner {
 
-    private static final String NI_BASE = "/Users/dkozak/Projects/graal/sdk/mxbuild/darwin-amd64/GRAALVM_37AE0F4241_JAVA17/graalvm-37ae0f4241-java17-23.0.0-dev/Contents/Home";
+    private static final String NI_BASE = "/Users/dkozak/Projects/graal/sdk/mxbuild/darwin-amd64/GRAALVM_8F70D52881_JAVA17/graalvm-8f70d52881-java17-23.0.0-dev/Contents/Home";
 
     private static final String NI_CMD = NI_BASE + "/bin/native-image";
 
@@ -26,7 +26,7 @@ public class NativeImageRunner {
         this.info = info;
         this.microservicePath = info.getBaseDir() + File.separator + info.getMicroserviceName();
         this.classpath = microservicePath + "/BOOT-INF/classes" + ":" + microservicePath + "/BOOT-INF/lib/*";
-        this.outputJson = "out.json";
+        this.outputJson = info.getMicroserviceName() + ".json";
     }
 
     public Module runProphetPlugin() {
@@ -45,7 +45,7 @@ public class NativeImageRunner {
 
     private void executeNativeImage() {
         List<String> cmd = prepareCommand();
-        System.out.println(cmd);
+        System.out.println(String.join(" ", cmd));
         try {
             Process process = new ProcessBuilder()
                     .command(cmd)
