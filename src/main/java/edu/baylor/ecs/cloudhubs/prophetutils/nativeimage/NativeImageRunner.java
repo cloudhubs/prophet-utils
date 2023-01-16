@@ -11,20 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NativeImageRunner {
-
-    private static final String NI_BASE = "/Users/dkozak/Projects/graal/sdk/mxbuild/darwin-amd64/GRAALVM_8F70D52881_JAVA17/graalvm-8f70d52881-java17-23.0.0-dev/Contents/Home";
-
-    private static final String NI_CMD = NI_BASE + "/bin/native-image";
-
-    private final String microservicePath;
     private final String classpath;
     private final String outputJson;
 
     private final MicroserviceInfo info;
+    private final String niCommand;
 
-    public NativeImageRunner(MicroserviceInfo info) {
+    public NativeImageRunner(MicroserviceInfo info, String graalProphetHome) {
+        this.niCommand = graalProphetHome + "/bin/native-image";
         this.info = info;
-        this.microservicePath = info.getBaseDir() + File.separator + info.getMicroserviceName();
+        String microservicePath = info.getBaseDir() + File.separator + info.getMicroserviceName();
         this.classpath = microservicePath + "/BOOT-INF/classes" + ":" + microservicePath + "/BOOT-INF/lib/*";
         this.outputJson = info.getMicroserviceName() + ".json";
     }
@@ -63,7 +59,7 @@ public class NativeImageRunner {
     @NotNull
     private List<String> prepareCommand() {
         List<String> cmd = new ArrayList<>();
-        cmd.add(NI_CMD);
+        cmd.add(niCommand);
         cmd.add("-cp");
         cmd.add(classpath);
         cmd.add("-H:+ProphetPlugin");

@@ -192,18 +192,14 @@ public class ProphetUtilsFacade {
         return systemContext;
     }
 
-    public static SystemContext getSystemContextViaNativeImage(List<MicroserviceInfo> msFullPaths) {
+    public static SystemContext getSystemContextViaNativeImage(List<MicroserviceInfo> msFullPaths, String graalProphetHome) {
         Set<Module> modules = new HashSet<>();
         for (MicroserviceInfo info : msFullPaths) {
-            Module module = extractModule(info);
+            NativeImageRunner runner = new NativeImageRunner(info, graalProphetHome);
+            Module module = runner.runProphetPlugin();
             modules.add(module);
         }
         return new SystemContext("unknown", modules);
-    }
-
-    private static Module extractModule(MicroserviceInfo info) {
-        NativeImageRunner runner = new NativeImageRunner(info);
-        return runner.runProphetPlugin();
     }
 
 
