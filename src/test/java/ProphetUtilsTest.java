@@ -22,10 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,9 +31,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @ContextConfiguration(classes = JunitConfig.class)
 @TestPropertySource(locations = "/application-dev.properties")
 public class ProphetUtilsTest {
-
-//    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-//    private final PrintStream originalOut = System.out;
 
     @Value("${user.rootPath}")
     private String rootPath;
@@ -55,11 +49,6 @@ public class ProphetUtilsTest {
 
     private String[] microServicePaths;
 
-//    @Before
-//    public void initStream() {
-//        System.setOut(new PrintStream(outContent));
-//    }
-
     @BeforeEach
     public void initSystems(){
         //rootPath.setRootPath("/Users/svacina/git/c2advseproject/");
@@ -73,7 +62,6 @@ public class ProphetUtilsTest {
     @Test
     @DisplayName("entity context generation")
     public void entityContextGen() {
-//        System.out.printf("Hello: %s %s %s %s%n", microServicePaths[0], microServicePaths[1], microServicePaths[2], microServicePaths[3]);
         SystemContext entityContext = ProphetUtilsFacade.getEntityContext(rootPath, microServicePaths);
         assertNotNull(entityContext.getSystemName());
     }
@@ -161,11 +149,6 @@ public class ProphetUtilsTest {
             System.out.println(s);
         }
     }
-
-//    @After
-//    public void cleanUp() {
-//        System.setOut(originalOut);
-//    }
 
 
 //    @Test
