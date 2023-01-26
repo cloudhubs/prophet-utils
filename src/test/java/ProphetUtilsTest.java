@@ -15,24 +15,28 @@ import edu.baylor.ecs.cloudhubs.prophetutils.ProphetUtilsFacade;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
 import edu.baylor.ecs.cloudhubs.prophetutils.semantic.SemanticUtils;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JunitConfig.class)
-@TestPropertySource(locations = "/application.properties")
+@TestPropertySource(locations = "/application-dev.properties")
 public class ProphetUtilsTest {
+
+//    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+//    private final PrintStream originalOut = System.out;
 
     @Value("${user.rootPath}")
     private String rootPath;
@@ -51,6 +55,11 @@ public class ProphetUtilsTest {
 
     private String[] microServicePaths;
 
+//    @Before
+//    public void initStream() {
+//        System.setOut(new PrintStream(outContent));
+//    }
+
     @BeforeEach
     public void initSystems(){
         //rootPath.setRootPath("/Users/svacina/git/c2advseproject/");
@@ -64,6 +73,7 @@ public class ProphetUtilsTest {
     @Test
     @DisplayName("entity context generation")
     public void entityContextGen() {
+//        System.out.printf("Hello: %s %s %s %s%n", microServicePaths[0], microServicePaths[1], microServicePaths[2], microServicePaths[3]);
         SystemContext entityContext = ProphetUtilsFacade.getEntityContext(rootPath, microServicePaths);
         assertNotNull(entityContext.getSystemName());
     }
@@ -71,7 +81,7 @@ public class ProphetUtilsTest {
     @Test
     @DisplayName("bounded entity context generation")
     public void boundedContextGen() {
-         BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(rootPath, microServicePaths);
+        BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(rootPath, microServicePaths);
         assertNotNull(boundedContext.getSystemName());
     }
 
@@ -141,16 +151,21 @@ public class ProphetUtilsTest {
     @Test
     @DisplayName("")
     public void testAnalysisContext1() {
+
         SemanticUtils semanticUtils = new SemanticUtils();
         String root = "/Users/svacina/git/tms2";
         String[] msPaths = {"/Users/svacina/git/tms2/cms", "/Users/svacina/git/tms2/ems"};
 
         List<String> lines = semanticUtils.getClonesInLines(root, msPaths);
-        for (String s: lines
-             ) {
+        for (String s: lines) {
             System.out.println(s);
         }
     }
+
+//    @After
+//    public void cleanUp() {
+//        System.setOut(originalOut);
+//    }
 
 
 //    @Test

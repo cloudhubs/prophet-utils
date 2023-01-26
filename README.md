@@ -12,3 +12,8 @@ creates context map, bounded contexts and communication diagrams.
 mvn clean install
 mvn package
 ```
+
+## ProphetUtilsTest
+* Running Unit tests requires that you clone this repo to get the microservices (https://github.com/cloudhubs/tms)
+* In src/test/resources/application-dev.properties change the root path and the microservices path to **tms** repo
+* This will properly the JUnit tests with valid microservices

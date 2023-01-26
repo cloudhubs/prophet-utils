@@ -14,33 +14,60 @@
 </head>
     <body>
         <div class="mermaid" id="graphDiv">
-            classDiagram
-            class Exam
-            Exam : +String examinee
-            Exam : +Date description
-            Exam : +Integer correct
-            Exam : +Integer sum
-            Exam : +Integer correct
-            Exam : +Integer id
-            Exam : +ExamStatus status
-            Exam : +Integer configurationId
-            Exam : +String issuer
-            Exam : +String configurationId
-            Exam : +String examDate
-            class Choice
-            Choice : +boolean correct
-            Choice : +Question question
-            Choice : +Integer id
-            Choice : +boolean chosen
-            Choice : +boolean correct
-            Choice : +String body
-            class Question
-            Question : +Choice description
-            Question : +String code
-            Question : +Integer id
-            Question : +Exam exam
-            Question : +String body
-            Question "1" --> "*" Choice
+classDiagram
+Question "1" -- "*" Code
+Question "1" -- "*" Choice
+Question "*" --> "1" Exam
+Question "*" -- "*" Category
+ConfigurationGroup "*" -- "1" Configuration
+Code "*" --> "1" Language
+	 class Question
+      Question : +String FIND_BY_CATEGORYID_AND_NAME
+      Question : +String FIND_BY_CATEGORYID_LEVEL_LANGUAGE
+      Question : +String body
+      Question : +Integer id
+      Question : +String title
+      Question : +Integer level
+      Question : +String description
+      Question : +String FIND_BY_CATEGORYID
+      Question : +String FIND_DTO_BY_NAME
+	 class ConfigurationGroup
+      ConfigurationGroup : +Integer count
+      ConfigurationGroup : +Integer level
+      ConfigurationGroup : +Long languageId
+      ConfigurationGroup : +Long category
+	 class Person
+      Person : +String userName
+      Person : +String lastName
+      Person : +String firstName
+	 class Language
+      Language : +String name
+	 class Exam
+      Exam : +String description
+      Exam : +String issuer
+      Exam : +String examinee
+      Exam : +Integer id
+      Exam : +Date examDate
+      Exam : +Integer correct
+      Exam : +String configurationId
+      Exam : +ExamStatus status
+      Exam : +Integer sum
+	 class Choice
+      Choice : +Integer id
+      Choice : +boolean chosen
+      Choice : +String body
+      Choice : +boolean correct
+	 class Code
+      Code : +String body
+	 class Category
+      Category : +String name
+      Category : +String description
+      Category : +String FIND_QUESTION_COUNT_DTO_BY_ID
+      Category : +String FIND_NAMES_BY_QUESTION_ID
+	 class Configuration
+      Configuration : +String name
+      Configuration : +String description
+      Configuration : +String FIND_ALL_GROUPS_BY_ID
 </div>
 <script>
     mermaidAPI.initialize({
