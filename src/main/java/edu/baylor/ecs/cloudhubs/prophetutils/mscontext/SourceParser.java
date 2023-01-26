@@ -60,7 +60,7 @@ public class SourceParser {
     }
 
     private List<RestFlow> getRestFlows(List<String> pathToMsRoots) throws IOException {
-        RadSourceRequestContext radSourceRequestContext = new RadSourceRequestContext(pathToMsRoots, "/Users/austinblanchard/Documents/CSI_43C9/prophet-utils/json/test.json");
+        RadSourceRequestContext radSourceRequestContext = new RadSourceRequestContext(pathToMsRoots, "");
         return this.radSourceService.generateRadSourceResponseContext(radSourceRequestContext).getRestFlows();
     }
 
