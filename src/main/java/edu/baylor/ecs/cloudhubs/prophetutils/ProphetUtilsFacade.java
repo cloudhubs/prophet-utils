@@ -1,7 +1,10 @@
 package edu.baylor.ecs.cloudhubs.prophetutils;
 
 import edu.baylor.ecs.cloudhubs.jparser.component.context.AnalysisContext;
-import edu.baylor.ecs.cloudhubs.prophetdto.app.*;
+import edu.baylor.ecs.cloudhubs.prophetdto.app.MicroserviceResult;
+import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetAppData;
+import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetAppGlobal;
+import edu.baylor.ecs.cloudhubs.prophetdto.app.ProphetResponse;
 import edu.baylor.ecs.cloudhubs.prophetdto.app.utilsapp.GitReq;
 import edu.baylor.ecs.cloudhubs.prophetdto.app.utilsapp.RepoReq;
 import edu.baylor.ecs.cloudhubs.prophetdto.communication.Communication;
@@ -11,6 +14,7 @@ import edu.baylor.ecs.cloudhubs.prophetdto.communication.Node;
 import edu.baylor.ecs.cloudhubs.prophetdto.mermaid.MermaidGraph;
 import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.MsModel;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.BoundedContext;
+import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.Module;
 import edu.baylor.ecs.cloudhubs.prophetdto.systemcontext.SystemContext;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityGraphAdapter;
@@ -20,6 +24,8 @@ import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
 import edu.baylor.ecs.cloudhubs.prophetutils.jparser.JParserUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.mermaidutils.MermaidStringConverters;
 import edu.baylor.ecs.cloudhubs.prophetutils.mscontext.SourceParser;
+import edu.baylor.ecs.cloudhubs.prophetutils.nativeimage.MicroserviceInfo;
+import edu.baylor.ecs.cloudhubs.prophetutils.nativeimage.NativeImageRunner;
 import edu.baylor.ecs.prophet.bounded.context.api.impl.BoundedContextApiImpl;
 
 import java.io.IOException;
@@ -30,15 +36,17 @@ public class ProphetUtilsFacade {
 
     /**
      * ToDo: change return object to MsModel
+     *
      * @param path - file system path to micro services
      */
-    public static void getMsModelSource(String path){
+    public static void getMsModelSource(String path) {
 
     }
 
 
     /**
      * ToDo: change return object to MsModel
+     *
      * @param path - file system path to micro services
      */
     public static void getMsModelByte(String path) {
@@ -69,12 +77,12 @@ public class ProphetUtilsFacade {
                 // denote non-java projects
                 List<String> badPaths = allPaths.stream().filter(p -> !validPaths.contains(p)).collect(Collectors.toList());
                 msFailures.addAll(badPaths.stream().map(p -> {
-                        MicroserviceResult fail = new MicroserviceResult();
-                        fail.setNoBoundedContext(true);
-                        fail.setNotJava(true);
-                        fail.setName(DirectoryUtils.getDirectoryNameFromPath(p));
-                        return fail;
-                    }).collect(Collectors.toList())
+                            MicroserviceResult fail = new MicroserviceResult();
+                            fail.setNoBoundedContext(true);
+                            fail.setNotJava(true);
+                            fail.setName(DirectoryUtils.getDirectoryNameFromPath(p));
+                            return fail;
+                        }).collect(Collectors.toList())
                 );
             }
         }
@@ -105,6 +113,7 @@ public class ProphetUtilsFacade {
 
     /**
      * Generates Bounded Context From Source Code of Microservice System
+     *
      * @param path
      * @return BoundedContext
      */
@@ -117,6 +126,7 @@ public class ProphetUtilsFacade {
 
     /**
      * Generates Bounded Context From multirepo microservice project
+     *
      * @param msFullPaths
      * @return BoundedContext
      */
@@ -129,6 +139,7 @@ public class ProphetUtilsFacade {
 
     /**
      * Generates a bounded context for each microservice
+     *
      * @param msFullPaths
      * @return List<MicroserviceResult>
      */
@@ -156,11 +167,12 @@ public class ProphetUtilsFacade {
 
     /**
      * Generates entity context of microservice system
-     * @param path to root folder
+     *
+     * @param path    to root folder
      * @param msPaths to microservices
      * @return entity context
      */
-    public static SystemContext getEntityContext(String path, String[] msPaths){
+    public static SystemContext getEntityContext(String path, String[] msPaths) {
         JParserUtils jParserUtils = JParserUtils.getInstance();
         AnalysisContext analysisContext = jParserUtils.createAnalysisContextFromDirectory(path);
         SystemContext systemContext = EntityContextAdapter.getSystemContext(analysisContext, msPaths);
@@ -169,42 +181,53 @@ public class ProphetUtilsFacade {
 
     /**
      * Generates entity context of microservice system across multiple repos
+     *
      * @param msFullPaths to microservices
      * @return entity context
      */
-    public static SystemContext getEntityContext(List<String> msFullPaths){
+    public static SystemContext getEntityContext(List<String> msFullPaths) {
         JParserUtils jParserUtils = JParserUtils.getInstance();
         AnalysisContext analysisContext = jParserUtils.createAnalysisContextFromMultipleDirectories(msFullPaths);
         SystemContext systemContext = EntityContextAdapter.getSystemContext(analysisContext, msFullPaths.toArray(new String[msFullPaths.size()]));
         return systemContext;
     }
 
+    public static SystemContext getSystemContextViaNativeImage(List<MicroserviceInfo> msFullPaths, String graalProphetHome) {
+        Set<Module> modules = new HashSet<>();
+        for (MicroserviceInfo info : msFullPaths) {
+            NativeImageRunner runner = new NativeImageRunner(info, graalProphetHome);
+            Module module = runner.runProphetPlugin();
+            modules.add(module);
+        }
+        return new SystemContext("unknown", modules);
+    }
 
-    public static List<String> createHtmlTemplate(String path, String[] msPaths){
+
+    public static List<String> createHtmlTemplate(String path, String[] msPaths) {
         BoundedContext boundedContext = getBoundedContext(path, msPaths);
         MermaidGraph mermaidGraph = EntityGraphAdapter.getMermaidGraph(boundedContext);
         return HtmlTemplateAdapter.getHtmlTemplateList(mermaidGraph);
     }
 
-    public static List<String> createHtmlTemplate(List<String> msFullPaths){
+    public static List<String> createHtmlTemplate(List<String> msFullPaths) {
         BoundedContext boundedContext = getBoundedContext(msFullPaths);
         MermaidGraph mermaidGraph = EntityGraphAdapter.getMermaidGraph(boundedContext);
         return HtmlTemplateAdapter.getHtmlTemplateList(mermaidGraph);
     }
 
-    public static MermaidGraph getMermaidGraph(String path, String[] msPaths){
+    public static MermaidGraph getMermaidGraph(String path, String[] msPaths) {
         BoundedContext boundedContext = getBoundedContext(path, msPaths);
         return EntityGraphAdapter.getMermaidGraph(boundedContext);
     }
 
-    public static ProphetResponse getProphetResponse(String path){
+    public static ProphetResponse getProphetResponse(String path) {
         String[] htmlTemplate = (String[]) createHtmlTemplate(path, DirectoryUtils.getMsPaths(path)).toArray();
         ProphetResponse prophetResponse = new ProphetResponse();
         prophetResponse.setContextMap(htmlTemplate);
         return prophetResponse;
     }
 
-    public static Communication getCommunication(String path){
+    public static Communication getCommunication(String path) {
         Communication communication = new Communication();
         Set<Edge> edges = new HashSet<>();
         Set<Node> nodes = new HashSet<>();
@@ -221,7 +244,7 @@ public class ProphetUtilsFacade {
 
         List<String> htmlTemplate = mermaidGraph.getHtmlLines();
         String[] strings = new String[htmlTemplate.size()];
-        for (int i = 0; i < htmlTemplate.size(); i++){
+        for (int i = 0; i < htmlTemplate.size(); i++) {
             strings[i] = htmlTemplate.get(i);
         }
         contextMap.setMarkdownStrings(strings);
@@ -230,6 +253,7 @@ public class ProphetUtilsFacade {
 
     /**
      * Uses the RAD source analyzer to get an MsModel from a directory
+     *
      * @param path Path to the ms roots
      * @return MsModel of the microservice communication
      */
@@ -250,7 +274,7 @@ public class ProphetUtilsFacade {
         return parser.createMsModel(msFullPaths);
     }
 
-    public static AnalysisContext getAnalysisContext(String path){
+    public static AnalysisContext getAnalysisContext(String path) {
         JParserUtils jParserUtils = JParserUtils.getInstance();
         return jParserUtils.createAnalysisContextFromDirectory(path);
     }
