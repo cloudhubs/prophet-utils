@@ -20,7 +20,10 @@ public class NativeImageRunner {
     public NativeImageRunner(MicroserviceInfo info, String graalProphetHome) {
         this.niCommand = graalProphetHome + "/bin/native-image";
         this.info = info;
-        String microservicePath = info.getBaseDir() + File.separator + info.getMicroserviceName();
+        //NEW
+        String microservicePath = info.getBaseDir();
+        //PREVIOUS
+        // String microservicePath = info.getBaseDir() + File.separator + info.getMicroserviceName();
         this.classpath = microservicePath + "/BOOT-INF/classes" + ":" + microservicePath + "/BOOT-INF/lib/*";
         this.outputJson = info.getMicroserviceName() + ".json";
     }

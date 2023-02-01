@@ -1,0 +1,530 @@
+{
+		"name" : {
+			"name" : "cms",
+			"fullName" : "cms"
+			}
+		,
+		"entities" : [
+			{
+				"entityName" : {
+					"name" : "Choice",
+					"fullName" : "Choice"
+					}
+				,
+				"fields" : [
+					{
+						"name" : {
+							"name" : "id",
+							"fullName" : "id"
+							}
+						,
+						"type" : "Integer",
+						"annotations" : [
+							{
+								"name" : "@GeneratedValue",
+								"stringValue" : "GeneratedValue",
+								"intValue" : null
+								}
+							,
+							{
+								"name" : "@Id",
+								"stringValue" : "Id",
+								"intValue" : null
+								}
+							,
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "body",
+							"fullName" : "body"
+							}
+						,
+						"type" : "String",
+						"annotations" : [
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "question",
+							"fullName" : "question"
+							}
+						,
+						"type" : "Question",
+						"annotations" : [
+							{
+								"name" : "@NotNull",
+								"stringValue" : "NotNull",
+								"intValue" : null
+								}
+							,
+							{
+								"name" : "@JsonIgnore",
+								"stringValue" : "JsonIgnore",
+								"intValue" : null
+								}
+							,
+							{
+								"name" : "@JoinColumn",
+								"stringValue" : "JoinColumn",
+								"intValue" : null
+								}
+							,
+							{
+								"name" : "@ManyToOne",
+								"stringValue" : "ManyToOne",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : true,
+						"entityRefName" : "Question",
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "chosen",
+							"fullName" : "chosen"
+							}
+						,
+						"type" : "boolean",
+						"annotations" : [
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "correct",
+							"fullName" : "correct"
+							}
+						,
+						"type" : "boolean",
+						"annotations" : [
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					
+					]
+				
+				}
+			,
+			{
+				"entityName" : {
+					"name" : "Question",
+					"fullName" : "Question"
+					}
+				,
+				"fields" : [
+					{
+						"name" : {
+							"name" : "id",
+							"fullName" : "id"
+							}
+						,
+						"type" : "Integer",
+						"annotations" : [
+							{
+								"name" : "@GeneratedValue",
+								"stringValue" : "GeneratedValue",
+								"intValue" : null
+								}
+							,
+							{
+								"name" : "@Id",
+								"stringValue" : "Id",
+								"intValue" : null
+								}
+							,
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "exam",
+							"fullName" : "exam"
+							}
+						,
+						"type" : "Exam",
+						"annotations" : [
+							{
+								"name" : "@JsonIgnore",
+								"stringValue" : "JsonIgnore",
+								"intValue" : null
+								}
+							,
+							{
+								"name" : "@JoinColumn",
+								"stringValue" : "JoinColumn",
+								"intValue" : null
+								}
+							,
+							{
+								"name" : "@OnDelete",
+								"stringValue" : "OnDelete",
+								"intValue" : null
+								}
+							,
+							{
+								"name" : "@ManyToOne",
+								"stringValue" : "ManyToOne",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : true,
+						"entityRefName" : "Exam",
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "choices",
+							"fullName" : "choices"
+							}
+						,
+						"type" : "Choice",
+						"annotations" : [
+							{
+								"name" : "@OneToMany",
+								"stringValue" : "OneToMany",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : true,
+						"entityRefName" : "Choice",
+						"isCollection" : true
+						}
+					,
+					{
+						"name" : {
+							"name" : "code",
+							"fullName" : "code"
+							}
+						,
+						"type" : "String",
+						"annotations" : [
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "body",
+							"fullName" : "body"
+							}
+						,
+						"type" : "String",
+						"annotations" : [
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "description",
+							"fullName" : "description"
+							}
+						,
+						"type" : "String",
+						"annotations" : [
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					
+					]
+				
+				}
+			,
+			{
+				"entityName" : {
+					"name" : "Exam",
+					"fullName" : "Exam"
+					}
+				,
+				"fields" : [
+					{
+						"name" : {
+							"name" : "sum",
+							"fullName" : "sum"
+							}
+						,
+						"type" : "Integer",
+						"annotations" : [
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "id",
+							"fullName" : "id"
+							}
+						,
+						"type" : "Integer",
+						"annotations" : [
+							{
+								"name" : "@GeneratedValue",
+								"stringValue" : "GeneratedValue",
+								"intValue" : null
+								}
+							,
+							{
+								"name" : "@Id",
+								"stringValue" : "Id",
+								"intValue" : null
+								}
+							,
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "issuer",
+							"fullName" : "issuer"
+							}
+						,
+						"type" : "String",
+						"annotations" : [
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "description",
+							"fullName" : "description"
+							}
+						,
+						"type" : "String",
+						"annotations" : [
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "examinee",
+							"fullName" : "examinee"
+							}
+						,
+						"type" : "String",
+						"annotations" : [
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "examDate",
+							"fullName" : "examDate"
+							}
+						,
+						"type" : "String",
+						"annotations" : [
+							{
+								"name" : "@JsonFormat",
+								"stringValue" : "JsonFormat",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "status",
+							"fullName" : "status"
+							}
+						,
+						"type" : "ExamStatus",
+						"annotations" : [
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "configurationId",
+							"fullName" : "configurationId"
+							}
+						,
+						"type" : "String",
+						"annotations" : [
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					,
+					{
+						"name" : {
+							"name" : "correct",
+							"fullName" : "correct"
+							}
+						,
+						"type" : "Integer",
+						"annotations" : [
+							{
+								"name" : "@Column",
+								"stringValue" : "Column",
+								"intValue" : null
+								}
+							
+							]
+						,
+						"isReference" : false,
+						"entityRefName" : null,
+						"isCollection" : false
+						}
+					
+					]
+				
+				}
+			
+			]
+		
+		}
+	

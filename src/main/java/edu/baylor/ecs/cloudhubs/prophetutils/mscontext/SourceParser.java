@@ -58,7 +58,8 @@ public class SourceParser {
     }
 
     private List<RestFlow> getRestFlows(List<String> pathToMsRoots) throws IOException {
-        RadSourceRequestContext radSourceRequestContext = new RadSourceRequestContext(pathToMsRoots);
+        //ADDED './' JUST TO GET TO COMPILE FOR TESTING. REFACTOR LATER
+        RadSourceRequestContext radSourceRequestContext = new RadSourceRequestContext(pathToMsRoots, "./");
         return this.radSourceService.generateRadSourceResponseContext(radSourceRequestContext).getRestFlows();
     }
 
