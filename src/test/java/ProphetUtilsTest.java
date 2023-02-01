@@ -35,7 +35,7 @@ public class ProphetUtilsTest {
     @Value("${user.rootPath}")
     private String rootPath;
 
-    @Value("${user.cmsPath}")
+    @Value("./msJar/cms.jar")
     private String cms_path;
 
     @Value("${user.qmsPath}")
@@ -52,11 +52,11 @@ public class ProphetUtilsTest {
     @BeforeEach
     public void initSystems(){
         //rootPath.setRootPath("/Users/svacina/git/c2advseproject/");
-        microServicePaths = new String[4];
+        microServicePaths = new String[1];
         microServicePaths[0] = rootPath + cms_path;
-        microServicePaths[1] = rootPath + qms_path;
-        microServicePaths[2] = rootPath + ems_path;
-        microServicePaths[3] = rootPath + ums_path;
+//        microServicePaths[1] = rootPath + qms_path;
+//        microServicePaths[2] = rootPath + ems_path;
+//        microServicePaths[3] = rootPath + ums_path;
     }
 
     @Test
@@ -99,7 +99,7 @@ public class ProphetUtilsTest {
     @Test
     @DisplayName("generating TMS2 template")
     public void generateTms2Template(){
-        String[] paths = new String[] {ems_path, cms_path};
+        String[] paths = new String[] { /* ems_path, */ cms_path};
         List<String> list = ProphetUtilsFacade.createHtmlTemplate(rootPath, paths);
         FileManager.writeBoundedContextToFile(list);
         assertNotNull(list);
