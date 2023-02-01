@@ -20,6 +20,7 @@ class SourceParserTest {
         sourceParser = new SourceParser();
     }
 
+    // TODO: setup later on after CI/CD finished
 //    @Test
 //    void createMsModel() throws IOException {
 //        List<String> pathToMsRoots = Arrays.asList(

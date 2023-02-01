@@ -15,13 +15,14 @@ class BytecodeParserTest {
         bytecodeParser = new BytecodeParser();
     }
 
-    @Test
-    void createMsModel() {
-        String pathToCompiledMicroservices = "C:\\seer-lab\\cil-tms";
-        String organizationPath = "edu/baylor/ecs";
-
-        MsModel msModel = bytecodeParser.createMsModel(organizationPath, pathToCompiledMicroservices);
-        msModel.getNodes().forEach(e -> log.info(e.toString()));
-        msModel.getEdges().forEach(e -> log.info(e.toString()));
-    }
+    // TODO: setup later on after CI/CD finished
+//    @Test
+//    void createMsModel() {
+//        String pathToCompiledMicroservices = "C:\\seer-lab\\cil-tms";
+//        String organizationPath = "edu/baylor/ecs";
+//
+//        MsModel msModel = bytecodeParser.createMsModel(organizationPath, pathToCompiledMicroservices);
+//        msModel.getNodes().forEach(e -> log.info(e.toString()));
+//        msModel.getEdges().forEach(e -> log.info(e.toString()));
+//    }
 }
