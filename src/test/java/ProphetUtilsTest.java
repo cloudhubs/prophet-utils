@@ -29,23 +29,24 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JunitConfig.class)
-@TestPropertySource(locations = "/application-dev.properties")
+//@TestPropertySource(locations = "/application-dev.properties")
 public class ProphetUtilsTest {
 
-    @Value("${user.rootPath}")
+    @Value("./msJar/tms/")
     private String rootPath;
 
     @Value("./msJar/cms.jar")
     private String cms_path;
 
-    @Value("${user.qmsPath}")
-    private String qms_path;
-
-    @Value("${user.emsPath}")
-    private String ems_path;
-
-    @Value("${user.umsPath}")
-    private String ums_path;
+    // NOTE: Commented out because we are testing cms microservice for CI/CD Pipeline
+//    @Value("${user.qmsPath}")
+//    private String qms_path;
+//
+//    @Value("${user.emsPath}")
+//    private String ems_path;
+//
+//    @Value("${user.umsPath}")
+//    private String ums_path;
 
     private String[] microServicePaths;
 
