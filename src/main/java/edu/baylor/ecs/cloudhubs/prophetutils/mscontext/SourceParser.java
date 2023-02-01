@@ -1,6 +1,7 @@
 package edu.baylor.ecs.cloudhubs.prophetutils.mscontext;
 
 import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.*;
+import edu.baylor.ecs.cloudhubs.prophetutils.AppConfigUtils;
 import edu.baylor.ecs.cloudhubs.prophetutils.directories.DirectoryUtils;
 import edu.baylor.ecs.cloudhubs.radsource.context.RadSourceRequestContext;
 import edu.baylor.ecs.cloudhubs.radsource.model.RestFlow;
@@ -8,8 +9,6 @@ import edu.baylor.ecs.cloudhubs.radsource.service.RadSourceService;
 
 import java.io.IOException;
 import java.util.*;
-
-import static java.util.stream.Collectors.toList;
 
 public class SourceParser {
     private final RadSourceService radSourceService;
@@ -60,8 +59,8 @@ public class SourceParser {
     }
 
     private List<RestFlow> getRestFlows(List<String> pathToMsRoots) throws IOException {
-        //ADDED './' JUST TO GET TO COMPILE FOR TESTING. REFACTOR LATER
-        RadSourceRequestContext radSourceRequestContext = new RadSourceRequestContext(pathToMsRoots, "./");
+
+        RadSourceRequestContext radSourceRequestContext = new RadSourceRequestContext(pathToMsRoots, AppConfigUtils.CONFIG_PROPS.getProperty("radSourceRequestContextPath"));
         return this.radSourceService.generateRadSourceResponseContext(radSourceRequestContext).getRestFlows();
     }
 

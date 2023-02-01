@@ -1,0 +1,19 @@
+{
+    "microservices": [
+      {
+        "baseDir": "/home/richardh/capstone/tms/cms/target",
+        "basePackage": "edu.baylor.ecs.cms",
+        "microserviceName": "cms"
+      },
+      {
+        "baseDir": "$PATH_TO_BOOT-INF",
+        "basePackage": "edu.baylor.ems",
+        "microserviceName": "ems"
+      },
+      {
+        "baseDir": "$PATH_TO_BOOT-INF",
+        "basePackage": "baylor.csi",
+        "microserviceName": "qms"
+      }
+    ]
+  }

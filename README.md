@@ -13,16 +13,17 @@ mvn clean install
 mvn package
 ```
 
-## ProphetUtilsTest Setup
+## Prophet-Utils Test Setup
 * Running Unit tests requires that you clone this repo to get the microservices (https://github.com/cloudhubs/tms)
-* create a file called **application-dev.properties** in src/test/resources/
-* In src/test/resources/application-dev.properties change the `user.rootPath` property to the path to **tms** repo
+* create a directory called 'resources' in src/test/
+* create a file called **test-config.properties** in src/test/resources/
+* In src/test/resources/test-config.properties change the `tms.rootPath` property to the path to **tms** repo
     * Example:
-    * user.rootPath=/Users/austinblanchard/Documents/CSI_43C9/microservices/tms/
-* Then add the `user.umsPath`, `user.qmsPath`, `user.cmsPath`, `user.emsPath` properties to each microservice
+      * user.rootPath=/Users/austinblanchard/Documents/CSI_43C9/microservices/tms/
+* Then add the `tms.umsPath`, `tms.qmsPath`, `tms.cmsPath`, `tms.emsPath` properties to each microservice
   * Example:
-  * user.umsPath=ums/
-  * user.qmsPath=qms/
-  * user.cmsPath=cms/
-  * user.emsPath=ems/
-* This will properly point the JUnit tests with the proper microservices
+    * tms.umsPath=ums/
+    * tms.qmsPath=qms/
+    * tms.cmsPath=cms/
+    * tms.emsPath=ems/
+  * This will properly point the JUnit tests to the proper microservices

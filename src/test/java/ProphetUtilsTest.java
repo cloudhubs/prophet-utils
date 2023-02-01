@@ -29,7 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JunitConfig.class)
-//@TestPropertySource(locations = "/application-dev.properties")
+//IMPORTANT! this file must have the paths used below filled out in the below config file 
+// @TestPropertySource(locations = "/resources/test-config.properties")
 public class ProphetUtilsTest {
 
     @Value("./msJar/tms/")
@@ -38,13 +39,12 @@ public class ProphetUtilsTest {
     @Value("./msJar/cms.jar")
     private String cms_path;
 
-    // NOTE: Commented out because we are testing cms microservice for CI/CD Pipeline
 //    @Value("${user.qmsPath}")
 //    private String qms_path;
-//
+
 //    @Value("${user.emsPath}")
 //    private String ems_path;
-//
+
 //    @Value("${user.umsPath}")
 //    private String ums_path;
 
