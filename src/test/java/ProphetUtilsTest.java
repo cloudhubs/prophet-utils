@@ -23,11 +23,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JunitConfig.class)
@@ -48,6 +48,7 @@ public class ProphetUtilsTest {
     @Value("ems/ems.jar")
     private String ems_path;
 
+    // TODO: Where do I find UMS?
 //    @Value("${user.umsPath}")
 //    private String ums_path;
 
@@ -55,13 +56,12 @@ public class ProphetUtilsTest {
 
     @BeforeEach
     public void initSystems(){
-        //rootPath.setRootPath("/Users/svacina/git/c2advseproject/");
         microServicePaths = new String[3];
         microServicePaths[0] = rootPath + cms_path;
         microServicePaths[1] = rootPath + qms_path;
         microServicePaths[2] = rootPath + ems_path;
-//        Arrays.asList(microServicePaths).forEach(log::info);
 //        microServicePaths[3] = rootPath + ums_path;
+//        Arrays.asList(microServicePaths).forEach(log::info);
     }
 
     @Test
@@ -104,7 +104,7 @@ public class ProphetUtilsTest {
     @Test
     @DisplayName("generating TMS2 template")
     public void generateTms2Template(){
-        String[] paths = new String[] { /* ems_path, */ cms_path};
+        String[] paths = new String[] { ems_path, cms_path};
         List<String> list = ProphetUtilsFacade.createHtmlTemplate(rootPath, paths);
         FileManager.writeBoundedContextToFile(list);
         assertNotNull(list);
@@ -120,7 +120,7 @@ public class ProphetUtilsTest {
     @Test
     @DisplayName("get context map")
     public void getContextMap(){
-        ContextMap mg =  ProphetUtilsFacade.getContextMap("./msJar/tms/");
+        ContextMap mg =  ProphetUtilsFacade.getContextMap(rootPath);
         assertNotNull(mg);
     }
 
@@ -146,10 +146,9 @@ public class ProphetUtilsTest {
     public void testAnalysisContext1() {
 
         SemanticUtils semanticUtils = new SemanticUtils();
-        String root = "./msJar/tms/";
-        String[] msPaths = {"./msJar/tms/cms.jar", /* "/Users/svacina/git/tms2/ems" */};
+        String[] msPaths = {rootPath + cms_path, rootPath + ems_path};
 
-        List<String> lines = semanticUtils.getClonesInLines(root, msPaths);
+        List<String> lines = semanticUtils.getClonesInLines(rootPath, msPaths);
         for (String s: lines) {
             System.out.println(s);
         }
