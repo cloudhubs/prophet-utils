@@ -29,9 +29,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JunitConfig.class)
-@Slf4j
 public class ProphetUtilsTest {
 
     @Value("./msJar/tms/")
@@ -59,7 +59,7 @@ public class ProphetUtilsTest {
         microServicePaths[1] = rootPath + qms_path;
         microServicePaths[2] = rootPath + ems_path;
 //        microServicePaths[3] = rootPath + ums_path;
-//        Arrays.asList(microServicePaths).forEach(log::info);
+        Arrays.asList(microServicePaths).forEach(e -> log.info("Microservice: " + e));
     }
 
     @Test
