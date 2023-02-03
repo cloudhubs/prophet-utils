@@ -32,8 +32,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JunitConfig.class)
 @Slf4j
-//IMPORTANT! this file must have the paths used below filled out in the below config file 
-// @TestPropertySource(locations = "/resources/test-config.properties")
 public class ProphetUtilsTest {
 
     @Value("./msJar/tms/")

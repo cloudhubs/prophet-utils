@@ -36,4 +36,3 @@ build/
 ### application.properties ###
 systemContext.json
 /.apt_generated_tests/
-src/test/resources/test-config.properties
