@@ -5,12 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
+@ExtendWith(SpringExtension.class)
 class SourceParserTest {
 
     private static SourceParser sourceParser;
@@ -20,18 +25,16 @@ class SourceParserTest {
         sourceParser = new SourceParser();
     }
 
-    // TODO: setup later on after CI/CD finished
-//    @Test
-//    void createMsModel() throws IOException {
-//        List<String> pathToMsRoots = Arrays.asList(
-//                "C:\\seer-lab\\cil-tms\\tms-cms",
-//                "C:\\seer-lab\\cil-tms\\tms-ems",
-//                "C:\\seer-lab\\cil-tms\\tms-qms",
-//                "C:\\seer-lab\\cil-tms\\tms-ums"
-//        );
-//
-//        MsModel msModel = sourceParser.createMsModel(pathToMsRoots);
-//        msModel.getNodes().forEach(e -> log.info(e.toString()));
-//        msModel.getEdges().forEach(e -> log.info(e.toString()));
-//    }
+    @Test
+    void createMsModel() throws IOException {
+        List<String> pathToMsRoots = Arrays.asList(
+                "./msJar/tms/cms/",
+                "./msJar/tms/ems/",
+                "./msJar/tms/qms/"
+        );
+
+        MsModel msModel = sourceParser.createMsModel(pathToMsRoots);
+        msModel.getNodes().forEach(e -> log.info(e.toString()));
+        msModel.getEdges().forEach(e -> log.info(e.toString()));
+    }
 }

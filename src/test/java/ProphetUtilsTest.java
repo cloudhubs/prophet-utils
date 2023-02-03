@@ -15,6 +15,7 @@ import edu.baylor.ecs.cloudhubs.prophetutils.ProphetUtilsFacade;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
 import edu.baylor.ecs.cloudhubs.prophetutils.semantic.SemanticUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -29,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JunitConfig.class)
+@Slf4j
 //IMPORTANT! this file must have the paths used below filled out in the below config file 
 // @TestPropertySource(locations = "/resources/test-config.properties")
 public class ProphetUtilsTest {
@@ -36,14 +39,14 @@ public class ProphetUtilsTest {
     @Value("./msJar/tms/")
     private String rootPath;
 
-    @Value("./msJar/cms.jar")
+    @Value("cms/cms.jar")
     private String cms_path;
 
-//    @Value("${user.qmsPath}")
-//    private String qms_path;
+    @Value("qms/qms.jar")
+    private String qms_path;
 
-//    @Value("${user.emsPath}")
-//    private String ems_path;
+    @Value("ems/ems.jar")
+    private String ems_path;
 
 //    @Value("${user.umsPath}")
 //    private String ums_path;
@@ -53,10 +56,11 @@ public class ProphetUtilsTest {
     @BeforeEach
     public void initSystems(){
         //rootPath.setRootPath("/Users/svacina/git/c2advseproject/");
-        microServicePaths = new String[1];
+        microServicePaths = new String[3];
         microServicePaths[0] = rootPath + cms_path;
-//        microServicePaths[1] = rootPath + qms_path;
-//        microServicePaths[2] = rootPath + ems_path;
+        microServicePaths[1] = rootPath + qms_path;
+        microServicePaths[2] = rootPath + ems_path;
+//        Arrays.asList(microServicePaths).forEach(log::info);
 //        microServicePaths[3] = rootPath + ums_path;
     }
 
