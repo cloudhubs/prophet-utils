@@ -15,50 +15,51 @@ import edu.baylor.ecs.cloudhubs.prophetutils.ProphetUtilsFacade;
 import edu.baylor.ecs.cloudhubs.prophetutils.adapter.EntityContextAdapter;
 import edu.baylor.ecs.cloudhubs.prophetutils.filemanager.FileManager;
 import edu.baylor.ecs.cloudhubs.prophetutils.semantic.SemanticUtils;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.IOException;
 import java.util.*;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JunitConfig.class)
-@TestPropertySource(locations = "/application.properties")
 public class ProphetUtilsTest {
 
-    @Value("${user.rootPath}")
+    @Value("./msJar/tms/")
     private String rootPath;
 
-    @Value("${user.cmsPath}")
+    @Value("cms/cms.jar")
     private String cms_path;
 
-    @Value("${user.qmsPath}")
+    @Value("qms/qms.jar")
     private String qms_path;
 
-    @Value("${user.emsPath}")
+    @Value("ems/ems.jar")
     private String ems_path;
 
-    @Value("${user.umsPath}")
-    private String ums_path;
+    // TODO: Where do I find UMS?
+//    @Value("${user.umsPath}")
+//    private String ums_path;
 
     private String[] microServicePaths;
 
     @BeforeEach
     public void initSystems(){
-        //rootPath.setRootPath("/Users/svacina/git/c2advseproject/");
-        microServicePaths = new String[4];
+        microServicePaths = new String[3];
         microServicePaths[0] = rootPath + cms_path;
         microServicePaths[1] = rootPath + qms_path;
         microServicePaths[2] = rootPath + ems_path;
-        microServicePaths[3] = rootPath + ums_path;
+//        microServicePaths[3] = rootPath + ums_path;
+        Arrays.asList(microServicePaths).forEach(e -> log.info("Microservice: " + e));
     }
 
     @Test
@@ -71,7 +72,7 @@ public class ProphetUtilsTest {
     @Test
     @DisplayName("bounded entity context generation")
     public void boundedContextGen() {
-         BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(rootPath, microServicePaths);
+        BoundedContext boundedContext = ProphetUtilsFacade.getBoundedContext(rootPath, microServicePaths);
         assertNotNull(boundedContext.getSystemName());
     }
 
@@ -101,7 +102,7 @@ public class ProphetUtilsTest {
     @Test
     @DisplayName("generating TMS2 template")
     public void generateTms2Template(){
-        String[] paths = new String[] {ems_path, cms_path};
+        String[] paths = new String[] { ems_path, cms_path};
         List<String> list = ProphetUtilsFacade.createHtmlTemplate(rootPath, paths);
         FileManager.writeBoundedContextToFile(list);
         assertNotNull(list);
@@ -117,37 +118,36 @@ public class ProphetUtilsTest {
     @Test
     @DisplayName("get context map")
     public void getContextMap(){
-        ContextMap mg =  ProphetUtilsFacade.getContextMap("/Users/svacina/tmp/tms");
+        ContextMap mg =  ProphetUtilsFacade.getContextMap(rootPath);
         assertNotNull(mg);
     }
 
-
-    @Test
-    @DisplayName("prophet data")
-    public void testProphetData() throws IOException {
-        ProphetAppData data = new ProphetAppData();
-        GitReq request = new GitReq();
-        List<RepoReq> repoReqs = new ArrayList<>();
-        RepoReq rr = new RepoReq();
-        rr.setPath("/Users/svacina/git/cdh/prophet-app-utils/repos-1589488397/train-ticket");
-        rr.setMonolith(false);
-        repoReqs.add(rr);
-        request.setRepositories(repoReqs);
-        data = ProphetUtilsFacade.getProphetAppData(request);
-        assertNotNull(data);
-    }
+    // TODO: setup later on after CI/CD finished
+//    @Test
+//    @DisplayName("prophet data")
+//    public void testProphetData() throws IOException {
+//        ProphetAppData data = new ProphetAppData();
+//        GitReq request = new GitReq();
+//        List<RepoReq> repoReqs = new ArrayList<>();
+//        RepoReq rr = new RepoReq();
+//        rr.setPath("/Users/svacina/git/cdh/prophet-app-utils/repos-1589488397/train-ticket");
+//        rr.setMonolith(false);
+//        repoReqs.add(rr);
+//        request.setRepositories(repoReqs);
+//        data = ProphetUtilsFacade.getProphetAppData(request);
+//        assertNotNull(data);
+//    }
 
 
     @Test
     @DisplayName("")
     public void testAnalysisContext1() {
-        SemanticUtils semanticUtils = new SemanticUtils();
-        String root = "/Users/svacina/git/tms2";
-        String[] msPaths = {"/Users/svacina/git/tms2/cms", "/Users/svacina/git/tms2/ems"};
 
-        List<String> lines = semanticUtils.getClonesInLines(root, msPaths);
-        for (String s: lines
-             ) {
+        SemanticUtils semanticUtils = new SemanticUtils();
+        String[] msPaths = {rootPath + cms_path, rootPath + ems_path};
+
+        List<String> lines = semanticUtils.getClonesInLines(rootPath, msPaths);
+        for (String s: lines) {
             System.out.println(s);
         }
     }
