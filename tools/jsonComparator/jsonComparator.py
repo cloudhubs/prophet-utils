@@ -15,11 +15,12 @@ json1 = json.load(file1)
 json2 = json.load(file2)
 
 ddiff = DeepDiff(json1, json2, ignore_order = True)
-
+ddiff.to_json()
+print(ddiff)
 #write the output of deepdiff to output
-with open('./output/comparisonOutput.json', "w", encoding='utf-8') as outputFile:
-    json.dump(ddiff, outputFile, ensure_ascii=False, indent=2)
+# with open('output/comparisonOutput.json', "w", encoding='utf-8') as outputFile:
+#     json.dump(ddiff, outputFile, ensure_ascii=False, indent=2)
 
-outputFile.close()
+# outputFile.close()
 file1.close()
 file2.close()
