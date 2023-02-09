@@ -4,7 +4,6 @@ HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
-!**/src/test/**
 .DS_Store
 
 ### STS ###
@@ -34,6 +33,6 @@ build/
 .vscode/
 
 ### application.properties ###
-**/src/main/recources/application-dev.properties
 systemContext.json
 /.apt_generated_tests/
+src/test/resources/application-dev.properties
