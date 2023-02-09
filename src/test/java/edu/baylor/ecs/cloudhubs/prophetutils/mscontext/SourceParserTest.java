@@ -2,14 +2,19 @@ package edu.baylor.ecs.cloudhubs.prophetutils.mscontext;
 
 import edu.baylor.ecs.cloudhubs.prophetdto.mscontext.MsModel;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
 @Slf4j
+@ExtendWith(SpringExtension.class)
 class SourceParserTest {
 
     private static SourceParser sourceParser;
@@ -22,10 +27,9 @@ class SourceParserTest {
     @Test
     void createMsModel() throws IOException {
         List<String> pathToMsRoots = Arrays.asList(
-                "C:\\seer-lab\\cil-tms\\tms-cms",
-                "C:\\seer-lab\\cil-tms\\tms-ems",
-                "C:\\seer-lab\\cil-tms\\tms-qms",
-                "C:\\seer-lab\\cil-tms\\tms-ums"
+                "./msJar/tms/cms/",
+                "./msJar/tms/ems/",
+                "./msJar/tms/qms/"
         );
 
         MsModel msModel = sourceParser.createMsModel(pathToMsRoots);

@@ -12,3 +12,8 @@ creates context map, bounded contexts and communication diagrams.
 mvn clean install
 mvn package
 ```
+
+## Running tests
+```bash
+mvn test
+```
