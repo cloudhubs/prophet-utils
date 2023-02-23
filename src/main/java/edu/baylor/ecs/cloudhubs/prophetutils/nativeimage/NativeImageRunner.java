@@ -65,10 +65,11 @@ public class NativeImageRunner {
         cmd.add("-cp");
         cmd.add(classpath);
         cmd.add("-H:+ProphetPlugin");
+        cmd.add("-H:+ProphetRest");
         cmd.add("-H:ProphetModuleName=" + this.info.getMicroserviceName());
         cmd.add("-H:ProphetBasePackage=" + this.info.getBasePackage());
         cmd.add("-H:ProphetOutputFile=" + this.outputJson);
-        cmd.add("dummy-main");
+        cmd.add(this.info.getMicroserviceName());
         return cmd;
     }
 }

@@ -30,8 +30,8 @@ public class Main {
         Gson gson = new Gson();
         AnalysisRequest analysisRequest = gson.fromJson(new FileReader(args[0]), AnalysisRequest.class);
         SystemContext ctx = ProphetUtilsFacade.getSystemContextViaNativeImage(analysisRequest.getMicroservices(), graalProphetHome);
-        FileManager.writeToFile(ctx, "./output/ni-prophet.json");
-        System.out.println("GSON TO JSON: " + gson.toJson(ctx));
+        FileManager.writeToFile(ctx, "./output/ni-system-context.json");
+        // System.out.println("GSON TO JSON: " + gson.toJson(ctx));
         BoundedContext boundedContext = new BoundedContextApiImpl().getBoundedContext(ctx, false);
         FileManager.writeToFile(boundedContext, "./output/ni-bounded-context.json");
     }

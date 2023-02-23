@@ -6,13 +6,13 @@
         "microserviceName": "cms"
       },
       {
-        "baseDir": "$PATH_TO_BOOT-INF",
-        "basePackage": "edu.baylor.ems",
+        "baseDir": "/home/richardh/capstone/tms/ems/target",
+        "basePackage": "edu.baylor.ecs.ems",
         "microserviceName": "ems"
       },
       {
-        "baseDir": "$PATH_TO_BOOT-INF",
-        "basePackage": "baylor.csi",
+        "baseDir": "/home/richardh/capstone/tms/qms/target",
+        "basePackage": "edu.baylor.ecs.qms",
         "microserviceName": "qms"
       }
     ]

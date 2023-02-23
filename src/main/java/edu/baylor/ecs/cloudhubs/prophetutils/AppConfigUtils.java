@@ -17,6 +17,7 @@ public class AppConfigUtils{
 
     //attempt to load path config file, bubble up exceptions
     public static void loadConfigFile() throws FileNotFoundException, IOException{
+
         final String CONFIG_FILE_PATH = "config/config.properties";
         try(FileInputStream fis = new FileInputStream(CONFIG_FILE_PATH)){
             CONFIG_PROPS.load(fis);
