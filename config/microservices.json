@@ -7,12 +7,12 @@
       },
       {
         "baseDir": "/home/richardh/capstone/tms/ems/target",
-        "basePackage": "edu.baylor.ecs.ems",
+        "basePackage": "edu.baylor.ems",
         "microserviceName": "ems"
       },
       {
         "baseDir": "/home/richardh/capstone/tms/qms/target",
-        "basePackage": "edu.baylor.ecs.qms",
+        "basePackage": "baylor.csi.questionManagement",
         "microserviceName": "qms"
       }
     ]
