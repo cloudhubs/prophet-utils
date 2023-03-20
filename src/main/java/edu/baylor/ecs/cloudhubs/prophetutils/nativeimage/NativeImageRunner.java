@@ -23,7 +23,7 @@ public class NativeImageRunner {
         String microservicePath = info.getBaseDir();
         //PREVIOUS
         // String microservicePath = info.getBaseDir() + File.separator + info.getMicroserviceName();
-        this.classpath = microservicePath + "target/BOOT-INF/classes" + ":" + microservicePath + "target/BOOT-INF/lib/*";
+        this.classpath = microservicePath + "/target/BOOT-INF/classes" + ":" + microservicePath + "/target/BOOT-INF/lib/*";
         this.outputJson = "./output/" + info.getMicroserviceName() + ".json";
     }
 
