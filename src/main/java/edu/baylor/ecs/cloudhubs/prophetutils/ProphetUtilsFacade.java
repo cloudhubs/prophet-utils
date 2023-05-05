@@ -123,6 +123,8 @@ public class ProphetUtilsFacade {
                 // filter paths to only those projects that contain Java
                 List<String> validPaths = allPaths.stream().filter(DirectoryUtils::hasJava).collect(Collectors.toList());
                 msFullPaths.addAll(validPaths);
+                
+                System.out.println("Number of Valid Java MS = " + validPaths.size());
 
                 // denote non-java projects
                 List<String> badPaths = allPaths.stream().filter(p -> !validPaths.contains(p)).collect(Collectors.toList());
