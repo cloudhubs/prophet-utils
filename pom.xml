@@ -58,26 +58,12 @@
 		    <artifactId>rad</artifactId>
 		    <version>expansion-base-SNAPSHOT</version>
 		</dependency>
-
-         <!-- rad-source -->
-       <!-- <dependency>
-            <groupId>edu.baylor.ecs.cloudhubs</groupId>
-            <artifactId>rad-source</artifactId>
-            <version>0.0.5</version>
-        </dependency> -->
-		
-		 <!-- rad-source -->
-       <!--  <dependency>
-            <groupId>edu.baylor.ecs.cloudhubs</groupId>
-            <artifactId>rad-source</artifactId>
-            <version>0.0.5</version>
-        </dependency> -->
         
         <dependency>
-		    <groupId>com.github.cloudhubs</groupId>
-		    <artifactId>rad-source</artifactId>
-		    <version>expansion-base-SNAPSHOT</version>
-		</dependency>
+            <groupId>com.github.cloudhubs.rad-source</groupId>
+            <artifactId>rad-source</artifactId>
+            <version>expansion-base-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
